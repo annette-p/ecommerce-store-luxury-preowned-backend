@@ -4,7 +4,7 @@ const router = express.Router();
 
 // A router object can contain routes - Add a new route to the Express router
 router.get('/', (req,res)=>{
-    res.send("Welcome")
+    res.render("home/index")
 })
 
 module.exports = router; 
