@@ -6,6 +6,7 @@
 
 ```
 PORT=4000
+DB_DRIVER=mysql
 DB_NAME=<preferred_new_database_name>
 DB_USERNAME=<preferred_new_db_username>
 DB_PASSWORD=<preferred_db_password>

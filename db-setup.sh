@@ -10,7 +10,7 @@ mysql -u root -e "CREATE DATABASE ${DB_NAME}"
 cat << EOF > database.json
 {
     "dev": {
-        "driver": "mysql",
+        "driver": "${DB_DRIVER}",
         "user": "${DB_USERNAME}",
         "password": "${DB_PASSWORD}",
         "database": "${DB_NAME}"
