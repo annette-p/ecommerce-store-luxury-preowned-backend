@@ -15,11 +15,48 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('order_shipments', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    order_id: {
+      type: 'int',
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: 'order_shipment_order_fk',
+        table: 'orders',
+        mapping: 'id',
+        rules:{
+          onDelete: 'cascade',
+          onUpdate: 'restrict'
+        }
+      }
+    },
+    shipment_provider: {
+      type: 'string',
+      length: 120
+    },
+    tracking_number: {
+      type: 'string',
+      length: 30
+    },
+    shipping_address: {
+      type: 'string',
+      length: 300
+    },
+    remarks: {
+      type: 'string',
+      length: 300
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('order_shipments');
 };
 
 exports._meta = {

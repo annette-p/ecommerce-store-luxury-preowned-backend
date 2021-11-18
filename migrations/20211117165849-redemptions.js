@@ -15,11 +15,46 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('redemptions', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    user_id: {
+      type: 'int',
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: 'redemption_user_fk',
+        table: 'users',
+        mapping: 'id',
+        rules:{
+          onDelete: 'cascade',
+          onUpdate: 'restrict'
+        }
+      }
+    },
+    voucher_id: {
+      type: 'int',
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: 'redemption_voucher_fk',
+        table: 'vouchers',
+        mapping: 'id',
+        rules:{
+          onDelete: 'cascade',
+          onUpdate: 'restrict'
+        }
+      }
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('redemptions');
 };
 
 exports._meta = {

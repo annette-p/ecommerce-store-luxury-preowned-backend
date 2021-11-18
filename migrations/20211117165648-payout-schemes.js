@@ -21,8 +21,22 @@ exports.up = function (db) {
       primaryKey: true,
       autoIncrement: true,
       unsigned: true
+    },
+    tier: {
+      type: 'string',
+      length: 45,
+      notNull: true
+    },
+    description: {
+      type: 'string',
+      length: 256
+    },
+    consignor_payout: {
+      type: 'int',
+      notNull: true,
+      unsigned: true
     }
-  })
+  });
 };
 
 exports.down = function (db) {

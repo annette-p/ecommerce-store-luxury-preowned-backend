@@ -15,11 +15,55 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('orders', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    user_id: {
+      type: 'int',
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: 'order_user_fk',
+        table: 'users',
+        mapping: 'id',
+        rules:{
+          onDelete: 'cascade',
+          onUpdate: 'restrict'
+        }
+      }
+    },
+    voucher_id: {
+      type: 'int',
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: 'order_voucher_fk',
+        table: 'vouchers',
+        mapping: 'id',
+        rules:{
+          onDelete: 'cascade',
+          onUpdate: 'restrict'
+        }
+      }
+    },
+    status: {
+      type: 'string',
+      length: 60,
+      notNull: true
+    },
+    status_comment: {
+      type: 'string',
+      length: 300
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('orders');
 };
 
 exports._meta = {

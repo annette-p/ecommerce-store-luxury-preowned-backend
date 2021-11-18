@@ -15,11 +15,39 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('vouchers', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    name: {
+      type: 'string',
+      length: 60,
+      notNull: true
+    },
+    code: {
+      type: 'string',
+      length: 90,
+      notNull: true
+    },
+    value: {
+      type: 'int',
+      notNull: true
+    },
+    quantity: {
+      type: 'int',
+      notNull: true
+    },
+    validity: {
+      type: 'date'
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('vouchers');
 };
 
 exports._meta = {

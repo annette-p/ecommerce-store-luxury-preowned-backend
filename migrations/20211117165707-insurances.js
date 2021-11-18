@@ -15,11 +15,28 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('insurances', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    policy_date: {
+      type: 'date'
+    },
+    claim_date: {
+      type: 'date'
+    },
+    coverage_amount: {
+      type: 'int',
+      unsigned: true
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('insurances');
 };
 
 exports._meta = {

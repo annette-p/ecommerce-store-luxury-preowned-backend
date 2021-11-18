@@ -15,11 +15,39 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('users', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    email: {
+      type: 'string',
+      length: 320,
+      notNull: true
+    },
+    type: {
+      type: 'string',
+      length: 60,
+      notNull: true
+    },
+    username: {
+      type: 'string',
+      length: 320
+    },
+    password: {
+      type: 'string',
+      length: 64
+    },
+    federated_login: {
+      type: 'boolean'
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('users');
 };
 
 exports._meta = {

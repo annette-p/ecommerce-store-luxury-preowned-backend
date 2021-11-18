@@ -15,11 +15,48 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('consignment_shipments', {
+    id: {
+      type: 'int',
+      primaryKey: true,
+      autoIncrement: true,
+      unsigned: true
+    },
+    consignment_id: {
+      type: 'int',
+      unsigned: true,
+      notNull: true,
+      foreignKey: {
+        name: 'consignment_shipment_consignment_fk',
+        table: 'consignments',
+        mapping: 'id',
+        rules:{
+          onDelete: 'cascade',
+          onUpdate: 'restrict'
+        }
+      }
+    },
+    shipment_provider: {
+      type: 'string',
+      length: 120
+    },
+    tracking_number: {
+      type: 'string',
+      length: 30
+    },
+    shipping_address: {
+      type: 'string',
+      length: 300
+    },
+    remarks: {
+      type: 'string',
+      length: 300
+    }
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('consignment_shipments');
 };
 
 exports._meta = {
