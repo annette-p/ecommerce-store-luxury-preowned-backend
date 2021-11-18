@@ -44,7 +44,7 @@ exports.up = function(db) {
       length: 60
     },
     holding_period: {
-      type: 'date'
+      type: 'datetime'
     }
   });
 };

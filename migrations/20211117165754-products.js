@@ -64,17 +64,33 @@ exports.up = function(db) {
         }
       }
     },
-    price: {
+    name: {
+      type: 'string',
+      length: 256
+    },
+    retail_price: {
       type: 'int',
       unsigned: true
     },
-    details: {
+    selling_price: {
+      type: 'int',
+      unsigned: true
+    },
+    description: {
       type: 'string',
-      length: 256
+      length: 500
+    },
+    specifications: {
+      type: 'string',
+      length: 500
     },
     condition: {
       type: 'string',
-      length: 256
+      length: 80
+    },
+    condition_description: {
+      type: 'string',
+      length: 300
     },
     image: {
       type: 'string',
@@ -83,6 +99,54 @@ exports.up = function(db) {
     sku: {
       type: 'string',
       length: 60
+    },
+    quantity: {
+      type: 'int',
+      unsigned: true,
+      notNull: true
+    },
+    authenticity: {
+      type: 'boolean'
+    },
+    product_image_1: {
+      type: 'string',
+      length: 500
+    },
+    product_image_2: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_1: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_2: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_3: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_4: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_5: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_6: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_7: {
+      type: 'string',
+      length: 500
+    },
+    product_gallery_8: {
+      type: 'string',
+      length: 500
     }
   });
 };

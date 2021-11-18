@@ -55,9 +55,9 @@ exports.up = function(db) {
       length: 60,
       notNull: true
     },
-    status_comment: {
+    comment: {
       type: 'string',
-      length: 300
+      length: 500
     }
   });
 };

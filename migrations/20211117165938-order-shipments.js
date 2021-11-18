@@ -46,11 +46,11 @@ exports.up = function(db) {
     },
     shipping_address: {
       type: 'string',
-      length: 300
+      length: 500
     },
     remarks: {
       type: 'string',
-      length: 300
+      length: 500
     }
   });
 };

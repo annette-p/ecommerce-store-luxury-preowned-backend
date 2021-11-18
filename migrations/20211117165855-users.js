@@ -22,6 +22,14 @@ exports.up = function(db) {
       autoIncrement: true,
       unsigned: true
     },
+    firstname: {
+      type: 'string',
+      length: 150
+    },
+    lastname: {
+      type: 'string',
+      length: 150
+    },
     email: {
       type: 'string',
       length: 320,
@@ -42,6 +50,14 @@ exports.up = function(db) {
     },
     federated_login: {
       type: 'boolean'
+    },
+    billing_address: {
+      type: 'string',
+      length: 500
+    },
+    shipping_address: {
+      type: 'string',
+      length: 500
     }
   });
 };
