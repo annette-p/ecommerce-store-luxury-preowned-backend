@@ -19,6 +19,7 @@
   "homepage": "https://github.com/annette-p/ecommerce-store-luxury-preowned-backend#readme",
   "dependencies": {
     "bookshelf": "^1.2.0",
+    "cors": "^2.8.5",
     "db-migrate": "^0.11.13",
     "db-migrate-mysql": "^2.2.0",
     "dotenv": "^10.0.0",
