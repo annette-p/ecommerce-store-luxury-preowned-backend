@@ -18,10 +18,12 @@
   },
   "homepage": "https://github.com/annette-p/ecommerce-store-luxury-preowned-backend#readme",
   "dependencies": {
+    "bookshelf": "^1.2.0",
     "db-migrate": "^0.11.13",
     "db-migrate-mysql": "^2.2.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "knex": "^0.95.14",
     "mysql": "^2.18.1"
   }
 }
