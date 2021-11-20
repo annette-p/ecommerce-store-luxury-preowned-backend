@@ -9,8 +9,19 @@ const {
 router.get('/', async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
 
-    let users = await User.collection().fetch();
-    res.send(users.toJSON()); // convert collection to JSON
+    // let users = await User.collection().fetch();
+    // res.send(users.toJSON()); // convert collection to JSON
+
+    await User.collection().fetch().then(users => {
+        res.status(200).send(users.toJSON());
+    }).catch(err => {
+        console.error("[Exception -> Users GET '/' Route] ", err)
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve users.`
+        })
+        // return;
+    });
 })
 
 router.get('/:user_id', async (req, res) => {
@@ -23,9 +34,9 @@ router.get('/:user_id', async (req, res) => {
     }).then(user => {
         res.status(200).send(user.toJSON()); // convert collection to JSON
     }).catch(_err => {
-        res.status(404).send({
+        res.status(500).send({
             "success": false,
-            "message": `Unable to retrieve User ID ${req.params.user_id}.`
+            "message": `Unable to retrieve users due to unexpected error.`
         })
         return;
     });
@@ -54,10 +65,11 @@ router.put('/:user_id/update', async (req, res) => {
         user.set('shipping_address', req.body.shipping_address);
         user.set('federated_login', false);
 
-        await user.save();
-        res.status(200).send({
-            "success": true,
-            "message": `User ID ${req.params.user_id} updated successfully`
+        await user.save().then(() => {
+            res.status(200).send({
+                "success": true,
+                "message": `User ID ${req.params.user_id} updated successfully`
+            })
         }).catch(_err => {
             res.status(500).send({
                 "success": false,
