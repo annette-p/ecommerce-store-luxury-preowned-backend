@@ -3,17 +3,17 @@
 ###
 
 # Get list of all users
-GET http://localhost:4000/users
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users
 
 ###
 
 # Get a specific user
-GET http://localhost:4000/users/3
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/3
 
 ###
 
 # Create user
-POST http://localhost:4000/users/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/create
 content-type: application/json
 
 {
@@ -31,7 +31,7 @@ content-type: application/json
 ###
 
 # Update user
-PUT http://localhost:4000/users/3/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/3/update
 content-type: application/json
 
 {
@@ -50,11 +50,36 @@ content-type: application/json
 
 # Delete user
 
-DELETE http://localhost:4000/users/2/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/2/delete
 
 ###
 
 # Get list of all categories
-GET http://localhost:4000/categories
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories
+
+###
+
+# Create category
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/create
+content-type: application/json
+
+{
+    "name": "Shoes"
+}
+
+###
+
+# Get list of all designers
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers
+
+###
+
+# Create designer
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/create
+content-type: application/json
+
+{
+    "name": "Prada"
+}
 
 ###

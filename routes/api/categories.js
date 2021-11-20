@@ -24,4 +24,21 @@ router.get('/', async (req, res) => {
     });
 })
 
+router.post('/create', async (req, res) => {
+    const category = new Category();
+    category.set('name', req.body.name);
+    await category.save().then(() => {
+        res.status(201).send({
+            "success": true,
+            "message": "New category created successfully",
+            "user_id": category.get("id")
+        })
+    }).catch(_err => {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to create new category due to unexpected error.`
+        })
+    });;
+})
+
 module.exports = router;
