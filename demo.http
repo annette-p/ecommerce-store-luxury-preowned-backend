@@ -1,0 +1,53 @@
+# REST Client - https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+###
+
+# Get list of all users
+GET http://localhost:4000/users
+
+###
+
+# Get a specific user
+GET http://localhost:4000/users/1
+
+###
+
+# Create user
+POST http://localhost:4000/users/create
+content-type: application/json
+
+{
+    "firstname": "Darren",
+    "lastname": "Poh",
+    "email": "darpohsh@gmail.com",
+    "type": "Admin",
+    "username": null,
+    "password": null,
+    "federated_login": 0,
+    "billing_address": "SG",
+    "shipping_address": "SG"
+}
+
+###
+
+# Update user
+PUT http://localhost:4000/users/1/update
+content-type: application/json
+
+{
+    "firstname": "Darren",
+    "lastname": "Poh",
+    "email": "darpohsh@gmail.com",
+    "type": "Admin",
+    "username": null,
+    "password": null,
+    "federated_login": 0,
+    "billing_address": "Bedok SG",
+    "shipping_address": "SG"
+}
+
+###
+
+# Delete user
+
+DELETE http://localhost:4000/users/2/delete

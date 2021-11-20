@@ -5,7 +5,7 @@
 * Create a `.env` file in the same directory as `index.js` with the below-contents.
 
 ```
-PORT=4000
+APP_PORT=4000
 DB_DRIVER=mysql
 DB_NAME=<preferred_new_database_name>
 DB_USERNAME=<preferred_new_db_username>
