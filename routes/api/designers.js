@@ -107,7 +107,7 @@ router.post('/create', async (req, res) => {
         res.status(201).send({
             "success": true,
             "message": "New designer created successfully",
-            "user_id": designer.get("id")
+            "designer_id": designer.get("id")
         })
     }).catch(_err => {
         res.status(500).send({

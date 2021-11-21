@@ -162,3 +162,82 @@ content-type: application/json
 }
 
 ###
+
+# Get list of all products
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products
+
+###
+
+# Get a specific product
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4
+
+###
+
+# Update a specific product
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/update
+content-type: application/json
+
+{
+    "designer_id": 2,
+    "category_id": 2,
+    "insurance_id": 2,
+    "name": "Prada Bag 2011",
+    "retail_price": 150,
+    "selling_price": 90,
+    "description": "XX",
+    "specifications": "",
+    "condition": "",
+    "condition_description": "",
+    "sku": "",
+    "quantity": 1,
+    "authenticity": true,
+    "product_image_1": "",
+    "product_image_2": "",
+    "product_gallery_1": "",
+    "product_gallery_2": "",
+    "product_gallery_3": "",
+    "product_gallery_4": "",
+    "product_gallery_5": "",
+    "product_gallery_6": "",
+    "product_gallery_7": "",
+    "product_gallery_8": ""
+}
+
+###
+
+# Delete a specific product
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/delete
+
+###
+
+# Create product
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/create
+content-type: application/json
+
+{
+    "designer_id": 2,
+    "category_id": 2,
+    "insurance_id": 2,
+    "name": "Prada Bag 2011",
+    "retail_price": 150,
+    "selling_price": 100,
+    "description": "",
+    "specifications": "",
+    "condition": "",
+    "condition_description": "",
+    "sku": "",
+    "quantity": 1,
+    "authenticity": true,
+    "product_image_1": "",
+    "product_image_2": "",
+    "product_gallery_1": "",
+    "product_gallery_2": "",
+    "product_gallery_3": "",
+    "product_gallery_4": "",
+    "product_gallery_5": "",
+    "product_gallery_6": "",
+    "product_gallery_7": "",
+    "product_gallery_8": ""
+}
+
+###

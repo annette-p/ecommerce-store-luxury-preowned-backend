@@ -111,7 +111,7 @@ router.post('/create', async (req, res) => {
         res.status(201).send({
             "success": true,
             "message": "New insurance created successfully",
-            "user_id": insurance.get("id")
+            "insurance_id": insurance.get("id")
         })
     }).catch(_err => {
         res.status(500).send({

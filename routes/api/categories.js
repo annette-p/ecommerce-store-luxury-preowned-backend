@@ -110,7 +110,7 @@ router.post('/create', async (req, res) => {
         res.status(201).send({
             "success": true,
             "message": "New category created successfully",
-            "user_id": category.get("id")
+            "category_id": category.get("id")
         })
     }).catch(_err => {
         res.status(500).send({
