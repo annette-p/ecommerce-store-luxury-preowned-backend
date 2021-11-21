@@ -9,7 +9,9 @@ const {
 router.get('/', async (req, res) => {
     // fetch all the products (ie, SELECT * from products)
 
-    await Product.collection().fetch().then(products => {
+    await Product.collection().fetch({
+        withRelated: ["category", "designer", "insurance"]
+    }).then(products => {
         res.send(products.toJSON()); // convert collection to JSON
     }).catch(err => {
         console.error("[Exception -> Products GET '/' Route] ", err)
@@ -28,7 +30,8 @@ router.get('/:product_id', async (req, res) => {
     await Product.where({
         'id': productId
     }).fetch({
-        require: true
+        require: true,
+        withRelated: ["category", "designer", "insurance"]
     }).then(product => {
         res.status(200).send(product.toJSON()); // convert collection to JSON
     }).catch(_err => {
