@@ -17,9 +17,9 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/create
 content-type: application/json
 
 {
-    "firstname": "Darren",
+    "firstname": "Net",
     "lastname": "Poh",
-    "email": "darpohsh@gmail.com",
+    "email": "net@gmail.com",
     "type": "Admin",
     "username": null,
     "password": null,
@@ -59,6 +59,11 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories
 
 ###
 
+# Get a specific category
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/1
+
+###
+
 # Create category
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/create
 content-type: application/json
@@ -66,6 +71,21 @@ content-type: application/json
 {
     "name": "Shoes"
 }
+
+###
+
+# Update category
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/1/update
+content-type: application/json
+
+{
+    "name": "Shoes 1"
+}
+
+###
+
+# Delete category
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/1/delete
 
 ###
 
