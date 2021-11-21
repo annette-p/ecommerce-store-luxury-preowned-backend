@@ -47,7 +47,7 @@ router.put('/:designer_id/update', async (req, res) => {
     }).catch(_err => {
         res.status(404).send({
             "success": false,
-            "message": `Unable to retrieve Designer ID ${req.params.category_id}. Designer update failed. `
+            "message": `Unable to retrieve Designer ID ${req.params.designer_id}. Designer update failed. `
         })
         return;
     });
@@ -64,7 +64,7 @@ router.put('/:designer_id/update', async (req, res) => {
         }).catch(_err => {
             res.status(500).send({
                 "success": false,
-                "message": `Unable to update Designer ID ${req.params.category_id} due to unexpected error.`
+                "message": `Unable to update Designer ID ${req.params.designer_id} due to unexpected error.`
             })
         });
     }

@@ -123,3 +123,42 @@ content-type: application/json
 }
 
 ###
+
+# Get list of all insurances
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances
+
+###
+
+# Get a specific insurance
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/1
+
+###
+
+# Update insurance
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/1/update
+content-type: application/json
+
+{
+    "policy_date": "2019-01-29",
+    "claim_date": "2020-12-02",
+    "coverage_amount": 300
+}
+
+###
+
+# Delete a specific insurance
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/1/delete
+
+###
+
+# Create insurance
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/create
+content-type: application/json
+
+{
+    "policy_date": "2019-01-30",
+    "claim_date": "2020-12-01",
+    "coverage_amount": 350
+}
+
+###

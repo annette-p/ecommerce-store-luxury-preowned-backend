@@ -15,6 +15,7 @@ const landingRoutes = require("./routes/landing");
 const api = {
   categories: require("./routes/api/categories"),
   designers: require("./routes/api/designers"),
+  insurances: require("./routes/api/insurances"),
   products: require("./routes/api/products"),
   users: require("./routes/api/users")
 }
@@ -26,6 +27,7 @@ async function main() {
   // * express.json() -- to parse req.body as JSON, so all content inside req.body will be converted to JSON before reaching any route functions
   app.use("/categories", express.json(), api.categories);
   app.use("/designers", express.json(), api.designers);
+  app.use("/insurances", express.json(), api.insurances);
   app.use("/products", express.json(), api.products);
   app.use("/users", express.json(), api.users);
 }

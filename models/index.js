@@ -8,6 +8,10 @@ const Designer = bookshelf.model('Designer', {
     tableName: 'designers'
 });
 
+const Insurance = bookshelf.model('Insurance', {
+    tableName: 'insurances'
+});
+
 const Product = bookshelf.model('Product', {
     tableName: 'products'
 });
@@ -19,6 +23,7 @@ const User = bookshelf.model('User', {
 module.exports = {
     Category,
     Designer,
+    Insurance,
     Product,
     User
 };
