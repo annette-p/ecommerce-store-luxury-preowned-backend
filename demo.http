@@ -94,6 +94,26 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers
 
 ###
 
+# Get a specific designer
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/2
+
+###
+
+# Update designer
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/1/update
+content-type: application/json
+
+{
+    "name": "Prada 1"
+}
+
+###
+
+# Delete designer
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/1/delete
+
+###
+
 # Create designer
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/create
 content-type: application/json
