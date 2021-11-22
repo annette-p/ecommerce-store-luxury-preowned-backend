@@ -17,12 +17,12 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/create
 content-type: application/json
 
 {
-    "firstname": "Net",
-    "lastname": "Poh",
-    "email": "net@gmail.com",
+    "firstname": "Baby",
+    "lastname": "Star",
+    "email": "star@gmail.com",
     "type": "Admin",
-    "username": null,
-    "password": null,
+    "username": "baby",
+    "password": "password",
     "federated_login": 0,
     "billing_address": "SG",
     "shipping_address": "SG"
@@ -50,7 +50,31 @@ content-type: application/json
 
 # Delete user
 
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/2/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/4/delete
+
+###
+
+# Authenticate using email/password
+
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
+content-type: application/json
+
+{
+    "email": "star@gmail.com",
+    "password": "password"
+}
+
+###
+
+# Authenticate using username/password
+
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
+content-type: application/json
+
+{
+    "username": "baby",
+    "password": "password"
+}
 
 ###
 

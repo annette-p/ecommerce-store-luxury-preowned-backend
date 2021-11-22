@@ -1,10 +1,17 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require('crypto');
 
 // import the User model
 const {
     User
 } = require('../../models');
+
+const getHashedPassword = (password) => {
+    const sha256 = crypto.createHash('sha256');
+    const hash = sha256.update(password).digest('base64');
+    return hash;
+}
 
 router.get('/', async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
@@ -117,6 +124,8 @@ router.post('/create', async (req, res) => {
     user.set('type', req.body.type);
     user.set('billing_address', req.body.billing_address);
     user.set('shipping_address', req.body.shipping_address);
+    user.set('username', req.body.username);
+    user.set('password', getHashedPassword(req.body.password));
     user.set('federated_login', false);
     await user.save().then(() => {
         res.status(201).send({
@@ -131,6 +140,51 @@ router.post('/create', async (req, res) => {
         })
     });;
 
+})
+
+router.post('/authenticate', async (req, res) => {
+    // find user by email or username 
+    // using 'bookshelf-eloquent' plugin for Bookshelf.js
+    // https://www.npmjs.com/package/bookshelf-eloquent
+    await User.where(
+        "email", req.body.email ? req.body.email : ""
+    ).orWhere(
+        "username", req.body.username ? req.body.username : ""
+    ).first()
+    .then(user => {
+        if (user) {
+            // check if the password matches
+            const passwordInDB = user.get("password")
+            const passwordProvided = getHashedPassword(req.body.password)
+            if (passwordInDB === passwordProvided) {
+                res.status(200).send({
+                    "success": true,
+                    "message": `Login Success`
+                })
+            } else {
+                // user exists, but password mismatch
+                res.status(401).send({
+                    "success": false,
+                    "message": `Login Failed`
+                })
+            }
+        } else {
+            // user does not exists
+            res.status(401).send({
+                "success": false,
+                "message": `Login Failed`
+            })
+        }
+
+    }).catch(_err => {
+        console.log(_err)
+        // something bad happened on the backend
+        res.status(500).send({
+            "success": false,
+            "message": `Login Failed`
+        })
+        return;
+    });
 })
 
 module.exports = router;

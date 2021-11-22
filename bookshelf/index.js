@@ -16,4 +16,9 @@ const knex = require('knex')({
 })
 
 const bookshelf = require('bookshelf')(knex)
+
+// Use 'bookshelf-eloquent' plugin for Bookshelf.js
+// ref: https://www.npmjs.com/package/bookshelf-eloquent
+bookshelf.plugin(require('bookshelf-eloquent'));
+
 module.exports = bookshelf;
