@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const {
     checkIfAuthenticatedJWT,
+    checkIsAdminJWT,
     getHashedPassword,
     generateAccessToken
 } = require('../../middlewares/authentication')
@@ -16,12 +17,11 @@ const {
 
 router.get('/', async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
-
-    // let users = await User.collection().fetch();
-    // res.send(users.toJSON()); // convert collection to JSON
-
     await User.collection().fetch().then(users => {
-        res.status(200).send(users.toJSON());
+        let usersResult = users.toJSON()
+        // mask out the users' password hash
+        usersResult.forEach(user => user["password"] = "***")
+        res.status(200).send(usersResult)
     }).catch(err => {
         console.error("[Exception -> Users GET '/' Route] ", err)
         res.status(500).send({
@@ -40,7 +40,10 @@ router.get('/:user_id', async (req, res) => {
     }).fetch({
         require: true
     }).then(user => {
-        res.status(200).send(user.toJSON()); // convert collection to JSON
+        // mask out the user's password hash
+        let userResult = user.toJSON()
+        userResult["password"] = "***"
+        res.status(200).send(userResult); // convert collection to JSON
     }).catch(_err => {
         res.status(500).send({
             "success": false,
@@ -50,7 +53,7 @@ router.get('/:user_id', async (req, res) => {
     });
 })
 
-router.put('/:user_id/update', async (req, res) => {
+router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
     }).fetch({
@@ -134,7 +137,7 @@ router.put('/:user_id/change-password', checkIfAuthenticatedJWT, async (req, res
     }
 })
 
-router.delete('/:user_id/delete', async (req, res) => {
+router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
     }).fetch({
@@ -238,7 +241,7 @@ router.post('/authenticate', async (req, res) => {
         });
 })
 
-router.post("/refresh", async (req, res) => {
+router.post("/refresh", checkIfAuthenticatedJWT, async (req, res) => {
     let refreshToken = req.body.refresh_token;
     if (!refreshToken) {
         return res.sendStatus(401);

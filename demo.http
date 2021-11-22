@@ -8,7 +8,7 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users
 ###
 
 # Get a specific user
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/3
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/5
 
 ###
 
@@ -93,7 +93,8 @@ content-type: application/json
 
 PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/5/change-password
 content-type: application/json
-authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzU5MTQxMywiZXhwIjoxNjM3NTkyMzEzLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.HvpOPBtNxKU4xN9pWmNzGKeI4gyWgFLXG10BmrT3W6M
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzU5NTMyMiwiZXhwIjoxNjM3NTk2MjIyLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.BYepT8ScwD06XEZIuXz_hoCACXSbxg-tPRs_YyO-vD4
+
 
 {
     "current_password": "password1",

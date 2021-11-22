@@ -9,6 +9,7 @@ const {
 
 // Add authentication middleware
 const checkIfAuthenticatedJWT = (req, res, next) => {
+    console.log("checkIfAuthenticatedJWT::req.user", req.user);
     // try to get authorization headers
     const authHeader = req.headers.authorization;
     if (authHeader) {
@@ -31,6 +32,14 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
     } else {
         return res.sendStatus(401);
     }
+}
+
+const checkIsAdminJWT = (req, res, next) => {
+    if (req.user.role !== "Admin") {
+        console.log("checkIsAdminJWT - not ADMIN")
+        return res.sendStatus(403);
+    }
+    next();
 }
 
 const getHashedPassword = (password) => {
@@ -60,6 +69,7 @@ const generateAccessToken = (user, tokenType, secret, expiresIn) => {
 
 module.exports = {
     checkIfAuthenticatedJWT,
+    checkIsAdminJWT,
     getHashedPassword,
     generateAccessToken
 };

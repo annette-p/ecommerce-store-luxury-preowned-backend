@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+const {
+    checkIfAuthenticatedJWT,
+    checkIsAdminJWT
+} = require('../../middlewares/authentication')
+
 // import the Product model
 const {
     Product
@@ -43,7 +48,7 @@ router.get('/:product_id', async (req, res) => {
     });
 })
 
-router.put('/:product_id/update', async (req, res) => {
+router.put('/:product_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const product = await Product.where({
         'id': req.params.product_id
     }).fetch({
@@ -97,7 +102,7 @@ router.put('/:product_id/update', async (req, res) => {
 
 })
 
-router.delete('/:product_id/delete', async (req, res) => {
+router.delete('/:product_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const product = await Product.where({
         'id': req.params.product_id
     }).fetch({
@@ -126,7 +131,7 @@ router.delete('/:product_id/delete', async (req, res) => {
 
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const product = new Product();
 
     product.set('designer_id', req.body.designer_id);

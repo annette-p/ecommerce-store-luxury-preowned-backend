@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+const {
+    checkIfAuthenticatedJWT,
+    checkIsAdminJWT
+} = require('../../middlewares/authentication')
+
 // import the Designer model
 const {
     Insurance
@@ -39,7 +44,7 @@ router.get('/:insurance_id', async (req, res) => {
     });
 })
 
-router.put('/:insurance_id/update', async (req, res) => {
+router.put('/:insurance_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const insurance = await Insurance.where({
         'id': req.params.insurance_id
     }).fetch({
@@ -73,7 +78,7 @@ router.put('/:insurance_id/update', async (req, res) => {
 
 })
 
-router.delete('/:insurance_id/delete', async (req, res) => {
+router.delete('/:insurance_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const insurance = await Insurance.where({
         'id': req.params.insurance_id
     }).fetch({
@@ -102,7 +107,7 @@ router.delete('/:insurance_id/delete', async (req, res) => {
 
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const insurance = new Insurance();
     insurance.set('policy_date', req.body.policy_date);
     insurance.set('claim_date', req.body.claim_date);

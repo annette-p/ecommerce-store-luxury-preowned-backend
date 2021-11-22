@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+const {
+    checkIfAuthenticatedJWT,
+    checkIsAdminJWT
+} = require('../../middlewares/authentication')
+
 // import the Category model
 const {
     Category
@@ -42,7 +47,7 @@ router.get('/:category_id', async (req, res) => {
     });
 })
 
-router.put('/:category_id/update', async (req, res) => {
+router.put('/:category_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const category = await Category.where({
         'id': req.params.category_id
     }).fetch({
@@ -74,7 +79,7 @@ router.put('/:category_id/update', async (req, res) => {
 
 })
 
-router.delete('/:category_id/delete', async (req, res) => {
+router.delete('/:category_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const category = await Category.where({
         'id': req.params.category_id
     }).fetch({
@@ -103,7 +108,7 @@ router.delete('/:category_id/delete', async (req, res) => {
 
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const category = new Category();
     category.set('name', req.body.name);
     await category.save().then(() => {

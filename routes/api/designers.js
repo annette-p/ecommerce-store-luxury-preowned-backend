@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+const {
+    checkIfAuthenticatedJWT,
+    checkIsAdminJWT
+} = require('../../middlewares/authentication')
+
 // import the Designer model
 const {
     Designer
@@ -39,7 +44,7 @@ router.get('/:designer_id', async (req, res) => {
     });
 })
 
-router.put('/:designer_id/update', async (req, res) => {
+router.put('/:designer_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const designer = await Designer.where({
         'id': req.params.designer_id
     }).fetch({
@@ -71,7 +76,7 @@ router.put('/:designer_id/update', async (req, res) => {
 
 })
 
-router.delete('/:designer_id/delete', async (req, res) => {
+router.delete('/:designer_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const designer = await Designer.where({
         'id': req.params.designer_id
     }).fetch({
@@ -100,7 +105,7 @@ router.delete('/:designer_id/delete', async (req, res) => {
 
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const designer = new Designer();
     designer.set('name', req.body.name);
     await designer.save().then(() => {
