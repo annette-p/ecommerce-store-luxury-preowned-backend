@@ -1,37 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const crypto = require('crypto');
+// const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+
+const {
+    checkIfAuthenticatedJWT,
+    getHashedPassword,
+    generateAccessToken
+} = require('../../middlewares/authentication')
 
 // import the User model
 const {
     User
 } = require('../../models');
-
-const getHashedPassword = (password) => {
-    const sha256 = crypto.createHash('sha256');
-    const hash = sha256.update(password).digest('base64');
-    return hash;
-}
-
-const generateAccessToken = (user, tokenType, secret, expiresIn) => {
-    let payload = {
-        'id': user.get('id')
-    }
-
-    if (tokenType === "access_token") {
-        payload.role = user.get('type');
-        payload.email = user.get('email');
-        payload.username = user.get('username');
-    }
-    return jwt.sign(payload, secret, {
-        expiresIn: expiresIn,
-        subject: user.get('email'),
-        header: {
-            "token_type": tokenType
-        }
-    });
-}
 
 router.get('/', async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
@@ -107,7 +88,7 @@ router.put('/:user_id/update', async (req, res) => {
 
 })
 
-router.put('/:user_id/change-password', async (req, res) => {
+router.put('/:user_id/change-password', checkIfAuthenticatedJWT, async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
     }).fetch({
@@ -285,7 +266,7 @@ router.post("/refresh", async (req, res) => {
         }
     })
 
-    
+
 })
 
 module.exports = router;
