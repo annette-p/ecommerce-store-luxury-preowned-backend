@@ -1,5 +1,9 @@
 const bookshelf = require("../bookshelf");
 
+const BlacklistedToken = bookshelf.model('BlacklistedToken',{
+    tableName: 'blacklisted_tokens'
+})
+
 const Category = bookshelf.model("Category", {
     tableName: "categories",
     products() {
@@ -39,6 +43,7 @@ const User = bookshelf.model("User", {
 });
 
 module.exports = {
+    BlacklistedToken,
     Category,
     Designer,
     Insurance,

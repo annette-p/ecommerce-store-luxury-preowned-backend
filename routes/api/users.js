@@ -12,6 +12,7 @@ const {
 
 // import the User model
 const {
+    BlacklistedToken,
     User
 } = require('../../models');
 
@@ -269,7 +270,28 @@ router.post("/refresh", checkIfAuthenticatedJWT, async (req, res) => {
         }
     })
 
+})
 
+router.post("/logout", checkIfAuthenticatedJWT, async (req, res) => {
+    let refreshToken = req.body.refresh_token;
+    if (!refreshToken) {
+        return res.sendStatus(401);
+    } else {
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, payload) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+    
+            const token = new BlacklistedToken();
+            token.set('token', refreshToken);
+            token.set('date_created', new Date());
+            await token.save();
+            res.status(200).send({
+                "success": true,
+                "message": "Logged out successfully."
+            })
+        })
+    }
 })
 
 module.exports = router;
