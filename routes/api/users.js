@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 // import the User model
 const {
@@ -11,6 +12,25 @@ const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
     const hash = sha256.update(password).digest('base64');
     return hash;
+}
+
+const generateAccessToken = (user, tokenType, secret, expiresIn) => {
+    let payload = {
+        'id': user.get('id')
+    }
+
+    if (tokenType === "access_token") {
+        payload.role = user.get('type');
+        payload.email = user.get('email');
+        payload.username = user.get('username');
+    }
+    return jwt.sign(payload, secret, {
+        expiresIn: expiresIn,
+        subject: user.get('email'),
+        header: {
+            "token_type": tokenType
+        }
+    });
 }
 
 router.get('/', async (req, res) => {
@@ -87,6 +107,52 @@ router.put('/:user_id/update', async (req, res) => {
 
 })
 
+router.put('/:user_id/change-password', async (req, res) => {
+    const user = await User.where({
+        'id': req.params.user_id
+    }).fetch({
+        require: true
+    }).catch(_err => {
+        console.log(_err)
+        res.status(404).send({
+            "success": false,
+            "message": `Unable to retrieve User ID ${req.params.user_id}. User change password failed. `
+        })
+        return;
+    });
+
+    if (user !== undefined) {
+
+        // check if the password matches
+        const passwordInDB = user.get("password")
+        const passwordProvided = getHashedPassword(req.body.current_password)
+        if (passwordInDB === passwordProvided) {
+            user.set('password', getHashedPassword(req.body.new_password));
+            await user.save().then(() => {
+                res.status(200).send({
+                    "success": true,
+                    "message": "Password changed successfully"
+                })
+            }).catch(_err => {
+                res.status(500).send({
+                    "success": false,
+                    "message": `Unable to change user password due to unexpected error.`
+                })
+            });
+        } else {
+            res.status(401).send({
+                "success": false,
+                "message": `Current password is invalid. Unable to change user password.`
+            })
+        }
+    } else {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to change user password due to unexpected error.`
+        })
+    }
+})
+
 router.delete('/:user_id/delete', async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
@@ -138,7 +204,7 @@ router.post('/create', async (req, res) => {
             "success": false,
             "message": `Unable to create new user due to unexpected error.`
         })
-    });;
+    });
 
 })
 
@@ -147,44 +213,45 @@ router.post('/authenticate', async (req, res) => {
     // using 'bookshelf-eloquent' plugin for Bookshelf.js
     // https://www.npmjs.com/package/bookshelf-eloquent
     await User.where(
-        "email", req.body.email ? req.body.email : ""
-    ).orWhere(
-        "username", req.body.username ? req.body.username : ""
-    ).first()
-    .then(user => {
-        if (user) {
-            // check if the password matches
-            const passwordInDB = user.get("password")
-            const passwordProvided = getHashedPassword(req.body.password)
-            if (passwordInDB === passwordProvided) {
-                res.status(200).send({
-                    "success": true,
-                    "message": `Login Success`
-                })
+            "email", req.body.email ? req.body.email : ""
+        ).orWhere(
+            "username", req.body.username ? req.body.username : ""
+        ).first()
+        .then(user => {
+            if (user) {
+                // check if the password matches
+                const passwordInDB = user.get("password")
+                const passwordProvided = getHashedPassword(req.body.password)
+                if (passwordInDB === passwordProvided) {
+                    let accessToken = generateAccessToken(user, "access_token", process.env.TOKEN_SECRET, '15m');
+                    let refreshToken = generateAccessToken(user, "refresh_token", process.env.REFRESH_TOKEN_SECRET, '7d')
+                    res.status(200).send({
+                        accessToken, refreshToken
+                    })
+                } else {
+                    // user exists, but password mismatch
+                    res.status(401).send({
+                        "success": false,
+                        "message": `Login Failed`
+                    })
+                }
             } else {
-                // user exists, but password mismatch
+                // user does not exists
                 res.status(401).send({
                     "success": false,
                     "message": `Login Failed`
                 })
             }
-        } else {
-            // user does not exists
-            res.status(401).send({
+
+        }).catch(_err => {
+            console.log(_err)
+            // something bad happened on the backend
+            res.status(500).send({
                 "success": false,
                 "message": `Login Failed`
             })
-        }
-
-    }).catch(_err => {
-        console.log(_err)
-        // something bad happened on the backend
-        res.status(500).send({
-            "success": false,
-            "message": `Login Failed`
-        })
-        return;
-    });
+            return;
+        });
 })
 
 module.exports = router;

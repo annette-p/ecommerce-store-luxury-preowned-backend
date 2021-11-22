@@ -78,6 +78,18 @@ content-type: application/json
 
 ###
 
+# Change password
+
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/5/change-password
+content-type: application/json
+
+{
+    "current_password": "password1",
+    "new_password": "password"
+}
+
+###
+
 # Get list of all categories
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories
 
