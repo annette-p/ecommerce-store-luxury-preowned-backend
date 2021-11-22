@@ -223,10 +223,13 @@ router.post('/authenticate', async (req, res) => {
                 const passwordInDB = user.get("password")
                 const passwordProvided = getHashedPassword(req.body.password)
                 if (passwordInDB === passwordProvided) {
+
+                    // TODO: consider shorter validity for access token of customers
                     let accessToken = generateAccessToken(user, "access_token", process.env.TOKEN_SECRET, '15m');
                     let refreshToken = generateAccessToken(user, "refresh_token", process.env.REFRESH_TOKEN_SECRET, '7d')
                     res.status(200).send({
-                        accessToken, refreshToken
+                        accessToken,
+                        refreshToken
                     })
                 } else {
                     // user exists, but password mismatch
@@ -252,6 +255,37 @@ router.post('/authenticate', async (req, res) => {
             })
             return;
         });
+})
+
+router.post("/refresh", async (req, res) => {
+    let refreshToken = req.body.refresh_token;
+    if (!refreshToken) {
+        return res.sendStatus(401);
+    }
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, payload) => {
+        if (err) {
+            return res.sendStatus(403);
+        }
+
+        const user = await User.where({
+            "id": payload.id,
+            "email": payload.sub
+        }).fetch({
+            require: true
+        }).catch(_err => {
+            return res.sendStatus(403);
+        });
+
+        if (user !== undefined) {
+            let accessToken = generateAccessToken(user, "access_token", process.env.TOKEN_SECRET, '15m');
+            res.send({
+                accessToken
+            });
+        }
+    })
+
+    
 })
 
 module.exports = router;
