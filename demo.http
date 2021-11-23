@@ -82,9 +82,21 @@ content-type: application/json
 
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/refresh
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY1MzE1MCwiZXhwIjoxNjM3NjU0MDUwLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.59Q90JqeeLHzBZURw-WCXF9StXhwvO9J4AljY5sli_o
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NTc3MDcyLCJleHAiOjE2MzgxODE4NzIsInN1YiI6InN0YXJAZ21haWwuY29tIn0.MQsggOEUQKGvRnGr4zqL2yeZiN_Z90ED1tCl8UzqGuw"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NjUzMTUwLCJleHAiOjE2MzgyNTc5NTAsInN1YiI6InN0YXJAZ21haWwuY29tIn0.TDolo31kPMmrazMN9Z42yZGAU0jd2OYHJNrbfsHeqnk"
+}
+
+###
+
+# Logout
+
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/logout
+content-type: application/json
+
+{
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NjUzMTUwLCJleHAiOjE2MzgyNTc5NTAsInN1YiI6InN0YXJAZ21haWwuY29tIn0.TDolo31kPMmrazMN9Z42yZGAU0jd2OYHJNrbfsHeqnk"
 }
 
 ###

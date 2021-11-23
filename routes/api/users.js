@@ -248,6 +248,32 @@ router.post("/refresh", checkIfAuthenticatedJWT, async (req, res) => {
         return res.sendStatus(401);
     }
 
+    // check if the refresh token has been black listed
+    let blacklistedToken;
+    try {
+        blacklistedToken = await BlacklistedToken.where({
+            'token': refreshToken
+        }).fetch({
+            require: false
+        });
+    } catch(_err) {
+        console.log(_err)
+        return res.status(500).send({
+            "success": false,
+            "message": `Failed to refresh the access token due to unexpected error.`
+        });
+    }
+    
+    
+    // if the refresh token has already been blacklisted
+    if (blacklistedToken) {
+        res.status(401);
+        return res.send({
+            "success": false,
+            "message": "The refresh token has already expired"
+        })
+    }
+
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, payload) => {
         if (err) {
             return res.sendStatus(403);
@@ -281,7 +307,7 @@ router.post("/logout", checkIfAuthenticatedJWT, async (req, res) => {
             if (err) {
                 return res.sendStatus(403);
             }
-    
+
             const token = new BlacklistedToken();
             token.set('token', refreshToken);
             token.set('date_created', new Date());

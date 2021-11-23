@@ -9,7 +9,6 @@ const {
 
 // Add authentication middleware
 const checkIfAuthenticatedJWT = (req, res, next) => {
-    console.log("checkIfAuthenticatedJWT::req.user", req.user);
     // try to get authorization headers
     const authHeader = req.headers.authorization;
     if (authHeader) {
