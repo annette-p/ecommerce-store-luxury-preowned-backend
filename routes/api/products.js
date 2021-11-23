@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     // fetch all the products (ie, SELECT * from products)
 
     await Product.collection().fetch({
-        withRelated: ["category", "designer", "insurance"]
+        withRelated: ["category", "designer", "insurance", "tags"]
     }).then(products => {
         res.send(products.toJSON()); // convert collection to JSON
     }).catch(err => {
@@ -36,7 +36,7 @@ router.get('/:product_id', async (req, res) => {
         'id': productId
     }).fetch({
         require: true,
-        withRelated: ["category", "designer", "insurance"]
+        withRelated: ["category", "designer", "insurance", "tags"]
     }).then(product => {
         res.status(200).send(product.toJSON()); // convert collection to JSON
     }).catch(_err => {
@@ -52,7 +52,8 @@ router.put('/:product_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
     const product = await Product.where({
         'id': req.params.product_id
     }).fetch({
-        require: true
+        require: true,
+        withRelated:['tags']
     }).catch(_err => {
         res.status(404).send({
             "success": false,
@@ -87,7 +88,19 @@ router.put('/:product_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
         product.set('product_gallery_7', req.body.product_gallery_7);
         product.set('product_gallery_8', req.body.product_gallery_8);
 
-        await product.save().then(() => {
+        await product.save().then(async () => {
+
+            // handle tags
+            let tagIds = req.body.tags.split(",");
+            let existinTagIds = await product.related("tags").pluck("id");
+
+            // remove all the tags that are not selected anymore
+            let tagsToRemove = existinTagIds.filter( id => tagIds.includes(id) === false);
+            await product.tags().detach(tagsToRemove);
+
+            // add in all the tags selected
+            await product.tags().attach(tagIds);
+
             res.status(200).send({
                 "success": true,
                 "message": `Product ID ${req.params.product_id} updated successfully`
@@ -158,7 +171,13 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
     product.set('product_gallery_7', req.body.product_gallery_7);
     product.set('product_gallery_8', req.body.product_gallery_8);
 
-    await product.save().then(() => {
+    await product.save().then(async () => {
+
+        // handle tags
+        if (req.body.tags) {
+            await product.tags().attach(req.body.tags.split(","));
+        }
+
         res.status(201).send({
             "success": true,
             "message": "New product created successfully",

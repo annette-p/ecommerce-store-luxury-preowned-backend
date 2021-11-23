@@ -35,11 +35,17 @@ const Product = bookshelf.model("Product", {
     },
     insurance() {
         return this.belongsTo("Insurance");
+    },
+    tags() {
+        return this.belongsToMany('Tag');
     }
 });
 
 const Tag = bookshelf.model("Tag", {
     tableName: "tags",
+    products() {
+        return this.belongsToMany('Product');
+    }
 });
 
 const User = bookshelf.model("User", {
