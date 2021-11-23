@@ -38,6 +38,10 @@ const Product = bookshelf.model("Product", {
     }
 });
 
+const Tag = bookshelf.model("Tag", {
+    tableName: "tags",
+});
+
 const User = bookshelf.model("User", {
     tableName: "users"
 });
@@ -48,5 +52,6 @@ module.exports = {
     Designer,
     Insurance,
     Product,
+    Tag,
     User
 };

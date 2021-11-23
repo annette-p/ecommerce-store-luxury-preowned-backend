@@ -17,6 +17,7 @@ const api = {
   designers: require("./routes/api/designers"),
   insurances: require("./routes/api/insurances"),
   products: require("./routes/api/products"),
+  tags: require("./routes/api/tags"),
   users: require("./routes/api/users")
 }
 
@@ -29,6 +30,7 @@ async function main() {
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);
   app.use("/products", express.json(), api.products);
+  app.use("/tags", express.json(), api.tags);
   app.use("/users", express.json(), api.users);
 }
 

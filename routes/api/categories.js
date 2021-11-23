@@ -13,10 +13,6 @@ const {
 
 router.get('/', async (req, res) => {
     // fetch all the categories (i.e., SELECT * FROM categories)
-
-    // let categories = await Category.collection().fetch();
-    // res.send(users.toJSON()); // convert collection to JSON
-
     await Category.collection().fetch().then(categories => {
         res.status(200).send(categories.toJSON());
     }).catch(err => {

@@ -242,7 +242,7 @@ router.post('/authenticate', async (req, res) => {
         });
 })
 
-router.post("/refresh", checkIfAuthenticatedJWT, async (req, res) => {
+router.post("/refresh", async (req, res) => {
     let refreshToken = req.body.refresh_token;
     if (!refreshToken) {
         return res.sendStatus(401);

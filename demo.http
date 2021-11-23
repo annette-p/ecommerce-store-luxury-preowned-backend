@@ -82,7 +82,6 @@ content-type: application/json
 
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/refresh
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY1MzE1MCwiZXhwIjoxNjM3NjU0MDUwLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.59Q90JqeeLHzBZURw-WCXF9StXhwvO9J4AljY5sli_o
 
 {
     "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NjUzMTUwLCJleHAiOjE2MzgyNTc5NTAsInN1YiI6InN0YXJAZ21haWwuY29tIn0.TDolo31kPMmrazMN9Z42yZGAU0jd2OYHJNrbfsHeqnk"
@@ -94,6 +93,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/logout
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY1MzE1MCwiZXhwIjoxNjM3NjU0MDUwLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.59Q90JqeeLHzBZURw-WCXF9StXhwvO9J4AljY5sli_o
 
 {
     "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NjUzMTUwLCJleHAiOjE2MzgyNTc5NTAsInN1YiI6InN0YXJAZ21haWwuY29tIn0.TDolo31kPMmrazMN9Z42yZGAU0jd2OYHJNrbfsHeqnk"
@@ -300,5 +300,43 @@ content-type: application/json
     "product_gallery_7": "",
     "product_gallery_8": ""
 }
+
+###
+
+# Get list of all tags
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags
+
+###
+
+# Get a specific tag
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/1
+
+###
+
+# Create tag
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/create
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY2NjA4OSwiZXhwIjoxNjM3NjY2OTg5LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.o-W2ZluOPTB49b9dYVlUuzA9DLqk7dgW07ZOSdWOyIs
+
+{
+    "name": "Just In"
+}
+
+###
+
+# Update tag
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/2/update
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY2NjA4OSwiZXhwIjoxNjM3NjY2OTg5LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.o-W2ZluOPTB49b9dYVlUuzA9DLqk7dgW07ZOSdWOyIs
+
+{
+    "name": "New Arrival"
+}
+
+###
+
+# Delete tag
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/1/delete
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY2NjA4OSwiZXhwIjoxNjM3NjY2OTg5LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.o-W2ZluOPTB49b9dYVlUuzA9DLqk7dgW07ZOSdWOyIs
 
 ###
