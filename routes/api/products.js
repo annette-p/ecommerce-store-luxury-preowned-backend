@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const productDataLayer = require("../../dal/products");
 const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT
@@ -11,38 +12,41 @@ const {
     Product
 } = require('../../models');
 
-router.get('/', async (req, res) => {
-    // fetch all the products (ie, SELECT * from products)
-
-    await Product.collection().fetch({
-        withRelated: ["category", "designer", "insurance", "tags"]
-    }).then(products => {
-        res.send(products.toJSON()); // convert collection to JSON
-    }).catch(err => {
-        console.error("[Exception -> Products GET '/' Route] ", err)
+// Retrieve all products
+router.get('/', async (_req, res) => {
+    await productDataLayer.getAllProducts().then( products => {
+        res.status(200).send({
+            "success": true,
+            "data": products
+        })
+    }).catch(_err => {
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve products due to unexpected error.`
         })
         return;
     });
-    
 })
 
+// Retrieve a product by its ID
 router.get('/:product_id', async (req, res) => {
-    // fetch a product by primary key "id"
-    const productId = req.params.product_id
-    await Product.where({
-        'id': productId
-    }).fetch({
-        require: true,
-        withRelated: ["category", "designer", "insurance", "tags"]
-    }).then(product => {
-        res.status(200).send(product.toJSON()); // convert collection to JSON
+    await productDataLayer.getProductById(req.params.product_id).then( product => {
+        if (product) {
+            res.send({
+                "success": true,
+                "data": product
+            })
+        } else {
+            res.status(404).send({
+                "success": false,
+                "message": `Product id ${req.params.product_id} does not exists.`
+            })
+        }
+        
     }).catch(_err => {
         res.status(500).send({
             "success": false,
-            "message": `Unable to retrieve product due to unexpected error.`
+            "message": `Unable to retrieve product id ${req.params.product_id} due to unexpected error.`
         })
         return;
     });

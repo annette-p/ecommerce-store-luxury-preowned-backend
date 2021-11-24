@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const productDataLayer = require("../../dal/products");
 const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT
@@ -11,12 +12,14 @@ const {
     Category
 } = require('../../models');
 
+// Retrieve all categories
 router.get('/', async (req, res) => {
-    // fetch all the categories (i.e., SELECT * FROM categories)
-    await Category.collection().fetch().then(categories => {
-        res.status(200).send(categories.toJSON());
-    }).catch(err => {
-        console.error("[Exception -> Categories GET '/' Route] ", err)
+    await productDataLayer.getAllCategories().then( categories => {
+        res.status(200).send({
+            "success": true,
+            "data": categories
+        })
+    }).catch(_err => {
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve categories due to unexpected error.`
@@ -26,18 +29,22 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:category_id', async (req, res) => {
-    // fetch a category by primary key "id"
-    const categoryId = req.params.category_id
-    await Category.where({
-        'id': categoryId
-    }).fetch({
-        require: true
-    }).then(category => {
-        res.status(200).send(category.toJSON()); // convert collection to JSON
+    await productDataLayer.getCategoryById(req.params.category_id).then( category => {
+        if (category) {
+            res.send({
+                "success": true,
+                "data": category
+            });
+        } else {
+            res.status(404).send({
+                "success": false,
+                "message": `Category id ${req.params.category_id} does not exists.`
+            });
+        }
     }).catch(_err => {
         res.status(500).send({
             "success": false,
-            "message": `Unable to retrieve category due to unexpected error.`
+            "message": `Unable to retrieve category id ${req.params.category_id} due to unexpected error.`
         })
         return;
     });

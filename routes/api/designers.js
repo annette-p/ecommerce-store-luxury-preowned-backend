@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const productDataLayer = require("../../dal/products");
 const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT
@@ -12,12 +13,12 @@ const {
 } = require('../../models');
 
 router.get('/', async (req, res) => {
-    // fetch all the designers (i.e., SELECT * FROM designers)
-
-    await Designer.collection().fetch().then(designers => {
-        res.status(200).send(designers.toJSON());
-    }).catch(err => {
-        console.error("[Exception -> Designers GET '/' Route] ", err)
+    await productDataLayer.getAllDesigners().then( designers => {
+        res.status(200).send({
+            "success": true,
+            "data": designers
+        })
+    }).catch(_err => {
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve designers due to unexpected error.`
@@ -27,18 +28,22 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:designer_id', async (req, res) => {
-    // fetch a designer by primary key "id"
-    const designerId = req.params.designer_id
-    await Designer.where({
-        'id': designerId
-    }).fetch({
-        require: true
-    }).then(designer => {
-        res.status(200).send(designer.toJSON()); // convert collection to JSON
+    await productDataLayer.getDesignerById(req.params.designer_id).then( designer => {
+        if (designer) {
+            res.send({
+                "success": true,
+                "data": designer
+            });
+        } else {
+            res.status(404).send({
+                "success": false,
+                "message": `Designer id ${req.params.designer_id} does not exists.`
+            });
+        }
     }).catch(_err => {
         res.status(500).send({
             "success": false,
-            "message": `Unable to retrieve designer due to unexpected error.`
+            "message": `Unable to retrieve designer id ${req.params.designer_id} due to unexpected error.`
         })
         return;
     });
