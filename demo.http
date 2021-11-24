@@ -237,7 +237,7 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4
 # Update a specific product
 PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/update
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY3NjM2OCwiZXhwIjoxNjM3Njc3MjY4LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.nAm2sM8hytm86CXmi40oi_myMGpN_7P0_A-jq84IBhY
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzc3MzE5MSwiZXhwIjoxNjM3Nzc0MDkxLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.t-z6_uhvIQ_1803q4auD9I9fVtAni-ZwMUuZmjHszlE
 
 {
     "designer_id": 2,
@@ -263,7 +263,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
     "product_gallery_6": "",
     "product_gallery_7": "",
     "product_gallery_8": "",
-    "tags": "3"
+    "tags": "2"
 }
 
 ###
@@ -357,8 +357,7 @@ content-type: application/json
 {
     "user_id": 5,
     "items": [
-        { "product_id": 4, "quantity": 6 },
-        { "product_id": 5, "quantity": 7 }
+        { "product_id": 5, "quantity": 2 }
     ]
 }
 
