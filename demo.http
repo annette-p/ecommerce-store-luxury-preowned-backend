@@ -84,7 +84,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/refresh
 content-type: application/json
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NjUzMTUwLCJleHAiOjE2MzgyNTc5NTAsInN1YiI6InN0YXJAZ21haWwuY29tIn0.TDolo31kPMmrazMN9Z42yZGAU0jd2OYHJNrbfsHeqnk"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NjY2MDg5LCJleHAiOjE2MzgyNzA4ODksInN1YiI6InN0YXJAZ21haWwuY29tIn0.nOnm1h_3miCUHKnaVsW_J5EZDZ0l7Y1bLq1xaY67vrs"
 }
 
 ###
@@ -121,7 +121,7 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories
 ###
 
 # Get a specific category
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/1
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/2
 
 ###
 
@@ -237,6 +237,7 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4
 # Update a specific product
 PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/update
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY3NjM2OCwiZXhwIjoxNjM3Njc3MjY4LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.nAm2sM8hytm86CXmi40oi_myMGpN_7P0_A-jq84IBhY
 
 {
     "designer_id": 2,
@@ -261,7 +262,8 @@ content-type: application/json
     "product_gallery_5": "",
     "product_gallery_6": "",
     "product_gallery_7": "",
-    "product_gallery_8": ""
+    "product_gallery_8": "",
+    "tags": "3"
 }
 
 ###
@@ -274,15 +276,16 @@ DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/delete
 # Create product
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/create
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY3NjM2OCwiZXhwIjoxNjM3Njc3MjY4LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.nAm2sM8hytm86CXmi40oi_myMGpN_7P0_A-jq84IBhY
 
 {
     "designer_id": 2,
     "category_id": 2,
     "insurance_id": 2,
-    "name": "Prada Bag 2011",
-    "retail_price": 150,
-    "selling_price": 100,
-    "description": "",
+    "name": "Prada Bag 2012",
+    "retail_price": 155,
+    "selling_price": 120,
+    "description": "xx",
     "specifications": "",
     "condition": "",
     "condition_description": "",
@@ -298,7 +301,8 @@ content-type: application/json
     "product_gallery_5": "",
     "product_gallery_6": "",
     "product_gallery_7": "",
-    "product_gallery_8": ""
+    "product_gallery_8": "",
+    "tags": "2"
 }
 
 ###
@@ -316,10 +320,10 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/1
 # Create tag
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY2NjA4OSwiZXhwIjoxNjM3NjY2OTg5LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.o-W2ZluOPTB49b9dYVlUuzA9DLqk7dgW07ZOSdWOyIs
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY3NjM2OCwiZXhwIjoxNjM3Njc3MjY4LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.nAm2sM8hytm86CXmi40oi_myMGpN_7P0_A-jq84IBhY
 
 {
-    "name": "Just In"
+    "name": "New Arrival"
 }
 
 ###
@@ -338,5 +342,38 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 # Delete tag
 DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/1/delete
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY2NjA4OSwiZXhwIjoxNjM3NjY2OTg5LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.o-W2ZluOPTB49b9dYVlUuzA9DLqk7dgW07ZOSdWOyIs
+
+###
+
+# Get list of all carts
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts
+
+###
+
+# Update a cart
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/3/update
+content-type: application/json
+
+{
+    "user_id": 5,
+    "items": [
+        { "product_id": 4, "quantity": 6 },
+        { "product_id": 5, "quantity": 7 }
+    ]
+}
+
+###
+
+# Create a cart
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/create
+content-type: application/json
+
+{
+    "user_id": 5,
+    "items": [
+        { "product_id": 4, "quantity": 3 },
+        { "product_id": 5, "quantity": 4 }
+    ]
+}
 
 ###

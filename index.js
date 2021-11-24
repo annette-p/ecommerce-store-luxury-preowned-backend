@@ -13,6 +13,7 @@ app.use(cors());
 // require the custom routes
 const landingRoutes = require("./routes/landing");
 const api = {
+  carts: require("./routes/api/carts"),
   categories: require("./routes/api/categories"),
   designers: require("./routes/api/designers"),
   insurances: require("./routes/api/insurances"),
@@ -25,7 +26,9 @@ async function main() {
   app.use("/", landingRoutes);
 
   // API routes
-  // * express.json() -- to parse req.body as JSON, so all content inside req.body will be converted to JSON before reaching any route functions
+  // * express.json() -- to parse req.body as JSON, so all content inside req.body 
+  //                     will be converted to JSON before reaching any route functions
+  app.use("/carts", express.json(), api.carts);
   app.use("/categories", express.json(), api.categories);
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);

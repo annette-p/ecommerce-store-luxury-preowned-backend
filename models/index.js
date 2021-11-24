@@ -27,6 +27,9 @@ const Insurance = bookshelf.model("Insurance", {
 
 const Product = bookshelf.model("Product", {
     tableName: "products",
+    carts() {
+        return this.belongsToMany("Cart");
+    },
     category() {
         return this.belongsTo("Category");
     },
@@ -37,14 +40,25 @@ const Product = bookshelf.model("Product", {
         return this.belongsTo("Insurance");
     },
     tags() {
-        return this.belongsToMany('Tag');
+        return this.belongsToMany("Tag");
+    }
+
+});
+
+const Cart = bookshelf.model("Cart", {
+    tableName: "carts",
+    user() {
+        return this.belongsTo("User");
+    },
+    products() {
+        return this.belongsToMany("Product").withPivot(['quantity']);
     }
 });
 
 const Tag = bookshelf.model("Tag", {
     tableName: "tags",
     products() {
-        return this.belongsToMany('Product');
+        return this.belongsToMany("Product");
     }
 });
 
@@ -54,6 +68,7 @@ const User = bookshelf.model("User", {
 
 module.exports = {
     BlacklistedToken,
+    Cart,
     Category,
     Designer,
     Insurance,
