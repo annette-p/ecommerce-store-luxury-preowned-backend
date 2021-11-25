@@ -3,11 +3,10 @@ const router = express.Router();
 
 const cartDataLayer = require("../../dal/carts");
 const {
-    checkIfAuthenticatedJWT,
-    checkIsAdminJWT
+    checkIfAuthenticatedJWT
 } = require('../../middlewares/authentication')
 
-// import the Category model
+// import the Cart model
 const {
     Cart
 } = require('../../models');
@@ -28,8 +27,7 @@ router.get('/', async (_req, res) => {
     });
 })
 
-// [checkIfAuthenticatedJWT, checkIsAdminJWT]
-router.put('/:cart_id/update', async (req, res) => {
+router.put('/:cart_id/update', checkIfAuthenticatedJWT, async (req, res) => {
     const cart = await Cart.where({
         'id': req.params.cart_id
     }).fetch({
@@ -50,22 +48,29 @@ router.put('/:cart_id/update', async (req, res) => {
 
         await cart.save().then(async () => {
 
-            // handle items
-            let itemsId = req.body.items.map(item => item.product_id);
+            let selectedItemsId = req.body.items.map(item => item.product_id);
 
-            console.log("itemsId: ", itemsId)
-            
-            let existinItemIds = await cart.related("products").pluck("product_id");
-
-            console.log("existinItemIds: ", existinItemIds)
-
-            // remove all the items that are not selected anymore
-            let itemsToRemove = existinItemIds.filter( product_id => itemsId.includes(product_id) === false);
-            console.log("itemsToRemove: ", itemsToRemove);
+            let existingItemIds = await cart.related("products").pluck("id");
+            let itemsToRemove = existingItemIds.filter( id => selectedItemsId.includes(id) === false);
             await cart.products().detach(itemsToRemove);
 
-            // add in all the items selected
-            await cart.products().attach(req.body.items);
+            req.body.items.forEach( async (item) => {
+
+                if (existingItemIds.includes(item.product_id)) {
+                    cart.products().updatePivot({
+                        "quantity": item.quantity
+                    }, {
+                        query: function(qb) {
+                            qb.where({
+                                "product_id": item.product_id
+                            })
+                        }
+                    })
+                } else {
+                    cart.products().attach(item)
+                }
+                
+            })
 
             res.status(200).send({
                 "success": true,
@@ -81,8 +86,36 @@ router.put('/:cart_id/update', async (req, res) => {
 
 })
 
-// [checkIfAuthenticatedJWT, checkIsAdminJWT] --> to add after
-router.post('/create', async (req, res) => {
+router.delete('/:cart_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
+    const cart = await Cart.where({
+        'id': req.params.cart_id
+    }).fetch({
+        require: true
+    }).catch(_err => {
+        res.status(404).send({
+            "success": false,
+            "message": `Unable to retrieve Cart ID ${req.params.cart_id}. Cart deletion failed. `
+        })
+        return;
+    });
+
+    if (cart !== undefined) {
+        await cart.destroy().then(() => {
+            res.status(200).send({
+                "success": true,
+                "message": `Cart ID ${req.params.cart_id} deleted successfully`
+            })
+        }).catch(_err => {
+            res.status(500).send({
+                "success": false,
+                "message": `Unable to delete Product ID ${req.params.product_id} due to unexpected error.`
+            })
+        });
+    }
+
+})
+
+router.post('/create', checkIfAuthenticatedJWT, async (req, res) => {
     const cart = new Cart();
 
     cart.set('user_id', req.body.user_id);

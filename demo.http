@@ -12,7 +12,7 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/5
 
 ###
 
-# Create user
+# Create admin
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/create
 content-type: application/json
 
@@ -22,6 +22,24 @@ content-type: application/json
     "email": "star@gmail.com",
     "type": "Admin",
     "username": "baby",
+    "password": "password",
+    "federated_login": 0,
+    "billing_address": "SG",
+    "shipping_address": "SG"
+}
+
+###
+
+# Create user
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/create
+content-type: application/json
+
+{
+    "firstname": "Cherry",
+    "lastname": "Blue",
+    "email": "blue.cherry@gmail.com",
+    "type": "Customer",
+    "username": "cherry",
     "password": "password",
     "federated_login": 0,
     "billing_address": "SG",
@@ -357,7 +375,7 @@ content-type: application/json
 {
     "user_id": 5,
     "items": [
-        { "product_id": 5, "quantity": 2 }
+        { "product_id": 5, "quantity": 3 }
     ]
 }
 
@@ -376,3 +394,9 @@ content-type: application/json
 }
 
 ###
+
+# Delete cart
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/1/delete
+
+###
+

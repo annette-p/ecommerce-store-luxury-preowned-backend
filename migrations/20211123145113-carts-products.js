@@ -21,7 +21,7 @@ exports.up = function(db) {
       primaryKey: true,
       autoIncrement: true,
       unsigned: true
-    },
+    }, 
     product_id: {
       type: 'int',
       unsigned: true,
