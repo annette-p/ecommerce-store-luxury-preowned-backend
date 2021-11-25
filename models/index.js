@@ -63,7 +63,8 @@ const Tag = bookshelf.model("Tag", {
 });
 
 const User = bookshelf.model("User", {
-    tableName: "users"
+    tableName: "users",
+    hidden: ["password"]
 });
 
 module.exports = {

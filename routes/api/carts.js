@@ -3,16 +3,29 @@ const router = express.Router();
 
 const cartDataLayer = require("../../dal/carts");
 const {
-    checkIfAuthenticatedJWT
+    checkIfAuthenticatedJWT,
+    checkIsCustomerJWT
 } = require('../../middlewares/authentication')
 
-// import the Cart model
-const {
-    Cart
-} = require('../../models');
+// Retrieve cart for authenticated user
+router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
+    let userId = req.user.id;
+    await cartDataLayer.getCartByUser(userId).then( cart => {
+        res.status(200).send({
+            "success": true,
+            "data": cart
+        })
+    }).catch(_err => {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve carts due to unexpected error.`
+        })
+        return;
+    });
+})
 
 // Retrieve all carts
-router.get('/', async (_req, res) => {
+router.get('/all', async (_req, res) => {
     await cartDataLayer.getAllCarts().then( carts => {
         console.log(carts)
         res.status(200).send({
@@ -62,7 +75,6 @@ router.put('/:cart_id/update', checkIfAuthenticatedJWT, async (req, res) => {
             "message": `Cart id ${req.params.cart_id} updated successfully`
         })
     }).catch(_err => {
-        console.log(_err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update Cart id ${req.params.cart_id} due to unexpected error.`
@@ -88,8 +100,11 @@ router.delete('/:cart_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
     });
 })
 
-router.post('/create', checkIfAuthenticatedJWT, async (req, res) => {
-    await cartDataLayer.createCart(req.body)
+// Create cart for the authenticated user
+router.post('/create', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
+    let userId = req.user.id;
+    let cartData = req.body;
+    await cartDataLayer.createCart(userId, cartData)
     .then( (newCartId) => {
         res.status(201).send({
             "success": true,
@@ -97,9 +112,27 @@ router.post('/create', checkIfAuthenticatedJWT, async (req, res) => {
             "cart_id": newCartId
         })
     }).catch(_err => {
+        console.log(_err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new cart due to unexpected error.`
+        })
+    });
+})
+
+router.put('/update', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
+    let userId = req.user.id;
+    let cartData = req.body;
+    await cartDataLayer.updateCartByUser(userId, cartData)
+    .then( () => {
+        res.status(200).send({
+            "success": true,
+            "message": `Cart updated successfully`
+        })
+    }).catch(_err => {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to update cart due to unexpected error.`
         })
     });
 })

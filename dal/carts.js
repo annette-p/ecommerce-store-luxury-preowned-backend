@@ -36,7 +36,7 @@ async function getCartByUser(userId) {
             'user_id': userId
         }).fetch({
             require: false,
-            withRelated: ["user", "products"]
+            withRelated: ["products"]
         });
         return cart;
     } catch (err) {
@@ -44,25 +44,44 @@ async function getCartByUser(userId) {
     }
 }
 
-async function createCart(cartData) {
-    const cart = new Cart();
+// Create cart for a user
+async function createCart(userId, cartData) {
+    await getCartByUser(userId)
+    .then( async (cart) => {
+        if (cart) {
+            console.log("User has existing cart")
+            await updateCart(cart, cartData)
+            .then( () => {
+                return cart.get("id");
+            })
+            .catch(err => {
+                throw err
+            });
+        } else {
+            // user do not have an existing cart
+            console.log("User has no existing cart")
+            const cart = new Cart();
 
-    cart.set('user_id', cartData.user_id);
-    cart.set('date_created', new Date());
+            cart.set('user_id', userId);
+            cart.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+            cart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
-    await cart.save().then(async () => {
+            await cart.save().then(async () => {
 
-        // handle items in cart
-        if (cartData.items) {
-            await cart.products().attach(cartData.items);
+                // handle items in cart
+                if (cartData.items) {
+                    await cart.products().attach(cartData.items);
+                }
+
+                return cart.get("id");
+            }).catch(err => {
+                throw err;
+            });
         }
-
-        return cart.get("id");
-    }).catch(err => {
-        throw err;
-    });
+    })
 }
 
+// Update a cart by id
 async function updateCartById(cartId, newCartData) {
     await getCartById(cartId)
     .then(async (cart) => {
@@ -74,6 +93,7 @@ async function updateCartById(cartId, newCartData) {
     })
 }
 
+// Update a cart for a user
 async function updateCartByUser(userId, newCartData) {
     await getCartByUser(userId)
     .then(async (cart) => {
@@ -85,8 +105,11 @@ async function updateCartByUser(userId, newCartData) {
     })
 }
 
+// Update a given cart collection
 async function updateCart(cart, newCartData) {
-    cart.set('date_created', new Date());
+    cart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+    cart.set("user_id", cart.get("user_id"));
 
     await cart.save().then(async () => {
 
@@ -98,6 +121,8 @@ async function updateCart(cart, newCartData) {
 
         newCartData.items.forEach(async (item) => {
 
+            // use of "updatePivot()"
+            // ref: https://stackoverflow.com/a/31124401
             if (existingItemIds.includes(item.product_id)) {
                 cart.products().updatePivot({
                     "quantity": item.quantity

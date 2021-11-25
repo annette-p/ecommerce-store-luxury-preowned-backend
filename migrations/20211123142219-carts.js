@@ -36,8 +36,11 @@ exports.up = function(db) {
         }
       }
     },
-    date_created: {
-      type: 'date'
+    created_at: {
+      type: 'datetime'
+    },
+    updated_at: {
+      type: 'datetime'
     },
     reminder: {
       type: 'boolean'

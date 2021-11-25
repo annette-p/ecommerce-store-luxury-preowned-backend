@@ -84,7 +84,7 @@ content-type: application/json
 
 ###
 
-# Authenticate using username/password
+# Authenticate as admin using username/password
 
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
 content-type: application/json
@@ -96,13 +96,25 @@ content-type: application/json
 
 ###
 
+# Authenticate as customer using username/password
+
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
+content-type: application/json
+
+{
+    "username": "cherry",
+    "password": "password"
+}
+
+###
+
 # Get new access token using refresh token
 
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/refresh
 content-type: application/json
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NSwiaWF0IjoxNjM3NjY2MDg5LCJleHAiOjE2MzgyNzA4ODksInN1YiI6InN0YXJAZ21haWwuY29tIn0.nOnm1h_3miCUHKnaVsW_J5EZDZ0l7Y1bLq1xaY67vrs"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NiwiaWF0IjoxNjM3ODE1NzA0LCJleHAiOjE2Mzg0MjA1MDQsInN1YiI6ImJsdWUuY2hlcnJ5QGdtYWlsLmNvbSJ9.wI3SYtbuTDxZL63fZX4aR_sZLclCJJNOid250qzVjBw"
 }
 
 ###
@@ -388,11 +400,25 @@ content-type: application/json
 # Create a cart
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/create
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgxNTcwNCwiZXhwIjoxNjM3ODE2NjA0LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.3aIsmlGgizhz3GBWv9Huma6YRPUFxRVOvbWuYRHCHV4
 
 {
-    "user_id": 6,
     "items": [
         { "product_id": 4, "quantity": 1 }
+    ]
+}
+
+###
+
+# Update a user's cart
+
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/update
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyMjEyMiwiZXhwIjoxNjM3ODIzMDIyLCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.lDa6HYcfKi1cVJSjgQ0OXPoeSWEZLWeyXdjnrrz2hkQ
+
+{
+    "items": [
+        { "product_id": 4, "quantity": 2 }
     ]
 }
 

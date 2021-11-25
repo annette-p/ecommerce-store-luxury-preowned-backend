@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 const {
@@ -21,7 +20,6 @@ router.get('/', async (req, res) => {
     await User.collection().fetch().then(users => {
         let usersResult = users.toJSON()
         // mask out the users' password hash
-        usersResult.forEach(user => user["password"] = "***")
         res.status(200).send(usersResult)
     }).catch(err => {
         console.error("[Exception -> Users GET '/' Route] ", err)
@@ -43,7 +41,6 @@ router.get('/:user_id', async (req, res) => {
     }).then(user => {
         // mask out the user's password hash
         let userResult = user.toJSON()
-        userResult["password"] = "***"
         res.status(200).send(userResult); // convert collection to JSON
     }).catch(_err => {
         res.status(500).send({

@@ -35,7 +35,13 @@ const checkIfAuthenticatedJWT = (req, res, next) => {
 
 const checkIsAdminJWT = (req, res, next) => {
     if (req.user.role !== "Admin") {
-        console.log("checkIsAdminJWT - not ADMIN")
+        return res.sendStatus(403);
+    }
+    next();
+}
+
+const checkIsCustomerJWT = (req, res, next) => {
+    if (req.user.role !== "Customer") {
         return res.sendStatus(403);
     }
     next();
@@ -68,6 +74,7 @@ const generateAccessToken = (user, tokenType, secret, expiresIn) => {
 
 module.exports = {
     checkIfAuthenticatedJWT,
+    checkIsCustomerJWT,
     checkIsAdminJWT,
     getHashedPassword,
     generateAccessToken
