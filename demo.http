@@ -7,6 +7,16 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users
 
 ###
 
+# Get list of all admin users
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/admins
+
+###
+
+# Get list of all customers
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/customers
+
+###
+
 # Get a specific user
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/5
 

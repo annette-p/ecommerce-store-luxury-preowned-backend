@@ -31,6 +31,40 @@ router.get('/', async (req, res) => {
     });
 })
 
+// Get all admin users
+router.get('/admins', async (req, res) => {
+    // fetch all the users (i.e., SELECT * FROM users)
+    await User.collection().where("type", "Admin").fetch().then(users => {
+        let usersResult = users.toJSON()
+        // mask out the users' password hash
+        res.status(200).send(usersResult)
+    }).catch(err => {
+        console.error("[Exception -> Users GET '/' Route] ", err)
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve users.`
+        })
+        // return;
+    });
+})
+
+// Get all customers
+router.get('/customers', async (req, res) => {
+    // fetch all the users (i.e., SELECT * FROM users)
+    await User.collection().where("type", "Customer").fetch().then(users => {
+        let usersResult = users.toJSON()
+        // mask out the users' password hash
+        res.status(200).send(usersResult)
+    }).catch(err => {
+        console.error("[Exception -> Users GET '/' Route] ", err)
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve users.`
+        })
+        // return;
+    });
+})
+
 // Get info of authenticated user
 router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
     // fetch a user by primary key "id"
