@@ -48,6 +48,13 @@ content-type: application/json
 
 ###
 
+# Get info of authenticated user
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/info
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgzNzIzNCwiZXhwIjoxNjM3ODM4MTM0LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.B2QCOau0rSPr-KfoTYivNDA0Pn-ud7jH4DWvTVRYlaE
+
+###
+
 # Update user
 PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/3/update
 content-type: application/json
@@ -78,7 +85,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
 content-type: application/json
 
 {
-    "email": "star@gmail.com",
+    "username": "star@gmail.com",
     "password": "password"
 }
 
@@ -375,8 +382,15 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 ###
 
-# Get list of all carts
+# Get cart for authenticated user
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyMzM3OSwiZXhwIjoxNjM3ODI0Mjc5LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.WaTB_ugEvjzUySYalWCEPP3rCfEPFJ4Y9-x_h0ogCyo
+
+###
+
+# Get list of all carts
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/all
 
 ###
 
@@ -400,7 +414,7 @@ content-type: application/json
 # Create a cart
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgxNTcwNCwiZXhwIjoxNjM3ODE2NjA0LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.3aIsmlGgizhz3GBWv9Huma6YRPUFxRVOvbWuYRHCHV4
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyNTIzNywiZXhwIjoxNjM3ODI2MTM3LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.UOJF8SjN93uOlsU5L7wJS0zif_7icfnDP0q1DUWHIQs
 
 {
     "items": [
@@ -414,7 +428,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/update
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyMjEyMiwiZXhwIjoxNjM3ODIzMDIyLCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.lDa6HYcfKi1cVJSjgQ0OXPoeSWEZLWeyXdjnrrz2hkQ
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyNTIzNywiZXhwIjoxNjM3ODI2MTM3LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.UOJF8SjN93uOlsU5L7wJS0zif_7icfnDP0q1DUWHIQs
 
 {
     "items": [

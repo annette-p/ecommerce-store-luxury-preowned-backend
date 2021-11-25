@@ -31,6 +31,30 @@ router.get('/', async (req, res) => {
     });
 })
 
+// Get info of authenticated user
+router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
+    // fetch a user by primary key "id"
+    const userId = req.user.id;
+    await User.where({
+        'id': userId
+    }).fetch({
+        require: true
+    }).then(user => {
+        // mask out the user's password hash
+        let userResult = user.toJSON()
+        res.status(200).send({
+            "success": true,
+            "data": userResult
+        }); // convert collection to JSON
+    }).catch(_err => {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve user due to unexpected error.`
+        })
+        return;
+    });
+})
+
 router.get('/:user_id', async (req, res) => {
     // fetch a user by primary key "id"
     const userId = req.params.user_id
@@ -41,7 +65,10 @@ router.get('/:user_id', async (req, res) => {
     }).then(user => {
         // mask out the user's password hash
         let userResult = user.toJSON()
-        res.status(200).send(userResult); // convert collection to JSON
+        res.status(200).send({
+            "success": true,
+            "data": userResult
+        }); // convert collection to JSON
     }).catch(_err => {
         res.status(500).send({
             "success": false,
@@ -195,9 +222,9 @@ router.post('/authenticate', async (req, res) => {
     // using 'bookshelf-eloquent' plugin for Bookshelf.js
     // https://www.npmjs.com/package/bookshelf-eloquent
     await User.where(
-            "email", req.body.email ? req.body.email : ""
+            "email", req.body.username
         ).orWhere(
-            "username", req.body.username ? req.body.username : ""
+            "username", req.body.username
         ).first()
         .then(user => {
             if (user) {
