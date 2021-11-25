@@ -368,14 +368,18 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts
 
 ###
 
+# Get a cart by id 
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/3
+
+###
+
 # Update a cart
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/3/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/4/update
 content-type: application/json
 
 {
-    "user_id": 5,
     "items": [
-        { "product_id": 5, "quantity": 3 }
+        { "product_id": 4, "quantity": 2 }
     ]
 }
 
@@ -386,17 +390,16 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/create
 content-type: application/json
 
 {
-    "user_id": 5,
+    "user_id": 6,
     "items": [
-        { "product_id": 4, "quantity": 3 },
-        { "product_id": 5, "quantity": 4 }
+        { "product_id": 4, "quantity": 1 }
     ]
 }
 
 ###
 
 # Delete cart
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/1/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/2/delete
 
 ###
 

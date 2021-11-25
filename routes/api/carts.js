@@ -14,6 +14,7 @@ const {
 // Retrieve all carts
 router.get('/', async (_req, res) => {
     await cartDataLayer.getAllCarts().then( carts => {
+        console.log(carts)
         res.status(200).send({
             "success": true,
             "data": carts
@@ -27,114 +28,75 @@ router.get('/', async (_req, res) => {
     });
 })
 
-router.put('/:cart_id/update', checkIfAuthenticatedJWT, async (req, res) => {
-    const cart = await Cart.where({
-        'id': req.params.cart_id
-    }).fetch({
-        require: true,
-        withRelated:["user", "products"]
-    }).catch(_err => {
-        res.status(404).send({
-            "success": false,
-            "message": `Unable to retrieve cart id ${req.params.cart_id}. Cart update failed. `
-        })
-        return;
-    });
-
-    if (cart !== undefined) {
-
-        cart.set('user_id', req.body.user_id);
-        cart.set('date_created', new Date());
-
-        await cart.save().then(async () => {
-
-            let selectedItemsId = req.body.items.map(item => item.product_id);
-
-            let existingItemIds = await cart.related("products").pluck("id");
-            let itemsToRemove = existingItemIds.filter( id => selectedItemsId.includes(id) === false);
-            await cart.products().detach(itemsToRemove);
-
-            req.body.items.forEach( async (item) => {
-
-                if (existingItemIds.includes(item.product_id)) {
-                    cart.products().updatePivot({
-                        "quantity": item.quantity
-                    }, {
-                        query: function(qb) {
-                            qb.where({
-                                "product_id": item.product_id
-                            })
-                        }
-                    })
-                } else {
-                    cart.products().attach(item)
-                }
-                
-            })
-
-            res.status(200).send({
+// get a specific cart by id
+router.get('/:cart_id', async (req, res) => {
+    await cartDataLayer.getCartById(req.params.cart_id).then( cart => {
+        if (cart) {
+            res.send({
                 "success": true,
-                "message": `Cart id ${req.params.cart_id} updated successfully`
+                "data": cart
             })
-        }).catch(_err => {
-            res.status(500).send({
+        } else {
+            res.status(404).send({
                 "success": false,
-                "message": `Unable to update Cart id ${req.params.cart_id} due to unexpected error.`
+                "message": `Cart id ${req.params.cart_id} does not exists.`
             })
-        });
-    }
-
-})
-
-router.delete('/:cart_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
-    const cart = await Cart.where({
-        'id': req.params.cart_id
-    }).fetch({
-        require: true
-    }).catch(_err => {
-        res.status(404).send({
-            "success": false,
-            "message": `Unable to retrieve Cart ID ${req.params.cart_id}. Cart deletion failed. `
-        })
-        return;
-    });
-
-    if (cart !== undefined) {
-        await cart.destroy().then(() => {
-            res.status(200).send({
-                "success": true,
-                "message": `Cart ID ${req.params.cart_id} deleted successfully`
-            })
-        }).catch(_err => {
-            res.status(500).send({
-                "success": false,
-                "message": `Unable to delete Product ID ${req.params.product_id} due to unexpected error.`
-            })
-        });
-    }
-
-})
-
-router.post('/create', checkIfAuthenticatedJWT, async (req, res) => {
-    const cart = new Cart();
-
-    cart.set('user_id', req.body.user_id);
-    cart.set('date_created', new Date());
-
-    await cart.save().then(async () => {
-
-        // handle tags
-        if (req.body.items) {
-            await cart.products().attach(req.body.items);
         }
+        
+    }).catch(_err => {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve cart id ${req.params.cart_id} due to unexpected error.`
+        })
+        return;
+    });
+})
 
-        res.status(201).send({
+// Update a specific cart by its ID 
+router.put('/:cart_id/update', checkIfAuthenticatedJWT, async (req, res) => {
+
+    await cartDataLayer.updateCartById(req.params.cart_id, req.body)
+    .then( () => {
+        res.status(200).send({
             "success": true,
-            "message": "New cart created successfully",
-            "cart_id": cart.get("id")
+            "message": `Cart id ${req.params.cart_id} updated successfully`
         })
     }).catch(_err => {
         console.log(_err)
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to update Cart id ${req.params.cart_id} due to unexpected error.`
+        })
+    });
+})
+
+// Delete a specific cart by its ID
+router.delete('/:cart_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
+
+    await cartDataLayer.deleteCartById(req.params.cart_id)
+    .then( () => {
+        res.status(200).send({
+            "success": true,
+            "message": `Cart id ${req.params.cart_id} deleted successfully`
+        })
+    }).catch(_err => {
+        console.log(_err)
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to delete Cart id ${req.params.cart_id} due to unexpected error.`
+        })
+    });
+})
+
+router.post('/create', checkIfAuthenticatedJWT, async (req, res) => {
+    await cartDataLayer.createCart(req.body)
+    .then( (newCartId) => {
+        res.status(201).send({
+            "success": true,
+            "message": "New cart created successfully",
+            "cart_id": newCartId
+        })
+    }).catch(_err => {
         res.status(500).send({
             "success": false,
             "message": `Unable to create new cart due to unexpected error.`
