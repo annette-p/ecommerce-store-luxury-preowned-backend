@@ -20,7 +20,10 @@ router.get('/', async (req, res) => {
     await User.collection().fetch().then(users => {
         let usersResult = users.toJSON()
         // mask out the users' password hash
-        res.status(200).send(usersResult)
+        res.status(200).send({
+            "success": true,
+            "data": usersResult
+        })
     }).catch(err => {
         console.error("[Exception -> Users GET '/' Route] ", err)
         res.status(500).send({
@@ -37,7 +40,10 @@ router.get('/admins', async (req, res) => {
     await User.collection().where("type", "Admin").fetch().then(users => {
         let usersResult = users.toJSON()
         // mask out the users' password hash
-        res.status(200).send(usersResult)
+        res.status(200).send({
+            "success": true,
+            "data": usersResult
+        })
     }).catch(err => {
         console.error("[Exception -> Users GET '/' Route] ", err)
         res.status(500).send({
@@ -54,7 +60,10 @@ router.get('/customers', async (req, res) => {
     await User.collection().where("type", "Customer").fetch().then(users => {
         let usersResult = users.toJSON()
         // mask out the users' password hash
-        res.status(200).send(usersResult)
+        res.status(200).send({
+            "success": true,
+            "data": usersResult
+        })
     }).catch(err => {
         console.error("[Exception -> Users GET '/' Route] ", err)
         res.status(500).send({
