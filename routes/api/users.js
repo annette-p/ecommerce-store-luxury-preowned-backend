@@ -98,6 +98,92 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
     });
 })
 
+router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
+    const userId = req.user.id;
+    const user = await User.where({
+        'id': userId
+    }).fetch({
+        require: true
+    }).catch(_err => {
+        res.status(404).send({
+            "success": false,
+            "message": `Unable to retrieve user information. User update failed. `
+        })
+        return;
+    });
+
+    if (user !== undefined) {
+
+        if (req.body.firstname) { user.set('firstname', req.body.firstname); }
+        if (req.body.lastname) { user.set('lastname', req.body.lastname); }
+        if (req.body.email) { user.set('email', req.body.email); }
+        if (req.body.billing_address) { user.set('billing_address', req.body.billing_address); }
+        if (req.body.shipping_address) { user.set('shipping_address', req.body.shipping_address); }
+        user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+        await user.save().then(() => {
+            res.status(200).send({
+                "success": true,
+                "message": `User updated successfully`
+            })
+        }).catch(_err => {
+            res.status(500).send({
+                "success": false,
+                "message": `Unable to update user due to unexpected error.`
+            })
+        });
+    }
+
+})
+
+router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
+    const userId = req.user.id;
+    const user = await User.where({
+        'id': userId
+    }).fetch({
+        require: true
+    }).catch(_err => {
+        console.log(_err)
+        res.status(404).send({
+            "success": false,
+            "message": `Unable to retrieve user information. User change password failed. `
+        })
+        return;
+    });
+
+    if (user !== undefined) {
+
+        // check if the password matches
+        const passwordInDB = user.get("password")
+        const passwordProvided = getHashedPassword(req.body.current_password)
+        if (passwordInDB === passwordProvided) {
+            user.set('password', getHashedPassword(req.body.new_password));
+            user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+            await user.save().then(() => {
+                res.status(200).send({
+                    "success": true,
+                    "message": "Password changed successfully"
+                })
+            }).catch(_err => {
+                res.status(500).send({
+                    "success": false,
+                    "message": `Unable to change user password due to unexpected error.`
+                })
+            });
+        } else {
+            res.status(401).send({
+                "success": false,
+                "message": `Current password is invalid. Unable to change user password.`
+            })
+        }
+    } else {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to change user password due to unexpected error.`
+        })
+    }
+})
+
 router.get('/:user_id', async (req, res) => {
     // fetch a user by primary key "id"
     const userId = req.params.user_id
@@ -158,53 +244,6 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
         });
     }
 
-})
-
-router.put('/:user_id/change-password', checkIfAuthenticatedJWT, async (req, res) => {
-    const user = await User.where({
-        'id': req.params.user_id
-    }).fetch({
-        require: true
-    }).catch(_err => {
-        console.log(_err)
-        res.status(404).send({
-            "success": false,
-            "message": `Unable to retrieve User ID ${req.params.user_id}. User change password failed. `
-        })
-        return;
-    });
-
-    if (user !== undefined) {
-
-        // check if the password matches
-        const passwordInDB = user.get("password")
-        const passwordProvided = getHashedPassword(req.body.current_password)
-        if (passwordInDB === passwordProvided) {
-            user.set('password', getHashedPassword(req.body.new_password));
-            user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-            await user.save().then(() => {
-                res.status(200).send({
-                    "success": true,
-                    "message": "Password changed successfully"
-                })
-            }).catch(_err => {
-                res.status(500).send({
-                    "success": false,
-                    "message": `Unable to change user password due to unexpected error.`
-                })
-            });
-        } else {
-            res.status(401).send({
-                "success": false,
-                "message": `Current password is invalid. Unable to change user password.`
-            })
-        }
-    } else {
-        res.status(500).send({
-            "success": false,
-            "message": `Unable to change user password due to unexpected error.`
-        })
-    }
 })
 
 router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
