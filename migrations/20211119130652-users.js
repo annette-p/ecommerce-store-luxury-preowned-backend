@@ -51,6 +51,9 @@ exports.up = function(db) {
     federated_login: {
       type: 'boolean'
     },
+    last_login_at: {
+      type: 'datetime'
+    },
     billing_address: {
       type: 'string',
       length: 500

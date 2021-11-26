@@ -91,6 +91,7 @@ router.put('/:product_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
         product.set('product_gallery_6', req.body.product_gallery_6);
         product.set('product_gallery_7', req.body.product_gallery_7);
         product.set('product_gallery_8', req.body.product_gallery_8);
+        product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await product.save().then(async () => {
 
@@ -174,6 +175,8 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
     product.set('product_gallery_6', req.body.product_gallery_6);
     product.set('product_gallery_7', req.body.product_gallery_7);
     product.set('product_gallery_8', req.body.product_gallery_8);
+    product.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+    product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
     await product.save().then(async () => {
 

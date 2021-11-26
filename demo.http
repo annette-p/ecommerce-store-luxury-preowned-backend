@@ -95,7 +95,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
 content-type: application/json
 
 {
-    "username": "star@gmail.com",
+    "username": "admin@your-company.com",
     "password": "password"
 }
 
@@ -107,7 +107,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
 content-type: application/json
 
 {
-    "username": "baby",
+    "username": "admin",
     "password": "password"
 }
 

@@ -66,6 +66,7 @@ router.put('/:category_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], a
     if (category !== undefined) {
 
         category.set('name', req.body.name);
+        category.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await category.save().then(() => {
             res.status(200).send({
@@ -114,6 +115,8 @@ router.delete('/:category_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT]
 router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const category = new Category();
     category.set('name', req.body.name);
+    category.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+    category.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     await category.save().then(() => {
         res.status(201).send({
             "success": true,

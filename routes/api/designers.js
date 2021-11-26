@@ -65,6 +65,7 @@ router.put('/:designer_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], a
     if (designer !== undefined) {
 
         designer.set('name', req.body.name);
+        designer.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await designer.save().then(() => {
             res.status(200).send({
@@ -113,6 +114,8 @@ router.delete('/:designer_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT]
 router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const designer = new Designer();
     designer.set('name', req.body.name);
+    designer.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+    designer.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     await designer.save().then(() => {
         res.status(201).send({
             "success": true,

@@ -143,6 +143,7 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
         user.set('billing_address', req.body.billing_address);
         user.set('shipping_address', req.body.shipping_address);
         user.set('federated_login', false);
+        user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await user.save().then(() => {
             res.status(200).send({
@@ -180,6 +181,7 @@ router.put('/:user_id/change-password', checkIfAuthenticatedJWT, async (req, res
         const passwordProvided = getHashedPassword(req.body.current_password)
         if (passwordInDB === passwordProvided) {
             user.set('password', getHashedPassword(req.body.new_password));
+            user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
             await user.save().then(() => {
                 res.status(200).send({
                     "success": true,
@@ -245,6 +247,8 @@ router.post('/create', async (req, res) => {
     user.set('username', req.body.username);
     user.set('password', getHashedPassword(req.body.password));
     user.set('federated_login', false);
+    user.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+    user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     await user.save().then(() => {
         res.status(201).send({
             "success": true,
@@ -269,12 +273,15 @@ router.post('/authenticate', async (req, res) => {
         ).orWhere(
             "username", req.body.username
         ).first()
-        .then(user => {
+        .then(async (user) => {
             if (user) {
                 // check if the password matches
                 const passwordInDB = user.get("password")
                 const passwordProvided = getHashedPassword(req.body.password)
                 if (passwordInDB === passwordProvided) {
+
+                    user.set('last_login_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+                    await user.save();
 
                     // TODO: consider shorter validity for access token of customers
                     let accessToken = generateAccessToken(user, "access_token", process.env.TOKEN_SECRET, '15m');
@@ -377,7 +384,7 @@ router.post("/logout", checkIfAuthenticatedJWT, async (req, res) => {
 
             const token = new BlacklistedToken();
             token.set('token', refreshToken);
-            token.set('date_created', new Date());
+            token.set('date_created', new Date().toISOString().slice(0, 19).replace('T', ' '));
             await token.save();
             res.status(200).send({
                 "success": true,

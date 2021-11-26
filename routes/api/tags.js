@@ -66,6 +66,7 @@ router.put('/:tag_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async 
     if (tag !== undefined) {
 
         tag.set('name', req.body.name);
+        tag.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await tag.save().then(() => {
             res.status(200).send({
@@ -114,6 +115,8 @@ router.delete('/:tag_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], asy
 router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const tag = new Tag();
     tag.set('name', req.body.name);
+    tag.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+    tag.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     await tag.save().then(() => {
         res.status(201).send({
             "success": true,

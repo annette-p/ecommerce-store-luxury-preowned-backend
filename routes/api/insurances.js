@@ -62,6 +62,7 @@ router.put('/:insurance_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], 
         insurance.set('policy_date', req.body.policy_date);
         insurance.set('claim_date', req.body.claim_date);
         insurance.set('coverage_amount', req.body.coverage_amount);
+        insurance.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await insurance.save().then(() => {
             res.status(200).send({
@@ -112,6 +113,8 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
     insurance.set('policy_date', req.body.policy_date);
     insurance.set('claim_date', req.body.claim_date);
     insurance.set('coverage_amount', req.body.coverage_amount);
+    insurance.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+    insurance.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     await insurance.save().then(() => {
         res.status(201).send({
             "success": true,

@@ -4,6 +4,10 @@ var dbm;
 var type;
 var seed;
 
+const {
+  getHashedPassword
+} = require('../middlewares/authentication')
+
 /**
   * We receive the dbmigrate dependency from dbmigrate initially.
   * This enables us to not have to rely on NODE_PATH.
@@ -24,7 +28,7 @@ exports.up = function(db) {
     firstname : 'Admin',
     lastname: 'Admin',
     username: 'admin',
-    password: 'password',
+    password: getHashedPassword('password'),
     federated_login: false,
     active: true,
     created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
