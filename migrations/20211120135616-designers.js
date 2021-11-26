@@ -26,6 +26,12 @@ exports.up = function(db) {
       type: 'string',
       length: 256,
       notNull: true
+    },
+    created_at: {
+      type: 'datetime'
+    },
+    updated_at: {
+      type: 'datetime'
     }
   });
 };

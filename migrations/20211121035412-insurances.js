@@ -31,6 +31,12 @@ exports.up = function(db) {
     coverage_amount: {
       type: 'int',
       unsigned: true
+    },
+    created_at: {
+      type: 'datetime'
+    },
+    updated_at: {
+      type: 'datetime'
     }
   });
 };

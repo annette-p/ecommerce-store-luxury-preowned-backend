@@ -58,6 +58,15 @@ exports.up = function(db) {
     shipping_address: {
       type: 'string',
       length: 500
+    },
+    active: {
+      type: 'boolean'
+    },
+    created_at: {
+      type: 'datetime'
+    },
+    updated_at: {
+      type: 'datetime'
     }
   });
 };

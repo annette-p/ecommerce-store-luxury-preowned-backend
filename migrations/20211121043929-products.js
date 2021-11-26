@@ -143,7 +143,13 @@ exports.up = function(db) {
     product_gallery_8: {
       type: 'string',
       length: 500
-    }
+    },
+    created_at: {
+      type: 'datetime'
+    },
+    updated_at: {
+      type: 'datetime'
+    },
   });
 };
 

@@ -36,12 +36,6 @@ exports.up = function(db) {
         }
       }
     },
-    created_at: {
-      type: 'datetime'
-    },
-    updated_at: {
-      type: 'datetime'
-    },
     reminder: {
       type: 'boolean'
     },
@@ -50,7 +44,13 @@ exports.up = function(db) {
       length: 60
     },
     holding_period: {
-      type: 'date'
+      type: 'datetime'
+    },
+    created_at: {
+      type: 'datetime'
+    },
+    updated_at: {
+      type: 'datetime'
     }
   });
 };
