@@ -319,6 +319,7 @@ router.post('/authenticate', async (req, res) => {
                 const passwordProvided = getHashedPassword(req.body.password)
                 if (passwordInDB === passwordProvided) {
 
+                    const lastLogin = user.get('last_login_at');
                     user.set('last_login_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
                     await user.save();
 
@@ -327,7 +328,8 @@ router.post('/authenticate', async (req, res) => {
                     let refreshToken = generateAccessToken(user, "refresh_token", process.env.REFRESH_TOKEN_SECRET, '7d')
                     res.status(200).send({
                         accessToken,
-                        refreshToken
+                        refreshToken,
+                        lastLogin
                     })
                 } else {
                     // user exists, but password mismatch
