@@ -15,7 +15,10 @@ router.get('/', async (req, res) => {
     // fetch all the tags (i.e., SELECT * FROM tags)
 
     await Tag.collection().fetch().then(tags => {
-        res.status(200).send(tags.toJSON());
+        res.status(200).send({
+            "success": true,
+            "data": tags.toJSON()
+        });
     }).catch(err => {
         console.error("[Exception -> Tags GET '/' Route] ", err)
         res.status(500).send({
@@ -34,7 +37,10 @@ router.get('/:tag_id', async (req, res) => {
     }).fetch({
         require: true
     }).then(tag => {
-        res.status(200).send(tag.toJSON()); // convert collection to JSON
+        res.status(200).send({
+            "success": true,
+            "data": tags.toJSON()
+        }); // convert collection to JSON
     }).catch(_err => {
         res.status(500).send({
             "success": false,
