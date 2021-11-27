@@ -39,7 +39,7 @@ router.get('/:tag_id', async (req, res) => {
     }).then(tag => {
         res.status(200).send({
             "success": true,
-            "data": tags.toJSON()
+            "data": tag.toJSON()
         }); // convert collection to JSON
     }).catch(_err => {
         res.status(500).send({

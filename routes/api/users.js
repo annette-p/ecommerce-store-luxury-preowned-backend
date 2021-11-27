@@ -119,6 +119,7 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
         if (req.body.email) { user.set('email', req.body.email); }
         if (req.body.billing_address) { user.set('billing_address', req.body.billing_address); }
         if (req.body.shipping_address) { user.set('shipping_address', req.body.shipping_address); }
+        if (req.body.active) { user.set('active', req.body.active); }
         user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await user.save().then(() => {
@@ -222,13 +223,13 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
 
     if (user !== undefined) {
 
-        user.set('firstname', req.body.firstname);
-        user.set('lastname', req.body.lastname);
-        user.set('email', req.body.email);
-        user.set('type', req.body.type);
-        user.set('billing_address', req.body.billing_address);
-        user.set('shipping_address', req.body.shipping_address);
-        user.set('federated_login', false);
+        if (req.body.firstname) { user.set('firstname', req.body.firstname); }
+        if (req.body.lastname) { user.set('lastname', req.body.lastname); }
+        if (req.body.email) { user.set('email', req.body.email); }
+        if (req.body.billing_address) { user.set('billing_address', req.body.billing_address); }
+        if (req.body.shipping_address) { user.set('shipping_address', req.body.shipping_address); }
+        if (req.body.active) { user.set('active', req.body.active); }
+        if (req.body.federated_login) { user.set('federated_login', req.body.federated_login); }
         user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await user.save().then(() => {
@@ -286,6 +287,7 @@ router.post('/create', async (req, res) => {
     user.set('username', req.body.username);
     user.set('password', getHashedPassword(req.body.password));
     user.set('federated_login', false);
+    user.set('active', true)
     user.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     await user.save().then(() => {
