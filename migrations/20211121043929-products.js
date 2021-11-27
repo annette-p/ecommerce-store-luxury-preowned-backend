@@ -66,7 +66,8 @@ exports.up = function(db) {
     },
     name: {
       type: 'string',
-      length: 256
+      length: 256,
+      notNull: true
     },
     retail_price: {
       type: 'int',
@@ -143,6 +144,14 @@ exports.up = function(db) {
     product_gallery_8: {
       type: 'string',
       length: 500
+    },
+    claim_date: {
+      type: 'date'
+    },
+    claim_amount: {
+      type: 'int',
+      unsigned: true,
+      notNull: true
     },
     created_at: {
       type: 'datetime'

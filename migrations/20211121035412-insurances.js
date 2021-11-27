@@ -22,15 +22,23 @@ exports.up = function(db) {
       autoIncrement: true,
       unsigned: true
     },
-    policy_date: {
-      type: 'date'
+    company_name: {
+      type: 'string',
+      length: 256,
+      notNull: true
     },
-    claim_date: {
+    policy_name: {
+      type: 'string',
+      length: 256,
+      notNull: true
+    },
+    policy_date: {
       type: 'date'
     },
     coverage_amount: {
       type: 'int',
-      unsigned: true
+      unsigned: true,
+      notNull: true
     },
     created_at: {
       type: 'datetime'

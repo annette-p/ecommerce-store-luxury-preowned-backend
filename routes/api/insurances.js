@@ -59,9 +59,10 @@ router.put('/:insurance_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], 
 
     if (insurance !== undefined) {
 
-        insurance.set('policy_date', req.body.policy_date);
-        insurance.set('claim_date', req.body.claim_date);
-        insurance.set('coverage_amount', req.body.coverage_amount);
+        if (req.body.company_name) { insurance.set('company_name', req.body.company_name); }
+        if (req.body.policy_name) { insurance.set('policy_name', req.body.policy_name); }
+        if (req.body.policy_date) { insurance.set('policy_date', req.body.policy_date); }
+        if (eq.body.coverage_amount) { insurance.set('coverage_amount', req.body.coverage_amount); }
         insurance.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await insurance.save().then(() => {
@@ -110,8 +111,9 @@ router.delete('/:insurance_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT
 
 router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const insurance = new Insurance();
+    insurance.set('company_name', req.body.company_name);
+    insurance.set('policy_name', req.body.policy_name);
     insurance.set('policy_date', req.body.policy_date);
-    insurance.set('claim_date', req.body.claim_date);
     insurance.set('coverage_amount', req.body.coverage_amount);
     insurance.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     insurance.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
