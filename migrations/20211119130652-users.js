@@ -33,7 +33,8 @@ exports.up = function(db) {
     email: {
       type: 'string',
       length: 320,
-      notNull: true
+      notNull: true,
+      unique: true
     },
     type: {
       type: 'string',
@@ -42,7 +43,8 @@ exports.up = function(db) {
     },
     username: {
       type: 'string',
-      length: 320
+      length: 320,
+      unique: true
     },
     password: {
       type: 'string',
