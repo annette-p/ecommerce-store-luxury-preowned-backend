@@ -15,7 +15,10 @@ router.get('/', async (_req, res) => {
     // fetch all the insurances (i.e., SELECT * FROM insurances)
 
     await Insurance.collection().fetch().then(insurances => {
-        res.status(200).send(insurances.toJSON());
+        res.status(200).send({
+            "success": true,
+            "data": insurances.toJSON()
+        });
     }).catch(err => {
         console.error("[Exception -> Insurances GET '/' Route] ", err)
         res.status(500).send({
@@ -34,7 +37,10 @@ router.get('/:insurance_id', async (req, res) => {
     }).fetch({
         require: true
     }).then(insurance => {
-        res.status(200).send(insurance.toJSON()); // convert collection to JSON
+        res.status(200).send({
+            "success": true,
+            "data": insurance.toJSON()
+        }); // convert collection to JSON
     }).catch(_err => {
         res.status(500).send({
             "success": false,
