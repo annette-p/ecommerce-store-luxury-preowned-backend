@@ -150,8 +150,7 @@ exports.up = function(db) {
     },
     claim_amount: {
       type: 'int',
-      unsigned: true,
-      notNull: true
+      unsigned: true
     },
     created_at: {
       type: 'datetime'
