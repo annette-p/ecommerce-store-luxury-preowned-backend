@@ -354,6 +354,14 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 ###
 
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/create
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODAyNTYxNSwiZXhwIjoxNjM4MDI2NTE1LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.8S6MMM75F3wXk7yPgEPPYAI9xHuozBrHGj_19URmxj4
+
+{"designer_id":"7","category_id":"4","name":"Xcode","retail_price":"150","selling_price":"120","condition":"Fair","condition_description":"XX","quantity":"1","authenticity":"1","product_image_1":"http://res.cloudinary.com/drkdludjy/image/upload/v1638025403/w5a8j0dw7gi6zw63h6bo.jpg","product_image_2":"http://res.cloudinary.com/drkdludjy/image/upload/v1638025415/hvas9dfllubaz40eiihx.jpg","product_gallery_1":"http://res.cloudinary.com/drkdludjy/image/upload/v1638025421/jx1hj1lnqzf4zgw7bnat.jpg","product_gallery_2":"http://res.cloudinary.com/drkdludjy/image/upload/v1638025429/ehyoxaalcn1ayzbibybl.jpg","product_gallery_3":"","product_gallery_4":"","product_gallery_5":"","product_gallery_6":"","product_gallery_7":"","product_gallery_8":"","tags":"1,3"}
+
+###
+
 # Get list of all tags
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags
 

@@ -15,6 +15,7 @@ const landingRoutes = require("./routes/landing");
 const api = {
   carts: require("./routes/api/carts"),
   categories: require("./routes/api/categories"),
+  checkout: require("./routes/api/checkout"),
   designers: require("./routes/api/designers"),
   insurances: require("./routes/api/insurances"),
   products: require("./routes/api/products"),
@@ -30,6 +31,7 @@ async function main() {
   //                     will be converted to JSON before reaching any route functions
   app.use("/carts", express.json(), api.carts);
   app.use("/categories", express.json(), api.categories);
+  app.use("/checkout", express.json(), api.checkout);
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);
   app.use("/products", express.json(), api.products);
