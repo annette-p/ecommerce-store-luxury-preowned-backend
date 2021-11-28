@@ -108,7 +108,7 @@ content-type: application/json
 
 {
     "username": "admin",
-    "password": "password"
+    "password": "password1"
 }
 
 ###

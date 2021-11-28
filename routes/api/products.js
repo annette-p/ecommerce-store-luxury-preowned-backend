@@ -94,6 +94,7 @@ router.put('/:product_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
         if (req.body.product_gallery_8) { product.set('product_gallery_8', req.body.product_gallery_8); }
         if (req.body.claim_date) { product.set('claim_date', req.body.claim_date); }
         if (req.body.claim_amount) { product.set('claim_amount', req.body.claim_amount); }
+        if (req.body.active) { product.set('authenticity', req.body.active); }
 
         product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
@@ -181,6 +182,11 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
     product.set('product_gallery_8', req.body.product_gallery_8);
     product.set('claim_date', req.body.claim_date);
     product.set('claim_amount', req.body.claim_amount);
+    const isActive = false;
+    if (req.body.active) {
+        isActive = req.body.active;
+    }
+    product.set('active', isActive);
     product.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 

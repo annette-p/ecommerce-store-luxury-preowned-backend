@@ -152,12 +152,15 @@ exports.up = function(db) {
       type: 'int',
       unsigned: true
     },
+    active: {
+      type: 'boolean'
+    },
     created_at: {
       type: 'datetime'
     },
     updated_at: {
       type: 'datetime'
-    },
+    }
   });
 };
 
