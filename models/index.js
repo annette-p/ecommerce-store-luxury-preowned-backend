@@ -40,10 +40,20 @@ const Order = bookshelf.model("Order", {
     user() {
         return this.belongsTo("User");
     },
+    orderShipment() {
+        return this.belongsTo("OrderShipment");
+    },
     products() {
         return this.belongsToMany("Product").withPivot(['quantity']);
     }
 });
+
+const OrderShipment = bookshelf.model("OrderShipment", {
+    tableName: "order_shipments",
+    order() {
+        return this.belongsTo("Order");
+    }
+})
 
 const Product = bookshelf.model("Product", {
     tableName: "products",
@@ -87,6 +97,7 @@ module.exports = {
     Designer,
     Insurance,
     Order,
+    OrderShipment,
     Product,
     Tag,
     User
