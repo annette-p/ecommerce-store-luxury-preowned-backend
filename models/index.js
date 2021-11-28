@@ -4,6 +4,16 @@ const BlacklistedToken = bookshelf.model('BlacklistedToken',{
     tableName: 'blacklisted_tokens'
 })
 
+const Cart = bookshelf.model("Cart", {
+    tableName: "carts",
+    user() {
+        return this.belongsTo("User");
+    },
+    products() {
+        return this.belongsToMany("Product").withPivot(['quantity']);
+    }
+});
+
 const Category = bookshelf.model("Category", {
     tableName: "categories",
     products() {
@@ -25,6 +35,16 @@ const Insurance = bookshelf.model("Insurance", {
     }
 });
 
+const Order = bookshelf.model("Order", {
+    tableName: "orders",
+    user() {
+        return this.belongsTo("User");
+    },
+    products() {
+        return this.belongsToMany("Product").withPivot(['quantity']);
+    }
+});
+
 const Product = bookshelf.model("Product", {
     tableName: "products",
     carts() {
@@ -39,20 +59,13 @@ const Product = bookshelf.model("Product", {
     insurance() {
         return this.belongsTo("Insurance");
     },
+    orders() {
+        return this.belongsToMany("Order");
+    },
     tags() {
         return this.belongsToMany("Tag");
     }
 
-});
-
-const Cart = bookshelf.model("Cart", {
-    tableName: "carts",
-    user() {
-        return this.belongsTo("User");
-    },
-    products() {
-        return this.belongsToMany("Product").withPivot(['quantity']);
-    }
 });
 
 const Tag = bookshelf.model("Tag", {
@@ -73,6 +86,7 @@ module.exports = {
     Category,
     Designer,
     Insurance,
+    Order,
     Product,
     Tag,
     User
