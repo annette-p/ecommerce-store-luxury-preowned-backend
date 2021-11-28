@@ -22,7 +22,7 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res
             const lineItem = {
                 'name': item["name"],
                 'images': [ item["product_image_1"] ],
-                'amount': item["selling_price"],
+                'amount': item["selling_price"] * 100,  // Stripe price unit is in cents
                 'quantity': item["_pivot_quantity"],
                 'currency': 'SGD'
             }
@@ -37,7 +37,6 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res
 
         // create Stripe payment 
         let metaData = JSON.stringify(meta);
-        console.log("metaData: ", metaData)
         const payment = {
             client_reference_id: userId,
             payment_method_types: ['card'],
@@ -72,30 +71,24 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res
 // NOTE! This is called by Stripe not internally by us.
 router.post('/process_payment', express.raw({type:'application/json'}), function(req,res){
 
-    console.log(process.env.STRIPE_ENDPOINT_SECRET);
     // payload is what Stripe is sending us
     let payload = req.body;
-
-    console.log("payload: ", payload)
 
     let endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 
     // extract signature header
     let sigHeader = req.headers['stripe-signature'];
 
-    console.log("sigHeader: ", sigHeader)
-
     // verify that the signature is actually from stripe
     let event;
     try {
         event = Stripe.webhooks.constructEvent(payload, sigHeader, endpointSecret);
-        console.log("event: ", event)
         if (event.type ==  "checkout.session.completed") {
             console.log("event type is checkout.session.completed")
             let stripeSession = event.data.object;
-            console.log(stripeSession);
+            console.log("stripeSession [event.data.object]: ", stripeSession);
             let metadata = JSON.parse(stripeSession.metadata.orders);
-            console.log(metadata);
+            console.log("metadata [stripeSession.metadata.orders]: ", metadata);
             res.send({
                 'received': true
             })
