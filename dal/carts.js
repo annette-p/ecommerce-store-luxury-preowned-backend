@@ -109,8 +109,6 @@ async function updateCartByUser(userId, newCartData) {
 async function updateCart(cart, newCartData) {
     cart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
-    cart.set("user_id", cart.get("user_id"));
-
     await cart.save().then(async () => {
 
         let selectedItemsId = newCartData.items.map(item => item.product_id);
