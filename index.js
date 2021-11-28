@@ -31,7 +31,14 @@ async function main() {
   //                     will be converted to JSON before reaching any route functions
   app.use("/carts", express.json(), api.carts);
   app.use("/categories", express.json(), api.categories);
-  app.use("/checkout", express.json(), api.checkout);
+  // app.use("/checkout", express.json(), api.checkout);
+  app.use("/checkout", function(req, res, next) {
+    if (req.url !== "/checkout/process_payment") {
+      express.json();
+    }
+    next();
+  }, api.checkout);
+  // app.use("/checkout", api.checkout);
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);
   app.use("/products", express.json(), api.products);
