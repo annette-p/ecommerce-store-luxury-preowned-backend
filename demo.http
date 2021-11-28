@@ -131,7 +131,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/refresh
 content-type: application/json
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6NiwiaWF0IjoxNjM3ODE1NzA0LCJleHAiOjE2Mzg0MjA1MDQsInN1YiI6ImJsdWUuY2hlcnJ5QGdtYWlsLmNvbSJ9.wI3SYtbuTDxZL63fZX4aR_sZLclCJJNOid250qzVjBw"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MiwiaWF0IjoxNjM4MTA4MDQ1LCJleHAiOjE2Mzg3MTI4NDUsInN1YiI6ImJsdWUuY2hlcnJ5QGdtYWlsLmNvbSJ9.Vilg5MLq_aa9JxeTmK3_cRMNVU2dRvbrvI5N6VVnOvM"
 }
 
 ###
@@ -323,7 +323,7 @@ DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/delete
 # Create product
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY3NjM2OCwiZXhwIjoxNjM3Njc3MjY4LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.nAm2sM8hytm86CXmi40oi_myMGpN_7P0_A-jq84IBhY
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODEwNTAzMSwiZXhwIjoxNjM4MTA1OTMxLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.UVaVSUZS6IQcMe9aeXHipwz_f8qtmyR8FiO4z_01QYU
 
 {
     "designer_id": 2,
@@ -458,6 +458,14 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 # Delete cart
 DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/2/delete
+
+###
+
+# Checkout
+
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/checkout
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Miwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzODExMTQ3MiwiZXhwIjoxNjM4MTEyMzcyLCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.y1pCrxGtFcK21a8h5wU5D_9IxVieexx8PT3Or3m6GCA
 
 ###
 

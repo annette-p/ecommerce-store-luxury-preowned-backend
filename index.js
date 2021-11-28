@@ -31,14 +31,16 @@ async function main() {
   //                     will be converted to JSON before reaching any route functions
   app.use("/carts", express.json(), api.carts);
   app.use("/categories", express.json(), api.categories);
-  // app.use("/checkout", express.json(), api.checkout);
+  // Stripe Webhook signing - must pass the raw request body, exactly as received from 
+  //  Stripe, to the constructEvent() function; this will not work with a parsed 
+  //  (i.e., JSON) request body.
+  // ref: https://github.com/stripe/stripe-node#webhook-signing
   app.use("/checkout", function(req, res, next) {
     if (req.url !== "/checkout/process_payment") {
       express.json();
     }
     next();
   }, api.checkout);
-  // app.use("/checkout", api.checkout);
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);
   app.use("/products", express.json(), api.products);
