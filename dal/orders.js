@@ -62,7 +62,7 @@ async function createOrder(userId, orderData) {
 
         const orderId = order.get("id")
 
-        // handle items in cart
+        // handle items in order
         if (orderData.items) {
             await order.products().attach(orderData.items);
         }
@@ -74,46 +74,21 @@ async function createOrder(userId, orderData) {
 }
 
 // Update a given order id
-// async function updateOrderById(orderId, newNewData) {
-//     await getOrderById(orderId)
-//     .then( async (order) => {
-//         order.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+async function updateOrderById(orderId, newNewData) {
+    await getOrderById(orderId)
+    .then( async (order) => {
+        order.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
-//         cart.set("status", newNewData.status);
-//         cart.set("comment", newNewData.comment);
+        cart.set("status", newNewData.status);
+        cart.set("comment", newNewData.comment);
 
-//         await order.save().then(async () => {
-
-//             let selectedItemsId = newCartData.items.map(item => item.product_id);
-
-//             let existingItemIds = await cart.related("products").pluck("id");
-//             let itemsToRemove = existingItemIds.filter(id => selectedItemsId.includes(id) === false);
-//             await cart.products().detach(itemsToRemove);
-
-//             newCartData.items.forEach(async (item) => {
-
-//                 // use of "updatePivot()"
-//                 // ref: https://stackoverflow.com/a/31124401
-//                 if (existingItemIds.includes(item.product_id)) {
-//                     cart.products().updatePivot({
-//                         "quantity": item.quantity
-//                     }, {
-//                         query: function (qb) {
-//                             qb.where({
-//                                 "product_id": item.product_id
-//                             })
-//                         }
-//                     })
-//                 } else {
-//                     cart.products().attach(item)
-//                 }
-
-//             })
-//         }).catch(err => {
-//             throw err;
-//         });
-//     })
-// }
+        await order.save().then(async () => {
+            //
+        }).catch(err => {
+            throw err;
+        });
+    })
+}
 
 module.exports = {
     createOrder,

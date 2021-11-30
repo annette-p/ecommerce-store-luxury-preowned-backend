@@ -81,6 +81,45 @@ async function createCart(userId, cartData) {
     })
 }
 
+// update quantity of an item for a user in the cart
+async function updateCartItemQuantity(userId, productId, quantity) {
+    await getCartByUser(userId)
+    .then( async (cart) => {
+        if (cart) {
+            let existingItemIds = await cart.related("products").pluck("id");
+            if (existingItemIds.includes(productId)) {
+                cart.products().updatePivot({
+                    "quantity": quantity
+                }, {
+                    query: function (qb) {
+                        qb.where({
+                            "product_id": productId
+                        })
+                    }
+                })
+            } else {
+                cart.products().attach([{ "product_id": productId, "quantity": quantity }])
+            }
+        } else {
+            const newCart = new Cart();
+
+            newCart.set('user_id', userId);
+            newCart.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+            newCart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+            await newCart.save().then(async () => {
+
+                // handle items in cart
+                await newCart.products().attach([{ "product_id": productId, "quantity": quantity }]);
+
+                return newCart.get("id");
+            }).catch(err => {
+                throw err;
+            }); 
+        }
+    })
+}
+
 // Update a cart by id
 async function updateCartById(cartId, newCartData) {
     await getCartById(cartId)
@@ -171,6 +210,18 @@ async function deleteCart(cart) {
     }
 }
 
+async function removeItemFromCart(userId, productId) {
+    await getCartByUser(userId)
+    .then(async (cart) => {
+        try {
+            let itemToRemove = await cart.related("products").where({"product_id": productId}).pluck("id");
+            await cart.products().detach(itemToRemove);
+        } catch(err) {
+            throw err
+        }
+    })
+}
+
 module.exports = {
     createCart,
     deleteCartById,
@@ -178,6 +229,8 @@ module.exports = {
     getAllCarts,
     getCartById,
     getCartByUser,
+    removeItemFromCart,
     updateCartById,
-    updateCartByUser
+    updateCartByUser,
+    updateCartItemQuantity
 }
