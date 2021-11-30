@@ -8,7 +8,7 @@ const {
     checkIsCustomerJWT
 } = require('../../middlewares/authentication');
 
-router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
+router.post('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
     let userId = req.user.id;
     await cartDataLayer.getCartByUser(userId).then( async (cartResult) => {
         
@@ -31,7 +31,8 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res
             // save the quantity data along with the product id
             meta.push({
                 'product_id' : item["id"],
-                'quantity': item["_pivot_quantity"]
+                'quantity': item["_pivot_quantity"],
+                'unit_price': item["selling_price"] * 100
             })
         }
 
@@ -44,8 +45,10 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res
                 allowed_countries: ['SG'],
             },
             line_items: lineItems,
-            success_url: process.env.STRIPE_SUCCESS_URL + '?sessionId={CHECKOUT_SESSION_ID}',
-            cancel_url: process.env.STRIPE_ERROR_URL,
+            // success_url: process.env.STRIPE_SUCCESS_URL + '?sessionId={CHECKOUT_SESSION_ID}',
+            // cancel_url: process.env.STRIPE_ERROR_URL,
+            success_url: req.body.success_url + '?sessionId={CHECKOUT_SESSION_ID}',
+            cancel_url: req.body.error_url,
             metadata: {
                 'orders': metaData
             }
