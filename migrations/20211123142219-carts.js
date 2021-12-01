@@ -25,7 +25,7 @@ exports.up = function(db) {
     user_id: {
       type: 'int',
       unsigned: true,
-      notNull: true,
+      notNull: false,
       foreignKey: {
         name: 'cart_user_fk',
         table: 'users',
