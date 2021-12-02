@@ -2,6 +2,43 @@ const {
     Cart
 } = require("../models");
 
+// assign ownership to cart that is owned by an anonymous user
+async function assignCartOwner(cartId, userId) {
+    await getCartById(cartId)
+    .then (async (cart) => {
+        if (cart) {
+            cart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+            cart.set('user_id', userId);
+            await cart.save();
+        }
+    }).catch(err => {
+        throw err;
+    })
+}
+
+// Create cart for a user
+async function createCart(userId, cartData) {
+    const cart = new Cart();
+
+    // cart for an authenticated user
+    if (userId) {
+        cart.set('user_id', userId);
+    }
+    
+    cart.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+    cart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+    await cart.save()
+
+    // handle items in cart
+    if (cartData.items) {
+        await cart.products().attach(cartData.items);
+    }
+
+    return cart.get("id")
+
+}
+
 // Retrieve all carts along with the user information.
 // This would be exposed to admins
 async function getAllCartsWithUserInfo() {
@@ -43,29 +80,6 @@ async function getCartByUser(userId) {
     } catch (err) {
         throw err
     }
-}
-
-// Create cart for a user
-async function createCart(userId, cartData) {
-    const cart = new Cart();
-
-    // cart for an authenticated user
-    if (userId) {
-        cart.set('user_id', userId);
-    }
-    
-    cart.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-    cart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-
-    await cart.save()
-
-    // handle items in cart
-    if (cartData.items) {
-        await cart.products().attach(cartData.items);
-    }
-
-    return cart.get("id")
-
 }
 
 // update quantity of an item for a user in the cart
@@ -142,6 +156,7 @@ async function removeItemFromCart(cartId, productId) {
 }
 
 module.exports = {
+    assignCartOwner,
     createCart,
     getAllCartsWithUserInfo,
     getCartById,

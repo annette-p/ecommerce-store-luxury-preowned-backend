@@ -5,6 +5,7 @@ const cartServiceLayer = require("../../services/cart")
 const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT,
+    checkIsCustomerJWT,
     parseJWT
 } = require('../../middlewares/authentication');
 
@@ -69,6 +70,25 @@ router.get('/:cart_id', [parseJWT], async (req, res) => {
 })
 
 // Update a specific cart by its ID 
+router.put('/:cart_id/own', [checkIfAuthenticatedJWT], async (req, res) => {
+    const cartId = req.params.cart_id
+    const userId = req.user.id
+    try {
+        await cartServiceLayer.assignCartOwner(cartId, userId)
+        res.status(200).send({
+            "success": true,
+            "message": `Cart id ${cartId} ownership updated successfully`
+        })
+    } catch(_err) {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to update ownership of Cart id ${cartId} due to unexpected error.`
+        })
+    };
+})
+
+
+// Update a specific cart by its ID 
 router.put('/:cart_id/update', [parseJWT], async (req, res) => {
     const cartId = req.params.cart_id
     const cartData = req.body
@@ -81,7 +101,7 @@ router.put('/:cart_id/update', [parseJWT], async (req, res) => {
     } catch(_err) {
         res.status(500).send({
             "success": false,
-            "message": `Unable to update Cart id ${cartId} due to unexpected error.xxx`
+            "message": `Unable to update Cart id ${cartId} due to unexpected error.`
         })
     };
 })
