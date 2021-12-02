@@ -14,7 +14,7 @@ async function getAllCarts() {
     }
 }
 
-// Retrieve a specific cart by id
+// Retrieve a specific cart by id (handle carts belonging to anonymous users)
 async function getCartById(cartId) {
     try {
         let cart = await Cart.where({
@@ -29,14 +29,14 @@ async function getCartById(cartId) {
     }
 }
 
-// Retrieve a specific cart by user
+// Retrieve a specific cart by user (handle carts belonging to authenticated users)
 async function getCartByUser(userId) {
     try {
         let cart = await Cart.where({
             'user_id': userId
         }).fetch({
             require: false,
-            withRelated: ["products"]
+            withRelated: ["user", "products"]
         });
         return cart;
     } catch (err) {
@@ -62,7 +62,11 @@ async function createCart(userId, cartData) {
             console.log("User has no existing cart")
             const cart = new Cart();
 
-            cart.set('user_id', userId);
+            // cart for an authenticated user
+            if (userId) {
+                cart.set('user_id', userId);
+            }
+            
             cart.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
             cart.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 

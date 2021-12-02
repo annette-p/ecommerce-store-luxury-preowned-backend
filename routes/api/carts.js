@@ -4,10 +4,11 @@ const router = express.Router();
 const cartDataLayer = require("../../dal/carts");
 const {
     checkIfAuthenticatedJWT,
+    checkIsAdminJWT,
     checkIsCustomerJWT
 } = require('../../middlewares/authentication')
 
-// Retrieve cart for authenticated user
+// Retrieve cart for authenticated customers
 router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
     let userId = req.user.id;
     await cartDataLayer.getCartByUser(userId).then( cart => {
@@ -24,8 +25,8 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res
     });
 })
 
-// Retrieve all carts
-router.get('/all', async (_req, res) => {
+// Retrieve all carts (by admins)
+router.get('/all', [ checkIfAuthenticatedJWT, checkIsAdminJWT ], async (_req, res) => {
     await cartDataLayer.getAllCarts().then( carts => {
         console.log(carts)
         res.status(200).send({
@@ -41,8 +42,8 @@ router.get('/all', async (_req, res) => {
     });
 })
 
-// get a specific cart by id
-router.get('/:cart_id', async (req, res) => {
+// get a specific cart by id (by admins)
+router.get('/:cart_id', [ checkIfAuthenticatedJWT, checkIsAdminJWT ], async (req, res) => {
     await cartDataLayer.getCartById(req.params.cart_id).then( cart => {
         if (cart) {
             res.send({
@@ -65,40 +66,40 @@ router.get('/:cart_id', async (req, res) => {
     });
 })
 
-// Update a specific cart by its ID 
-router.put('/:cart_id/update', checkIfAuthenticatedJWT, async (req, res) => {
+// // Update a specific cart by its ID 
+// router.put('/:cart_id/update', checkIfAuthenticatedJWT, async (req, res) => {
 
-    await cartDataLayer.updateCartById(req.params.cart_id, req.body)
-    .then( () => {
-        res.status(200).send({
-            "success": true,
-            "message": `Cart id ${req.params.cart_id} updated successfully`
-        })
-    }).catch(_err => {
-        res.status(500).send({
-            "success": false,
-            "message": `Unable to update Cart id ${req.params.cart_id} due to unexpected error.`
-        })
-    });
-})
+//     await cartDataLayer.updateCartById(req.params.cart_id, req.body)
+//     .then( () => {
+//         res.status(200).send({
+//             "success": true,
+//             "message": `Cart id ${req.params.cart_id} updated successfully`
+//         })
+//     }).catch(_err => {
+//         res.status(500).send({
+//             "success": false,
+//             "message": `Unable to update Cart id ${req.params.cart_id} due to unexpected error.`
+//         })
+//     });
+// })
 
 // Delete a specific cart by its ID
-router.delete('/:cart_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
+// router.delete('/:cart_id/delete', checkIfAuthenticatedJWT, async (req, res) => {
 
-    await cartDataLayer.deleteCartById(req.params.cart_id)
-    .then( () => {
-        res.status(200).send({
-            "success": true,
-            "message": `Cart id ${req.params.cart_id} deleted successfully`
-        })
-    }).catch(_err => {
-        console.log(_err)
-        res.status(500).send({
-            "success": false,
-            "message": `Unable to delete Cart id ${req.params.cart_id} due to unexpected error.`
-        })
-    });
-})
+//     await cartDataLayer.deleteCartById(req.params.cart_id)
+//     .then( () => {
+//         res.status(200).send({
+//             "success": true,
+//             "message": `Cart id ${req.params.cart_id} deleted successfully`
+//         })
+//     }).catch(_err => {
+//         console.log(_err)
+//         res.status(500).send({
+//             "success": false,
+//             "message": `Unable to delete Cart id ${req.params.cart_id} due to unexpected error.`
+//         })
+//     });
+// })
 
 // Create cart for the authenticated user
 router.post('/create', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
