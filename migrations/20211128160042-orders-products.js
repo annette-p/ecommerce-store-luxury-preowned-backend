@@ -54,6 +54,11 @@ exports.up = function(db) {
       type: 'int',
       unsigned: true,
       notNull: true
+    },
+    unit_price: {
+      type: 'int',
+      unsigned: true,
+      notNull: true
     }
   });
 };

@@ -45,6 +45,11 @@ exports.up = function(db) {
       type: 'string',
       length: 45
     },
+    payment_amount: {
+      type: 'int',
+      unsigned: true,
+      notNull: true
+    },
     status: {
       type: 'string',
       length: 60,
