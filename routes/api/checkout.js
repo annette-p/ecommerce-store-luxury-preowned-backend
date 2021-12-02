@@ -2,15 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
-const cartDataLayer = require("../../dal/carts");
+const cartServiceLayer = require("../../services/cart")
 const {
     checkIfAuthenticatedJWT,
     checkIsCustomerJWT
 } = require('../../middlewares/authentication');
 
-router.post('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
+let jsonParser = express.json();
+
+router.post('/', [ jsonParser, checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
+    console.log("req.body: ", req.body)
     let userId = req.user.id;
-    await cartDataLayer.getCartByUser(userId).then( async (cartResult) => {
+    await cartServiceLayer.getCartByUser(userId).then( async (cartResult) => {
         
 
         // Create line items
@@ -48,7 +51,7 @@ router.post('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, re
             // success_url: process.env.STRIPE_SUCCESS_URL + '?sessionId={CHECKOUT_SESSION_ID}',
             // cancel_url: process.env.STRIPE_ERROR_URL,
             success_url: req.body.success_url + '?sessionId={CHECKOUT_SESSION_ID}',
-            cancel_url: req.body.error_url,
+            cancel_url: req.body.cancel_url,
             metadata: {
                 'orders': metaData
             }
@@ -63,6 +66,7 @@ router.post('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, re
             "publishableKey": process.env.STRIPE_PUBLISHABLE_KEY
         })
     }).catch(_err => {
+        console.log(_err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve carts due to unexpected error.`
@@ -72,7 +76,7 @@ router.post('/', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, re
 })
 
 // NOTE! This is called by Stripe not internally by us.
-router.post('/process_payment', express.raw({type:'application/json'}), function(req,res){
+router.post('/process_payment', express.raw({type:'application/json'}), async (req,res) =>{
 
     // payload is what Stripe is sending us
     let payload = req.body;
@@ -90,10 +94,12 @@ router.post('/process_payment', express.raw({type:'application/json'}), function
             console.log("event type is checkout.session.completed")
             let stripeSession = event.data.object;
             console.log("stripeSession [event.data.object]: ", stripeSession);
-            let metadata = JSON.parse(stripeSession.metadata.orders);
-            console.log("metadata [stripeSession.metadata.orders]: ", metadata);
-            res.send({
-                'received': true
+            let newOrderId = await cartServiceLayer.createOrder(stripeSession)
+            // let metadata = JSON.parse(stripeSession.metadata.orders);
+            // console.log("metadata [stripeSession.metadata.orders]: ", metadata);
+            res.status(200).send({
+                'received': true,
+                "order_id": newOrderId
             })
         }
     } catch (e) {

@@ -1,11 +1,12 @@
 const cartDataLayer = require("../dal/carts");
+const orderDataLayer = require("../dal/orders");
 
 async function assignCartOwner(cartId, userId) {
     let userCart = await cartDataLayer.getCartByUser(userId)
     if (userCart && userCart.get("id") !== parseInt(cartId)) {
         throw new Error("User already have an existing cart");
     }
-    
+
     let cart = await getCartById(cartId);
     if (cart && cart.get("user_id") !== null && cart.get("user_id") !== parseInt(userId)) {
         throw new Error(`Cart id ${cartId} is already owned by another user`)
@@ -16,7 +17,7 @@ async function assignCartOwner(cartId, userId) {
 }
 
 // Retrieve the cart for a user 
-async function getShoppingCart(userId) {
+async function getCartByUser(userId) {
     return await cartDataLayer.getCartByUser(userId);
 }
 
@@ -44,7 +45,6 @@ async function getCartById(cartId) {
 
 // Create cart for a user
 async function createCart(userId, cartData) {
-
     if (userId) {
         let cart = await cartDataLayer.getCartByUser(userId)
         if (cart) {
@@ -55,7 +55,6 @@ async function createCart(userId, cartData) {
     } else {
         return await cartDataLayer.createCart(userId, cartData);
     }
-
 }
 
 // Update cart details
@@ -79,12 +78,58 @@ async function updateQuantityOfCartItem(cartId, productId, newQuantity) {
     }
 }
 
+// Create order upon payment completion of the cart
+// - input is the Stripe checkout session completed event response received from
+//   Stripe via the webhook /checkout/process_payment
+//   ref: https://stripe.com/docs/api/checkout/sessions
+async function createOrder(completedCheckoutSession) {
+
+    // capture the shipping address from the Stripe checkout session
+    // this will be placed in the 'order_shipments' table
+    let shippingAddress = `Attention To: ${completedCheckoutSession.shipping.name}
+Address Line 1: ${completedCheckoutSession.shipping.address.line1}
+Address Line 2: ${completedCheckoutSession.shipping.address.line2}
+City: ${completedCheckoutSession.shipping.address.city}
+State: ${completedCheckoutSession.shipping.address.state}
+Country: ${completedCheckoutSession.shipping.address.country}
+Postal Code: ${completedCheckoutSession.shipping.address.postal_code}`
+
+    // capture the required data from he Stripe checkout session to be placed in
+    // the 'orders' table
+    let orderData = {
+        'user_id': completedCheckoutSession.client_reference_id,
+        'payment_reference': completedCheckoutSession.payment_intent,
+        'payment_method': completedCheckoutSession.payment_method_types[0],
+        'shipping_address': shippingAddress,
+        'items': []
+    }
+
+    // capture the required data from he Stripe checkout session to be placed in
+    // the 'orders_products' table
+    let orderMetadata = JSON.parse(completedCheckoutSession.metadata.orders);
+    orderMetadata.forEach( order => {
+        orderData.items.push({
+            'product_id': order.product_id,
+            'quantity': order.quantity,
+            'unit_price': order.unit_price ? order.unit_price : 0
+        })
+    })
+
+    // create the order
+    const orderId = await orderDataLayer.createOrder(orderData);
+
+    // clear the related cart 
+    await cartDataLayer.removeCartByUser(completedCheckoutSession.client_reference_id);
+    return orderId;
+}
+
 module.exports = {
     assignCartOwner,
     createCart,
+    createOrder,
     getAllShoppingCarts,
     getCartById,
-    getShoppingCart,
+    getCartByUser,
     updateCart,
     updateQuantityOfCartItem
 }

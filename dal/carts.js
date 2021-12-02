@@ -155,12 +155,35 @@ async function removeItemFromCart(cartId, productId) {
     })
 }
 
+// Delete a cart by id. 
+async function removeCartById(cartId) {
+    await getCartById(cartId)
+    .then( async (cart) => {
+        await cart.destroy();
+    })
+    .catch(err => {
+        throw err;
+    }) 
+}
+
+async function removeCartByUser(userId) {
+    await getCartByUser(userId)
+    .then( async (cart) => {
+        await cart.destroy();
+    })
+    .catch(err => {
+        throw err;
+    }) 
+}
+
 module.exports = {
     assignCartOwner,
     createCart,
     getAllCartsWithUserInfo,
     getCartById,
     getCartByUser,
+    removeCartById,
+    removeCartByUser,
     removeItemFromCart,
     updateCart,
     updateCartItemQuantity

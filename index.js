@@ -35,12 +35,13 @@ async function main() {
   //  Stripe, to the constructEvent() function; this will not work with a parsed 
   //  (i.e., JSON) request body.
   // ref: https://github.com/stripe/stripe-node#webhook-signing
-  app.use("/checkout", function(req, res, next) {
-    if (req.url !== "/checkout/process_payment") {
-      express.json();
-    }
-    next();
-  }, api.checkout);
+  // app.use("/checkout", function(req, res, next) {
+  //   if (req.url !== "/checkout/process_payment") {
+  //     express.json();
+  //   }
+  //   next();
+  // }, api.checkout);
+  app.use("/checkout", api.checkout);
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);
   app.use("/products", express.json(), api.products);
