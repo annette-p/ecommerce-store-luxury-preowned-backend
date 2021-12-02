@@ -72,10 +72,35 @@ const generateAccessToken = (user, tokenType, secret, expiresIn) => {
     });
 }
 
+// Add authentication middleware
+const parseJWT = (req, res, next) => {
+    // try to get authorization headers
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        // the authHeader will be a string that is like "Bearer <ACCESS_TOKEN>"
+        const [authType, token] = authHeader.split(' ');
+
+        if (authType === "Bearer") {
+            jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    return res.sendStatus(403);
+                } else {
+                    // store the current logged in user inside req.user
+                    req.user = user;
+                    next();
+                }
+            })
+        }
+    } else {
+        next();
+    }
+}
+
 module.exports = {
     checkIfAuthenticatedJWT,
     checkIsCustomerJWT,
     checkIsAdminJWT,
     getHashedPassword,
-    generateAccessToken
+    generateAccessToken,
+    parseJWT
 };
