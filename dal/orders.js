@@ -32,10 +32,10 @@ async function getOrderById(orderId) {
 
 // Retrieve orders for a user
 async function getOrdersByUser(userId) {
+    let q = Order.collection()
+    q.where('user_id', '=', userId)
     try {
-        let orders = await Order.where({
-            'user_id': userId
-        }).fetch({
+        let orders = await q.fetch({
             require: false,
             withRelated: ["products"]
         });
@@ -83,20 +83,17 @@ async function createOrder(orderData) {
 }
 
 // Update a given order id
-async function updateOrderById(orderId, newNewData) {
-    await getOrderById(orderId)
-    .then( async (order) => {
+async function updateOrderById(orderId, newOrderData) {
+    try {
+        const order = await getOrderById(orderId)
         order.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
-        cart.set("status", newNewData.status);
-        cart.set("comment", newNewData.comment);
-
-        await order.save().then(async () => {
-            //
-        }).catch(err => {
-            throw err;
-        });
-    })
+        order.set("status", newOrderData.status);
+        order.set("comment", newOrderData.comment);
+        await order.save()
+    } catch(err) {
+        throw err;
+    }
 }
 
 module.exports = {

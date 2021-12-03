@@ -18,6 +18,7 @@ const api = {
   checkout: require("./routes/api/checkout"),
   designers: require("./routes/api/designers"),
   insurances: require("./routes/api/insurances"),
+  orders: require("./routes/api/orders"),
   products: require("./routes/api/products"),
   tags: require("./routes/api/tags"),
   users: require("./routes/api/users")
@@ -35,15 +36,13 @@ async function main() {
   //  Stripe, to the constructEvent() function; this will not work with a parsed 
   //  (i.e., JSON) request body.
   // ref: https://github.com/stripe/stripe-node#webhook-signing
-  // app.use("/checkout", function(req, res, next) {
-  //   if (req.url !== "/checkout/process_payment") {
-  //     express.json();
-  //   }
-  //   next();
-  // }, api.checkout);
+  //
+  // Hence is not applying "express.json()" here. It will be done for the respective 
+  // /checkout sub-routes as necessary.
   app.use("/checkout", api.checkout);
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);
+  app.use("/orders", express.json(), api.orders);
   app.use("/products", express.json(), api.products);
   app.use("/tags", express.json(), api.tags);
   app.use("/users", express.json(), api.users);

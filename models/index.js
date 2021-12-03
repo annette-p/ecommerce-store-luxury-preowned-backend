@@ -87,7 +87,10 @@ const Tag = bookshelf.model("Tag", {
 
 const User = bookshelf.model("User", {
     tableName: "users",
-    hidden: ["password"]
+    hidden: ["password"],
+    orders() {
+        return this.hasMany("Order");
+    }
 });
 
 module.exports = {

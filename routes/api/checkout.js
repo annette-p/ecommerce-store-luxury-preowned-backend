@@ -76,6 +76,10 @@ router.post('/', [ jsonParser, checkIfAuthenticatedJWT, checkIsCustomerJWT ], as
 })
 
 // NOTE! This is called by Stripe not internally by us.
+// Stripe Webhook signing - must pass the raw request body, exactly as received from 
+//  Stripe, to the constructEvent() function; this will not work with a parsed 
+//  (i.e., JSON) request body.
+// ref: https://github.com/stripe/stripe-node#webhook-signing
 router.post('/process_payment', express.raw({type:'application/json'}), async (req,res) =>{
 
     // payload is what Stripe is sending us
