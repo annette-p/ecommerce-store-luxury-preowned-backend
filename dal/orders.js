@@ -3,6 +3,17 @@ const {
     OrderShipment
 } = require("../models");
 
+function getStatusList() {
+    return [
+        "New",
+        "Processing",
+        "Shipment",
+        "Completed",
+        "Cancelled",
+        "Refund"
+    ]
+}
+
 // Retrieve all orders
 async function getAllOrders() {
     try {
@@ -102,5 +113,6 @@ module.exports = {
     getAllOrders,
     getOrderById,
     getOrdersByUser,
+    getStatusList,
     updateOrderById
 }

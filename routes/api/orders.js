@@ -29,6 +29,14 @@ router.get('/', [ checkIfAuthenticatedJWT ], async (req, res) => {
     }
 })
 
+// Retrieve list of valid order statuses
+router.get('/status-list', async (req, res) => {
+    res.status(200).send({
+        "success": true,
+        "data": await orderDataLayer.getStatusList()
+    })
+})
+
 // Retrieve an order
 router.get('/:order_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
     const orderId = req.params.order_id;
