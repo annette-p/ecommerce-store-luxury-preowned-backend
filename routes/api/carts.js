@@ -11,7 +11,7 @@ const {
 
 
 // Retrieve all carts with user info (by admins)
-router.get('/all', [ checkIfAuthenticatedJWT, checkIsAdminJWT ], async (_req, res) => {
+router.get('/', [ checkIfAuthenticatedJWT, checkIsAdminJWT ], async (_req, res) => {
     await cartServiceLayer.getAllShoppingCarts().then( carts => {
         res.status(200).send({
             "success": true,
