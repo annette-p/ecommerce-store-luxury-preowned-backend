@@ -41,7 +41,7 @@ const Order = bookshelf.model("Order", {
         return this.belongsTo("User");
     },
     orderShipment() {
-        return this.belongsTo("OrderShipment");
+        return this.hasMany("OrderShipment");
     },
     products() {
         return this.belongsToMany("Product").withPivot(['quantity']);

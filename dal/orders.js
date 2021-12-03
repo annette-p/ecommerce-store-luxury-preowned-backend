@@ -7,7 +7,7 @@ const {
 async function getAllOrders() {
     try {
         let orders = await Order.collection().fetch({
-            withRelated: ["user", "products"]
+            withRelated: ["user", "products", "orderShipment"]
         });
         return orders;
     } catch (err) {
@@ -22,7 +22,7 @@ async function getOrderById(orderId) {
             'id': orderId
         }).fetch({
             require: false,
-            withRelated: ["user", "products"]
+            withRelated: ["user", "products", "orderShipment"]
         });
         return order;
     } catch (err) {
@@ -37,7 +37,7 @@ async function getOrdersByUser(userId) {
     try {
         let orders = await q.fetch({
             require: false,
-            withRelated: ["products"]
+            withRelated: ["products", "orderShipment"]
         });
         return orders;
     } catch (err) {
