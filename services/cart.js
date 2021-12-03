@@ -100,6 +100,7 @@ Postal Code: ${completedCheckoutSession.shipping.address.postal_code}`
         'user_id': completedCheckoutSession.client_reference_id,
         'payment_reference': completedCheckoutSession.payment_intent,
         'payment_method': completedCheckoutSession.payment_method_types[0],
+        'payment_amount': completedCheckoutSession.amount_total,
         'shipping_address': shippingAddress,
         'items': []
     }

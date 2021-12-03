@@ -54,6 +54,7 @@ async function createOrder(orderData) {
         order.set('user_id', orderData.user_id);
         order.set('payment_reference', orderData.payment_reference)
         order.set('payment_method', orderData.payment_method)
+        order.set('payment_amount', orderData.payment_amount)
         order.set('status', "New")
         order.set('comment', orderData.comment)
         order.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
