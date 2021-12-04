@@ -22,6 +22,7 @@ router.get('/', [ checkIfAuthenticatedJWT ], async (req, res) => {
             "data": orders
         })
     } catch(_err) {
+        console.log(_err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve orders due to unexpected error.`
@@ -47,6 +48,7 @@ router.get('/:order_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
             "data": order
         })
     } catch(_err) {
+        console.log(_err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve orders due to unexpected error.`
@@ -60,6 +62,8 @@ router.put('/:order_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
     let newOrderData = {}
     if (req.body.status) { newOrderData.status = req.body.status; }
     if (req.body.comment) { newOrderData.comment = req.body.comment; }
+    if (req.body.shipment_provider) { newOrderData.shipment_provider = req.body.shipment_provider; }
+    if (req.body.tracking_number) { newOrderData.tracking_number = req.body.tracking_number; }
 
     try {
         await orderDataLayer.updateOrderById(orderId, newOrderData)
@@ -68,6 +72,7 @@ router.put('/:order_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
             "message": `Order Id ${orderId} updated.`
         })
     } catch(_err) {
+        console.log(_err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update order id ${orderId} due to unexpected error.`

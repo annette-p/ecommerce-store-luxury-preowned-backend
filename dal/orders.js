@@ -103,6 +103,14 @@ async function updateOrderById(orderId, newOrderData) {
         order.set("status", newOrderData.status);
         order.set("comment", newOrderData.comment);
         await order.save()
+
+        const orderShipment = await OrderShipment.where({
+            'order_id': orderId
+        }).fetch()
+        orderShipment.set("shipment_provider", newOrderData.shipment_provider)
+        orderShipment.set("tracking_number", newOrderData.tracking_number)
+        orderShipment.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+        await orderShipment.save()
     } catch(err) {
         throw err;
     }

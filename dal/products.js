@@ -74,8 +74,11 @@ async function getDesignerById(designerId) {
     }
 }
 
+// async function createProduct(productData) {}
+
 
 module.exports = {
+    // createProduct,
     getAllCategories, getCategoryById,
     getAllDesigners, getDesignerById,
     getAllProducts, getProductById

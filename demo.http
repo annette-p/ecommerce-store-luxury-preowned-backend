@@ -131,7 +131,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/refresh
 content-type: application/json
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM4NDk5MjIyLCJleHAiOjE2MzkxMDQwMjIsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ.srFzalnHg0SduC7Ex4pqMwa8sFWtMoRWC5zK0j8Mvmw"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM4MTA1MDMxLCJleHAiOjE2Mzg3MDk4MzEsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ.3Wsa5As-rxskbRUSuVe18oYI27erXq78XTFK2Hf9zzQ"
 }
 
 ###
@@ -510,6 +510,17 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 # Get list of all orders
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODU1NTc2MCwiZXhwIjoxNjM4NTU2NjYwLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.Fo4CIE3zlr7pKnWrPpsur4aYKZAsLyePEpQryZz8cS8
+
+###
+
+# Get list of valid order statuses
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/status-list
+
+###
+
+# Get an order
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/3
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODUwMzU1NywiZXhwIjoxNjM4NTA0NDU3LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.HGyB_4MJ7TJ10mUibTD9jTMD1Xa302W7-p4MrgZotNU
 
 ###
@@ -520,8 +531,17 @@ content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODUwMzU1NywiZXhwIjoxNjM4NTA0NDU3LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.HGyB_4MJ7TJ10mUibTD9jTMD1Xa302W7-p4MrgZotNU
 
 {
-    "status": "New 2"
+    "status": "Delivered",
+    "comment": "Testing 2.."
 }
+
+###
+# Get all consignments
+
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/consignments
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODU0NjA3MiwiZXhwIjoxNjM4NTQ2OTcyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.qvBmB9viGTSC5O6oKSNurv5TaPZXLBATF_8g9WrWe9c
+
 
 ###
 
