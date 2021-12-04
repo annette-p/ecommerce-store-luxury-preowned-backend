@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('orders', {
+  return db.createTable('consignments', {
     id: {
       type: 'int',
       primaryKey: true,
@@ -27,7 +27,7 @@ exports.up = function(db) {
       unsigned: true,
       notNull: true,
       foreignKey: {
-        name: 'order_user_fk',
+        name: 'consignments_user_fk',
         table: 'users',
         mapping: 'id',
         rules:{
@@ -36,19 +36,19 @@ exports.up = function(db) {
         }
       }
     },
-    payment_reference: {
-      type: 'string',
-      length: 60,
-      notNull: true
-    },
-    payment_method: {
-      type: 'string',
-      length: 45
-    },
-    payment_amount: {
+    product_id: {
       type: 'int',
       unsigned: true,
-      notNull: true
+      notNull: true,
+      foreignKey: {
+        name: 'consignments_product_fk',
+        table: 'products',
+        mapping: 'id',
+        rules:{
+          onDelete: 'cascade',
+          onUpdate: 'restrict'
+        }
+      }
     },
     status: {
       type: 'string',
@@ -69,7 +69,7 @@ exports.up = function(db) {
 };
 
 exports.down = function(db) {
-  return db.dropTable('orders');
+  return db.dropTable('consignments');
 };
 
 exports._meta = {

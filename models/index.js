@@ -21,6 +21,16 @@ const Category = bookshelf.model("Category", {
     }
 });
 
+const Consignment = bookshelf.model("Consignment", {
+    tableName: "consignments",
+    user() {
+        return this.belongsTo("User");
+    },
+    product() {
+        return this.belongsTo("Product")
+    }
+})
+
 const Designer = bookshelf.model("Designer", {
     tableName: "designers",
     products() {
@@ -63,6 +73,9 @@ const Product = bookshelf.model("Product", {
     category() {
         return this.belongsTo("Category");
     },
+    consignment() {
+        return this.hasOne("Consignment");
+    },
     designer() {
         return this.belongsTo("Designer");
     },
@@ -88,6 +101,9 @@ const Tag = bookshelf.model("Tag", {
 const User = bookshelf.model("User", {
     tableName: "users",
     hidden: ["password"],
+    consignments() {
+        return this.hasMany("Consignment");
+    },
     orders() {
         return this.hasMany("Order");
     }
@@ -97,6 +113,7 @@ module.exports = {
     BlacklistedToken,
     Cart,
     Category,
+    Consignment,
     Designer,
     Insurance,
     Order,

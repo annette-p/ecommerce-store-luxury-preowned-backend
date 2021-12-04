@@ -16,6 +16,7 @@ const api = {
   carts: require("./routes/api/carts"),
   categories: require("./routes/api/categories"),
   checkout: require("./routes/api/checkout"),
+  consignments: require("./routes/api/consignments"),
   designers: require("./routes/api/designers"),
   insurances: require("./routes/api/insurances"),
   orders: require("./routes/api/orders"),
@@ -40,6 +41,7 @@ async function main() {
   // Hence is not applying "express.json()" here. It will be done for the respective 
   // /checkout sub-routes as necessary.
   app.use("/checkout", api.checkout);
+  app.use("/consignments", express.json(), api.consignments);
   app.use("/designers", express.json(), api.designers);
   app.use("/insurances", express.json(), api.insurances);
   app.use("/orders", express.json(), api.orders);
