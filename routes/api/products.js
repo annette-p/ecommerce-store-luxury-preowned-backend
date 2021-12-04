@@ -103,59 +103,19 @@ router.delete('/:product_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT],
 
 // Create a new product
 router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
-    const product = new Product();
-
-    product.set('designer_id', req.body.designer_id);
-    product.set('category_id', req.body.category_id);
-    product.set('insurance_id', req.body.insurance_id);
-    product.set('name', req.body.name);
-    product.set('retail_price', req.body.retail_price);
-    product.set('selling_price', req.body.selling_price);
-    product.set('description', req.body.description);
-    product.set('specifications', req.body.specifications);
-    product.set('condition', req.body.condition);
-    product.set('condition_description', req.body.condition_description);
-    product.set('sku', req.body.sku);
-    product.set('quantity', req.body.quantity);
-    product.set('authenticity', req.body.authenticity);
-    product.set('product_image_1', req.body.product_image_1);
-    product.set('product_image_2', req.body.product_image_2);
-    product.set('product_gallery_1', req.body.product_gallery_1);
-    product.set('product_gallery_2', req.body.product_gallery_2);
-    product.set('product_gallery_3', req.body.product_gallery_3);
-    product.set('product_gallery_4', req.body.product_gallery_4);
-    product.set('product_gallery_5', req.body.product_gallery_5);
-    product.set('product_gallery_6', req.body.product_gallery_6);
-    product.set('product_gallery_7', req.body.product_gallery_7);
-    product.set('product_gallery_8', req.body.product_gallery_8);
-    product.set('claim_date', req.body.claim_date);
-    product.set('claim_amount', req.body.claim_amount);
-    const isActive = false;
-    if (req.body.active) {
-        isActive = req.body.active;
-    }
-    product.set('active', isActive);
-    product.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-    product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-
-    await product.save().then(async () => {
-
-        // handle tags
-        if (req.body.tags) {
-            await product.tags().attach(req.body.tags.split(","));
-        }
-
+    try {
+        const newProductId = await productDataLayer.createProduct(req.body);
         res.status(201).send({
             "success": true,
             "message": "New product created successfully",
-            "product_id": product.get("id")
+            "product_id": newProductId
         })
-    }).catch(_err => {
+    } catch(_err) {
         res.status(500).send({
             "success": false,
             "message": `Unable to create new product due to unexpected error.`
         })
-    });;
+    }
 })
 
 module.exports = router;

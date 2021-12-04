@@ -153,11 +153,59 @@ async function deleteProduct(productId) {
     }
 }
 
-// async function createProduct(productData) {}
+async function createProduct(productData) {
+    try {
+        const product = new Product();
+
+        product.set('designer_id', productData.designer_id);
+        product.set('category_id', productData.category_id);
+        product.set('insurance_id', productData.insurance_id);
+        product.set('name', productData.name);
+        product.set('retail_price', productData.retail_price);
+        product.set('selling_price', productData.selling_price);
+        product.set('description', productData.description);
+        product.set('specifications', productData.specifications);
+        product.set('condition', productData.condition);
+        product.set('condition_description', productData.condition_description);
+        product.set('sku', productData.sku);
+        product.set('quantity', productData.quantity);
+        product.set('authenticity', productData.authenticity);
+        product.set('product_image_1', productData.product_image_1);
+        product.set('product_image_2', productData.product_image_2);
+        product.set('product_gallery_1', productData.product_gallery_1);
+        product.set('product_gallery_2', productData.product_gallery_2);
+        product.set('product_gallery_3', productData.product_gallery_3);
+        product.set('product_gallery_4', productData.product_gallery_4);
+        product.set('product_gallery_5', productData.product_gallery_5);
+        product.set('product_gallery_6', productData.product_gallery_6);
+        product.set('product_gallery_7', productData.product_gallery_7);
+        product.set('product_gallery_8', productData.product_gallery_8);
+        product.set('claim_date', productData.claim_date);
+        product.set('claim_amount', productData.claim_amount);
+        const isActive = false;
+        if (productData.active) {
+            isActive = productData.active;
+        }
+        product.set('active', isActive);
+        product.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+        product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+        await product.save();
+
+        // handle tags
+        if (productData.tags) {
+            await product.tags().attach(productData.tags.split(","));
+        }
+
+        return product.get("id");
+    } catch(err) {
+        throw err;
+    }
+}
 
 
 module.exports = {
-    // createProduct,
+    createProduct,
     deleteProduct,
     getAllCategories, getCategoryById,
     getAllDesigners, getDesignerById,
