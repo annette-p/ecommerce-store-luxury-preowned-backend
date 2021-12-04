@@ -3,6 +3,7 @@ const {
     OrderShipment
 } = require("../models");
 
+// List of valid order statuses
 function getStatusList() {
     return [
         "New",
@@ -11,6 +12,16 @@ function getStatusList() {
         "Completed",
         "Cancelled",
         "Refund"
+    ]
+}
+
+// List of supported shipment/courier providers
+function getShipmentProviderList() {
+    return [
+        "FedEx",
+        "Lalamove",
+        "NinjaVan",
+        "SingPost"
     ]
 }
 
@@ -122,5 +133,6 @@ module.exports = {
     getOrderById,
     getOrdersByUser,
     getStatusList,
+    getShipmentProviderList,
     updateOrderById
 }

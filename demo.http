@@ -515,7 +515,12 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Get list of valid order statuses
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/status-list
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/statuses
+
+###
+
+# Get list of shipment/courier providers
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/shipment-providers
 
 ###
 

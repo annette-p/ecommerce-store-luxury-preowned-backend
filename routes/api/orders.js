@@ -31,10 +31,18 @@ router.get('/', [ checkIfAuthenticatedJWT ], async (req, res) => {
 })
 
 // Retrieve list of valid order statuses
-router.get('/status-list', async (req, res) => {
+router.get('/statuses', async (req, res) => {
     res.status(200).send({
         "success": true,
         "data": await orderDataLayer.getStatusList()
+    })
+})
+
+// Retrieve list of supported shipment/courier providers
+router.get('/shipment-providers', async (req, res) => {
+    res.status(200).send({
+        "success": true,
+        "data": await orderDataLayer.getShipmentProviderList()
     })
 })
 
@@ -57,7 +65,7 @@ router.get('/:order_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
 })
 
 // Update an order
-router.put('/:order_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
+router.put('/:order_id/update', [ checkIfAuthenticatedJWT ], async (req, res) => {
     const orderId = req.params.order_id
     let newOrderData = {}
     if (req.body.status) { newOrderData.status = req.body.status; }
