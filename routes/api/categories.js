@@ -1,20 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
-const productDataLayer = require("../../dal/products");
+const categoryDataLayer = require("../../dal/categories");
 const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT
 } = require('../../middlewares/authentication')
 
-// import the Category model
-const {
-    Category
-} = require('../../models');
 
-// Retrieve all categories
+// Retrieve all product categories
 router.get('/', async (req, res) => {
-    await productDataLayer.getAllCategories().then( categories => {
+    await categoryDataLayer.getAllCategories().then( categories => {
         res.status(200).send({
             "success": true,
             "data": categories
@@ -28,8 +24,9 @@ router.get('/', async (req, res) => {
     });
 })
 
+// Retrieve a specific product category by id
 router.get('/:category_id', async (req, res) => {
-    await productDataLayer.getCategoryById(req.params.category_id).then( category => {
+    await categoryDataLayer.getCategoryById(req.params.category_id).then( category => {
         if (category) {
             res.send({
                 "success": true,
@@ -50,85 +47,71 @@ router.get('/:category_id', async (req, res) => {
     });
 })
 
+// Update a product category
 router.put('/:category_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
-    const category = await Category.where({
-        'id': req.params.category_id
-    }).fetch({
-        require: true
-    }).catch(_err => {
-        res.status(404).send({
-            "success": false,
-            "message": `Unable to retrieve Category ID ${req.params.category_id}. Category update failed. `
-        })
-        return;
-    });
-
-    if (category !== undefined) {
-
-        category.set('name', req.body.name);
-        category.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-
-        await category.save().then(() => {
+    let categoryId = req.params.category_id;
+    try {
+        const success = await categoryDataLayer.updateCategory(categoryId, req.body);
+        if (success) {
             res.status(200).send({
                 "success": true,
-                "message": `Category ID ${req.params.category_id} updated successfully`
+                "message": `Category ID ${categoryId} updated successfully`
             })
-        }).catch(_err => {
-            res.status(500).send({
+        } else {
+            res.status(404).send({
                 "success": false,
-                "message": `Unable to update Category ID ${req.params.category_id} due to unexpected error.`
+                "message": `Unable to retrieve Category ID ${categoryId}. Category update failed. `
             })
-        });
+        }
+    } catch(_err) {
+        console.log(_err);
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to update Category ID ${categoryId} due to unexpected error.`
+        })
     }
-
 })
 
+// Delete a product category
 router.delete('/:category_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
-    const category = await Category.where({
-        'id': req.params.category_id
-    }).fetch({
-        require: true
-    }).catch(_err => {
-        res.status(404).send({
-            "success": false,
-            "message": `Unable to retrieve Category ID ${req.params.category_id}. Category deletion failed. `
-        })
-        return;
-    });
-
-    if (category !== undefined) {
-        await category.destroy().then(() => {
+    let categoryId = req.params.category_id;
+    try {
+        const success = await categoryDataLayer.deleteCategory(categoryId);
+        if (success) {
             res.status(200).send({
                 "success": true,
-                "message": `Category ID ${req.params.category_id} deleted successfully`
+                "message": `Category ID ${categoryId} deleted successfully`
             })
-        }).catch(_err => {
-            res.status(500).send({
+        } else {
+            res.status(404).send({
                 "success": false,
-                "message": `Unable to delete Category ID ${req.params.category_id} due to unexpected error.`
+                "message": `Unable to retrieve Category ID ${categoryId}. Category deletion failed. `
             })
-        });
+        }
+    } catch(_err) {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to delete Category ID ${categoryId} due to unexpected error.`
+        })
     }
-
 })
 
+
+// Create new product category
 router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
-    const category = new Category();
-    category.set('name', req.body.name);
-    category.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-    category.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-    await category.save().then(() => {
+    try {
+        const newCategoryId = await categoryDataLayer.createCategory(req.body);
         res.status(201).send({
             "success": true,
             "message": "New category created successfully",
-            "category_id": category.get("id")
+            "category_id": newCategoryId
         })
-    }).catch(_err => {
+    } catch(err) {
         res.status(500).send({
             "success": false,
             "message": `Unable to create new category due to unexpected error.`
         })
-    });;
+    }
 })
 
 module.exports = router;

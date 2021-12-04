@@ -30,50 +30,6 @@ async function getProductById(productId) {
     
 }
 
-async function getAllCategories() {
-    try {
-        let categories = await Category.collection().fetch();
-        return categories;
-    } catch(err) {
-        throw err;
-    }
-}
-
-async function getCategoryById(categoryId) {
-    try {
-        let category = await Category.where({
-            'id': categoryId
-        }).fetch({
-            require: false
-        });
-        return category;
-    } catch(err) {
-        throw err;
-    }
-}
-
-async function getAllDesigners() {
-    try {
-        let designers = await Designer.collection().fetch();
-        return designers;
-    } catch(err) {
-        throw err;
-    }
-}
-
-async function getDesignerById(designerId) {
-    try {
-        let designer = await Designer.where({
-            'id': designerId
-        }).fetch({
-            require: false
-        });
-        return designer;
-    } catch(err) {
-        throw err;
-    }
-}
-
 async function updateProduct(productId, productData) {
     const product = await getProductById(productId);
     try {
@@ -203,11 +159,36 @@ async function createProduct(productData) {
     }
 }
 
+// ************** Manage Product Designers **************
+
+async function getAllDesigners() {
+    try {
+        let designers = await Designer.collection().fetch();
+        return designers;
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function getDesignerById(designerId) {
+    try {
+        let designer = await Designer.where({
+            'id': designerId
+        }).fetch({
+            require: false
+        });
+        return designer;
+    } catch(err) {
+        throw err;
+    }
+}
+
+
+
 
 module.exports = {
     createProduct,
     deleteProduct,
-    getAllCategories, getCategoryById,
     getAllDesigners, getDesignerById,
     getAllProducts, getProductById,
     updateProduct

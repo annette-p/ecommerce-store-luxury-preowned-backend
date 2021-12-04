@@ -282,9 +282,9 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4
 ###
 
 # Update a specific product
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/2000/update
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzc3MzE5MSwiZXhwIjoxNjM3Nzc0MDkxLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.t-z6_uhvIQ_1803q4auD9I9fVtAni-ZwMUuZmjHszlE
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYxMTY1OSwiZXhwIjoxNjM4NjEyNTU5LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.gtFlklnOZ9Ijcjb6VaGr-PcgaJgtu_ZZrtaQS2-b4nw
 
 {
     "designer_id": 2,
@@ -313,10 +313,14 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
     "tags": "2"
 }
 
+
+
 ###
 
 # Delete a specific product
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/3/delete
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYxMTY1OSwiZXhwIjoxNjM4NjEyNTU5LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.gtFlklnOZ9Ijcjb6VaGr-PcgaJgtu_ZZrtaQS2-b4nw
 
 ###
 

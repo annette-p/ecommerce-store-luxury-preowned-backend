@@ -5,7 +5,6 @@ const cartServiceLayer = require("../../services/cart")
 const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT,
-    checkIsCustomerJWT,
     parseJWT
 } = require('../../middlewares/authentication');
 

@@ -7,10 +7,6 @@ const {
     checkIsAdminJWT
 } = require('../../middlewares/authentication')
 
-// import the Product model
-const {
-    Product
-} = require('../../models');
 
 // Retrieve all products
 router.get('/', async (_req, res) => {
