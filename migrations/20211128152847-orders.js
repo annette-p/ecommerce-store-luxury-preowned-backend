@@ -31,7 +31,7 @@ exports.up = function(db) {
         table: 'users',
         mapping: 'id',
         rules:{
-          onDelete: 'cascade',
+          onDelete: 'restrict',
           onUpdate: 'restrict'
         }
       }
