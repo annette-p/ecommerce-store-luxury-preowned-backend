@@ -53,7 +53,7 @@ exports.up = function(db) {
     insurance_id: {
       type: 'int',
       unsigned: true,
-      notNull: true,
+      notNull: false,
       foreignKey: {
         name: 'product_insurance_fk',
         table: 'insurances',

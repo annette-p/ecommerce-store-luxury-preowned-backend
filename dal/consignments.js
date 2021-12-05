@@ -2,12 +2,28 @@ const {
     Consignment
 } = require("../models");
 
+const productDataLayer = require("./products");
+
+// List of valid consignment statuses
+function getStatusList() {
+    return [
+        "New",
+        "Initial Evaluation",
+        "Official Evaluation",
+        "Shipment",
+        "Listed",
+        "Rejected",
+        "Cancelled",
+        "Refund"
+    ]
+}
+
 // Retrieve all consignments along with the user information.
 // This would be exposed to admins
 async function getAllConsignments() {
     try {
         let consignments = await Consignment.collection().fetch({
-            withRelated: ["user", "products"]
+            withRelated: ["user", "product"]
         });
         return consignments;
     } catch (err) {
@@ -15,10 +31,26 @@ async function getAllConsignments() {
     }
 }
 
+// Retrieve a consignment by id
+async function getConsignmentById(consignmentId) {
+    try {
+        let consignment = await Consignment.where({
+            'id': consignmentId
+        }).fetch({
+            require: false,
+            withRelated: ["user", "product"]
+        });
+        return consignment;
+    } catch(err) {
+        throw err;
+    }
+    
+}
+
 // Retrieve consignments for a user
 async function getConsignmentsByUser(userId) {
     let q = Consignment.collection()
-    q.where('user_id', '=', userId)
+    q.where('user_id', '=', userId);
     try {
         let consignments = await q.fetch({
             require: false,
@@ -26,50 +58,75 @@ async function getConsignmentsByUser(userId) {
         });
         return consignments;
     } catch (err) {
-        throw err
+        throw err;
     }
 }
 
 // Create consignment for a user
-async function createConsignment(consignmentData) {
+async function createConsignment(userId, consignmentData) {
 
     try {
-        const consignment = new Consignment();
-
-        consignment.set('user_id', orderData.user_id);
-        consignment.set('product_id', orderData.payment_reference)
-        consignment.set('payment_method', orderData.payment_method)
-        order.set('payment_amount', orderData.payment_amount)
-        order.set('status', "New")
-        order.set('comment', orderData.comment)
-        order.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-        order.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-
-        await order.save();
-
-        const orderId = order.get("id")
-
-        // handle items in order
-        if (orderData.items) {
-            await order.products().attach(orderData.items);
+        const productData = {
+            designer_id: consignmentData.designer_id,
+            category_id: consignmentData.category_id,
+            name: consignmentData.name, 
+            condition: consignmentData.condition,
+            condition_description: consignmentData.condition_description,
+            selling_price: consignmentData.selling_price,
+            specifications: consignmentData.specifications,
+            quantity: 1,
+            active: false,
+            authenticity: false,
+            product_gallery_1: consignmentData.product_gallery_1,
+            product_gallery_2: consignmentData.product_gallery_2,
+            product_gallery_3: consignmentData.product_gallery_3,
+            product_gallery_4: consignmentData.product_gallery_4,
+            product_gallery_5: consignmentData.product_gallery_5,
+            product_gallery_6: consignmentData.product_gallery_6,
+            product_gallery_7: consignmentData.product_gallery_7,
+            product_gallery_8: consignmentData.product_gallery_8,
         }
 
-        const shipment = new OrderShipment();
-        shipment.set('order_id', orderId)
-        shipment.set('shipping_address', orderData.shipping_address)
-        shipment.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
-        shipment.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+        let newProductId = await productDataLayer.createProduct(productData)
 
-        await shipment.save();
+        const consignment = new Consignment();
+        consignment.set('user_id', userId);
+        consignment.set('product_id', newProductId);
+        consignment.set('status', "New");
+        consignment.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+        consignment.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
-        return orderId;
+        await consignment.save();
+        const consignmentId = consignment.get("id");
+        return consignmentId;
     } catch(err) {
-        throw err
+        throw err;
+    }
+}
+
+// Update consignment
+async function updateConsignment(consignmentId, consignmentData) {
+    try {
+        const consignment = await getConsignmentById(consignmentId);
+
+        if (consignment) {
+            consignment.set('status', consignmentData.status);
+            consignment.set('comment', consignmentData.comment);
+            consignment.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+            await consignment.save();
+        } else {
+            return false;
+        }
+    } catch(err) {
+        throw err;
     }
 }
 
 module.exports = {
     createConsignment,
+    getAllConsignments,
+    getConsignmentById,
     getConsignmentsByUser,
-    getAllConsignments
+    getStatusList,
+    updateConsignment
 }

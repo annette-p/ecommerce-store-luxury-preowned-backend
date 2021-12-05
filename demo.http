@@ -3,27 +3,27 @@
 ###
 
 # Get list of all users
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users
 
 ###
 
 # Get list of all admin users
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/admins
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/admins
 
 ###
 
 # Get list of all customers
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/customers
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/customers
 
 ###
 
 # Get a specific user
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/5
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/5
 
 ###
 
 # Create admin
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/create
 content-type: application/json
 
 {
@@ -41,7 +41,7 @@ content-type: application/json
 ###
 
 # Create user
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/create
 content-type: application/json
 
 {
@@ -59,14 +59,14 @@ content-type: application/json
 ###
 
 # Get info of authenticated user
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/info
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/info
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgzNzIzNCwiZXhwIjoxNjM3ODM4MTM0LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.B2QCOau0rSPr-KfoTYivNDA0Pn-ud7jH4DWvTVRYlaE
 
 ###
 
 # Update user
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/3/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/3/update
 content-type: application/json
 
 {
@@ -85,13 +85,13 @@ content-type: application/json
 
 # Delete user
 
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/4/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/4/delete
 
 ###
 
 # Authenticate using email/password
 
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/authenticate
 content-type: application/json
 
 {
@@ -103,7 +103,7 @@ content-type: application/json
 
 # Authenticate as admin using username/password
 
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/authenticate
 content-type: application/json
 
 {
@@ -115,7 +115,7 @@ content-type: application/json
 
 # Authenticate as customer using username/password
 
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/authenticate
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/authenticate
 content-type: application/json
 
 {
@@ -127,18 +127,18 @@ content-type: application/json
 
 # Get new access token using refresh token
 
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/refresh
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/refresh
 content-type: application/json
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM4MTA1MDMxLCJleHAiOjE2Mzg3MDk4MzEsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ.3Wsa5As-rxskbRUSuVe18oYI27erXq78XTFK2Hf9zzQ"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM4NjI2NjcwLCJleHAiOjE2MzkyMzE0NzAsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ"
 }
 
 ###
 
 # Logout
 
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/logout
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/logout
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY1MzE1MCwiZXhwIjoxNjM3NjU0MDUwLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.59Q90JqeeLHzBZURw-WCXF9StXhwvO9J4AljY5sli_o
 
@@ -150,7 +150,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 # Change password
 
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/users/5/change-password
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/5/change-password
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzU5NTMyMiwiZXhwIjoxNjM3NTk2MjIyLCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.BYepT8ScwD06XEZIuXz_hoCACXSbxg-tPRs_YyO-vD4
 
@@ -163,52 +163,56 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Get list of all categories
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/categories
 
 ###
 
 # Get a specific category
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/2
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/categories/6
 
 ###
 
 # Create category
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/categories/create
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYyNjY3MCwiZXhwIjoxNjM4NjI3NTcwLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.0eyoze-SgLHQ4ln2a4OSpBbwEtaeXNg9GHhzmhBRV80
 
 {
-    "name": "Shoes"
+    "name": "Test Shoes"
 }
 
 ###
 
 # Update category
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/1/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/categories/6/update
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYyNjY3MCwiZXhwIjoxNjM4NjI3NTcwLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.0eyoze-SgLHQ4ln2a4OSpBbwEtaeXNg9GHhzmhBRV80
 
 {
-    "name": "Shoes 1"
+    "name": "Test Shoes 2"
 }
 
 ###
 
 # Delete category
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/categories/1/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/categories/6/delete
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYyNzg4MSwiZXhwIjoxNjM4NjI4NzgxLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.lFvNI9zued3DDu3v74cg9Bor2iRSG1lYyvkoVCaGBdw
 
 ###
 
 # Get list of all designers
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/designers
 
 ###
 
 # Get a specific designer
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/2
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/designers/2
 
 ###
 
 # Update designer
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/1/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/designers/1/update
 content-type: application/json
 
 {
@@ -218,12 +222,12 @@ content-type: application/json
 ###
 
 # Delete designer
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/1/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/designers/1/delete
 
 ###
 
 # Create designer
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/designers/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/designers/create
 content-type: application/json
 
 {
@@ -233,17 +237,17 @@ content-type: application/json
 ###
 
 # Get list of all insurances
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/insurances
 
 ###
 
 # Get a specific insurance
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/1
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/insurances/1
 
 ###
 
 # Update insurance
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/1/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/insurances/1/update
 content-type: application/json
 
 {
@@ -255,12 +259,12 @@ content-type: application/json
 ###
 
 # Delete a specific insurance
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/1/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/insurances/1/delete
 
 ###
 
 # Create insurance
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/insurances/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/insurances/create
 content-type: application/json
 
 {
@@ -272,17 +276,17 @@ content-type: application/json
 ###
 
 # Get list of all products
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products
 
 ###
 
 # Get a specific product
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/4
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products/4
 
 ###
 
 # Update a specific product
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/2000/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products/2000/update
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYxMTY1OSwiZXhwIjoxNjM4NjEyNTU5LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.gtFlklnOZ9Ijcjb6VaGr-PcgaJgtu_ZZrtaQS2-b4nw
 
@@ -318,14 +322,14 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Delete a specific product
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/3/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products/3/delete
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYxMTY1OSwiZXhwIjoxNjM4NjEyNTU5LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.gtFlklnOZ9Ijcjb6VaGr-PcgaJgtu_ZZrtaQS2-b4nw
 
 ###
 
 # Create product
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products/create
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODEwNTAzMSwiZXhwIjoxNjM4MTA1OTMxLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.UVaVSUZS6IQcMe9aeXHipwz_f8qtmyR8FiO4z_01QYU
 
@@ -358,7 +362,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 ###
 
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/products/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products/create
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODAyNTYxNSwiZXhwIjoxNjM4MDI2NTE1LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.8S6MMM75F3wXk7yPgEPPYAI9xHuozBrHGj_19URmxj4
 
@@ -367,17 +371,17 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Get list of all tags
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/tags
 
 ###
 
 # Get a specific tag
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/1
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/tags/1
 
 ###
 
 # Create tag
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/tags/create
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY3NjM2OCwiZXhwIjoxNjM3Njc3MjY4LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.nAm2sM8hytm86CXmi40oi_myMGpN_7P0_A-jq84IBhY
 
@@ -388,7 +392,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Update tag
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/2/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/tags/2/update
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY2NjA4OSwiZXhwIjoxNjM3NjY2OTg5LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.o-W2ZluOPTB49b9dYVlUuzA9DLqk7dgW07ZOSdWOyIs
 
@@ -399,31 +403,31 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Delete tag
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/tags/1/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/tags/1/delete
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY2NjA4OSwiZXhwIjoxNjM3NjY2OTg5LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.o-W2ZluOPTB49b9dYVlUuzA9DLqk7dgW07ZOSdWOyIs
 
 ###
 
 # Get cart for authenticated user
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyMzM3OSwiZXhwIjoxNjM3ODI0Mjc5LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.WaTB_ugEvjzUySYalWCEPP3rCfEPFJ4Y9-x_h0ogCyo
 
 ###
 
 # Get list of all carts
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/all
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/all
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODQyMTk4NSwiZXhwIjoxNjM4NDIyODg1LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.MGE-Yh25cAoFdje9OCMCjrRUROyiwtGC-s60JQmhXN4
 
 ###
 
 # Get a cart by id 
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/34
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/34
 
 ###
 
 # Update a cart
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/34/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/34/update
 content-type: application/json
 
 {
@@ -436,7 +440,7 @@ content-type: application/json
 ###
 
 # Create a cart
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/create
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODQyNTU0OSwiZXhwIjoxNjM4NDI2NDQ5LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.ikHqAFy8KAd6tKNiOugLz3pDOtFz7qLW7Wd7nzo-uxI
 
@@ -449,7 +453,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Create a cart for anonymous
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/create
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/create
 content-type: application/json
 
 {
@@ -464,7 +468,7 @@ content-type: application/json
 
 # Update a user's cart
 
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/update
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/update
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyNTIzNywiZXhwIjoxNjM3ODI2MTM3LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.UOJF8SjN93uOlsU5L7wJS0zif_7icfnDP0q1DUWHIQs
 
@@ -478,7 +482,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 # Update quantity of a cart item
 
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/34/update/2
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/34/update/2
 content-type: application/json
 
 {
@@ -489,19 +493,19 @@ content-type: application/json
 
 # Update ownership of a cart
 
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/35/own
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/35/own
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Miwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzODQ1NjIwNSwiZXhwIjoxNjM4NDU3MTA1LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.aU2DCX4HRpCtxuWTgzWwDo0Oa53ftKxkLen-a0QUqqA
 
 ###
 
 # Delete cart
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/2/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/2/delete
 
 ###
 
 # Checkout
 
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/checkout
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/checkout
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Miwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzODQ1NzE3NiwiZXhwIjoxNjM4NDU4MDc2LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.rieZSf33NJLVXhVV1r3TP1Fh4pkRj0JpK6vo32pqDnA
 
@@ -513,29 +517,29 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Get list of all orders
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODU1NTc2MCwiZXhwIjoxNjM4NTU2NjYwLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.Fo4CIE3zlr7pKnWrPpsur4aYKZAsLyePEpQryZz8cS8
 
 ###
 
 # Get list of valid order statuses
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/statuses
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders/statuses
 
 ###
 
 # Get list of shipment/courier providers
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/shipment-providers
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders/shipment-providers
 
 ###
 
 # Get an order
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/3
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders/3
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODUwMzU1NywiZXhwIjoxNjM4NTA0NDU3LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.HGyB_4MJ7TJ10mUibTD9jTMD1Xa302W7-p4MrgZotNU
 
 ###
 
 # Update an order
-PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/orders/3
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders/3
 content-type: application/json
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODUwMzU1NywiZXhwIjoxNjM4NTA0NDU3LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.HGyB_4MJ7TJ10mUibTD9jTMD1Xa302W7-p4MrgZotNU
 
@@ -545,16 +549,61 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 }
 
 ###
+
 # Get all consignments
 
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/consignments
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/consignments
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODU0NjA3MiwiZXhwIjoxNjM4NTQ2OTcyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.qvBmB9viGTSC5O6oKSNurv5TaPZXLBATF_8g9WrWe9c
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODY4MTIzNSwiZXhwIjoxNjM4NjgyMTM1LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.hTGW2PYU3BcUUtS9cg4LJ-RbQ4YR31KIwkcVJyfDYUw
 
 
 ###
 
+# Get valid consignment statuses
+
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/consignments/statuses
+
+
+###
+
+# Create consigment
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/consignments/create
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Miwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzODY4MDUyNywiZXhwIjoxNjM4NjgxNDI3LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.T5ITqV4Y1p9qCRMI4k3SbxemCfVESET4XJe-WMZJX3E
+
+{
+    "designer_id": 2,
+    "category_id": 2,
+    "name": "Rolex 2012",
+    "selling_price": 120,
+    "specifications": "45cm by 60cm",
+    "condition": "good",
+    "condition_description": "Good with no scatches",
+    "product_gallery_1": "",
+    "product_gallery_2": "",
+    "product_gallery_3": "",
+    "product_gallery_4": "",
+    "product_gallery_5": "",
+    "product_gallery_6": "",
+    "product_gallery_7": "",
+    "product_gallery_8": null
+}
+
+###
+
+# Update a consignment
+PUT {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/consignments/1/update
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODY4MTIzNSwiZXhwIjoxNjM4NjgyMTM1LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.hTGW2PYU3BcUUtS9cg4LJ-RbQ4YR31KIwkcVJyfDYUw
+
+{
+    "status": "Initial Evaluation",
+    "comment": "some comments from evaluation..."
+}
+
+###
+
 # Test
-POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %APP_PORT}}/carts/test1
+POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/test1
 
 ###

@@ -7,7 +7,7 @@ const {
 async function getAllProducts() {
     try {
         let products = await Product.collection().fetch({
-            withRelated: ["category", "designer", "insurance", "tags"]
+            withRelated: ["category", "consignment", "designer", "insurance", "tags"]
         });
         return products;
     } catch(err) {
@@ -21,7 +21,7 @@ async function getProductById(productId) {
             'id': productId
         }).fetch({
             require: false,
-            withRelated: ["category", "designer", "insurance", "tags"]
+            withRelated: ["category", "consignment", "designer", "insurance", "tags"]
         });
         return product;
     } catch(err) {
