@@ -40,6 +40,24 @@ router.get('/statuses', async (req, res) => {
     })
 })
 
+// Retrieve a consignment
+router.get('/:consignment_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
+    const consignmentId = req.params.consignment_id;
+    try {
+        const consignment = await consignmentDataLayer.getConsignmentById(consignmentId);
+        res.status(200).send({
+            "success": true,
+            "data": consignment
+        })
+    } catch(_err) {
+        console.log(_err)
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve orders due to unexpected error.`
+        })
+    }
+})
+
 router.post('/create', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async(req, res) => {
     const userId = req.user.id;
     const consignmentData = {

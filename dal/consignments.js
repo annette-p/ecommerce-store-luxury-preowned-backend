@@ -23,7 +23,7 @@ function getStatusList() {
 async function getAllConsignments() {
     try {
         let consignments = await Consignment.collection().fetch({
-            withRelated: ["user", "product"]
+            withRelated: ["user", "product", "product.category", "product.designer"]
         });
         return consignments;
     } catch (err) {
@@ -38,7 +38,7 @@ async function getConsignmentById(consignmentId) {
             'id': consignmentId
         }).fetch({
             require: false,
-            withRelated: ["user", "product"]
+            withRelated: ["user", "product", "product.category", "product.designer"]
         });
         return consignment;
     } catch(err) {
