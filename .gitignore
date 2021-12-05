@@ -3,5 +3,8 @@ sessions/
 .github/
 .env
 .vscode
-database.json
+
+# db-migrate
 migrations.old/
+database.json
+database-*.json
