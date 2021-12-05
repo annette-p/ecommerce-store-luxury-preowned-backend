@@ -18,23 +18,31 @@ exports.up = function(db) {
   // ref: https://stackoverflow.com/a/66194155
   const promises = [];
 
-  promises.push(db.insert('insurances', {
-    company_name: 'AIG',
-    policy_name: 'AIG SME Package for Retail & Shop - Package A',
-    policy_date: '2021-11-01',
-    coverage_amount: 150000,
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  promises.push(
+    db.insert(
+      'insurances', 
+      [
+        'company_name', 'policy_name', 'policy_date', 'coverage_amount', 
+        'created_at', 'updated_at'],
+      [
+        'AIG', 'AIG SME Package for Retail & Shop - Package A', '2021-11-01', 150000, 
+        new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')
+      ]
+    )
+  );
 
-  promises.push(db.insert('insurances', {
-    company_name: 'UOB',
-    policy_name: 'UOB BizCare - Plan A',
-    policy_date: '2021-11-01',
-    coverage_amount: 500000,
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  promises.push(
+    db.insert(
+      'insurances', 
+      [
+        'company_name', 'policy_name', 'policy_date', 'coverage_amount', 
+        'created_at', 'updated_at'],
+      [
+        'UOB', 'UOB BizCare - Plan A', '2021-11-01', 500000, 
+        new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')
+      ]
+    )
+  );
 
   return Promise.all(promises);
 };

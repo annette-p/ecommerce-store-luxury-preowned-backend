@@ -18,22 +18,25 @@ exports.setup = function(options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = function(db) {
+exports.up = function(db) {    
   // ref: https://stackoverflow.com/a/66194155
   const promises = [];
 
-  promises.push(db.insert('users', {
-    type: 'Admin',
-    email: 'admin@your-company.com',
-    firstname : 'Admin',
-    lastname: 'Admin',
-    username: 'admin',
-    password: getHashedPassword('password'),
-    federated_login: false,
-    active: true,
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  promises.push(
+    db.insert(
+      'users',
+      [
+        'type', 'email', 'firstname', 'lastname', 
+        'username', 'password', 'federated_login', 'active', 
+        'created_at', 'updated_at'
+      ],
+      [
+        'Admin', 'admin@your-company.com', 'Admin', 'Admin', 
+        'admin', getHashedPassword('password'), false, true, 
+        new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')
+      ]
+    )
+  );
 
   return Promise.all(promises);
 };

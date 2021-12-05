@@ -18,24 +18,22 @@ exports.up = function(db) {
   // ref: https://stackoverflow.com/a/66194155
   const promises = [];
 
-  promises.push(db.insert('tags', {
-    name: 'Just in',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  const tags = [
+    'Just in',
+    'Limited edition',
+    'Vintage'
+  ]
 
-  promises.push(db.insert('tags', {
-    name: 'Limited edition',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('tags', {
-    name: 'Vintage',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
+  tags.forEach( designer => {
+    promises.push(
+      db.insert(
+        'tags', 
+        ['name', 'created_at', 'updated_at'],
+        [designer, new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')]
+      )
+    );
+  })
+  
   return Promise.all(promises);
 };
 

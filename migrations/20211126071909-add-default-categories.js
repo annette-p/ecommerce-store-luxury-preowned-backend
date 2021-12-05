@@ -18,35 +18,23 @@ exports.up = function(db) {
   // ref: https://stackoverflow.com/a/66194155
   const promises = [];
 
-  promises.push(db.insert('categories', {
-    name: 'Bags',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  const categories = [
+    'Bags',
+    'Clothing',
+    'Jewellery',
+    'Shoes',
+    'Watch',
+  ]
 
-  promises.push(db.insert('categories', {
-    name: 'Shoes',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('categories', {
-    name: 'Watch',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('categories', {
-    name: 'Clothing',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('categories', {
-    name: 'Jewellery',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  categories.forEach( designer => {
+    promises.push(
+      db.insert(
+        'categories', 
+        ['name', 'created_at', 'updated_at'],
+        [designer, new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')]
+      )
+    );
+  })
 
   return Promise.all(promises);
 };

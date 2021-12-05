@@ -18,107 +18,35 @@ exports.up = function(db) {
   // ref: https://stackoverflow.com/a/66194155
   const promises = [];
 
-  promises.push(db.insert('designers', {
-    name: 'Versace',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  const designers = [
+    'Alexander McQueen',
+    'Alexander Wang',
+    'Balenciaga',
+    'Celine',
+    'Chanel',
+    'Christian Dior',
+    'Christian Louboutin',
+    'Fendi',
+    'Gucci',
+    'Hermes',
+    'Miu Miu',
+    'Patek Philippe',
+    'Prada',
+    'Rolex',
+    'Siant Laurent',
+    'Versace',
+    'Valentino',
+  ]
 
-  promises.push(db.insert('designers', {
-    name: 'Valentino',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Rolex',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Prada',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Miu Miu',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Siant Laurent',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Fendi',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Hermes',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Patek Philippe',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Alexander McQueen',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Gucci',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Alexander Wang',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Balenciaga',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Celine',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Chanel',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Christian Dior',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
-
-  promises.push(db.insert('designers', {
-    name: 'Christian Louboutin',
-    created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    updated_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
-  }));
+  designers.forEach( designer => {
+    promises.push(
+      db.insert(
+        'designers', 
+        ['name', 'created_at', 'updated_at'],
+        [designer, new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')]
+      )
+    );
+  })
 
   return Promise.all(promises);
 };
