@@ -228,7 +228,7 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
         if (req.body.email) { user.set('email', req.body.email); }
         if (req.body.billing_address) { user.set('billing_address', req.body.billing_address); }
         if (req.body.shipping_address) { user.set('shipping_address', req.body.shipping_address); }
-        if (req.body.active) { user.set('active', req.body.active); }
+        if (req.body.hasOwnProperty('active')) { user.set('active', req.body.active); console.log("set user active to ", req.body.active)}
         if (req.body.federated_login) { user.set('federated_login', req.body.federated_login); }
         user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
