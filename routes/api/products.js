@@ -40,6 +40,7 @@ router.get('/:product_id', async (req, res) => {
         }
         
     }).catch(_err => {
+        console.log(`Unable to retrieve product id ${req.params.product_id}. `, _err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve product id ${req.params.product_id} due to unexpected error.`
@@ -65,7 +66,7 @@ router.put('/:product_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
             })
         }
     } catch(_err) {
-        console.log(_err)
+        console.log(`Unable to update Product ID ${productId}. `, _err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update Product ID ${productId} due to unexpected error.`
@@ -107,6 +108,7 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
             "product_id": newProductId
         })
     } catch(_err) {
+        console.log("Unable to create new product. ", _err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new product due to unexpected error.`
