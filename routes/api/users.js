@@ -15,7 +15,7 @@ const {
     User
 } = require('../../models');
 
-router.get('/', async (req, res) => {
+router.get('/', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
     await User.collection().fetch().then(users => {
         let usersResult = users.toJSON()
@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 })
 
 // Get all admin users
-router.get('/admins', async (req, res) => {
+router.get('/admins', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
     await User.collection().where("type", "Admin").fetch().then(users => {
         let usersResult = users.toJSON()
@@ -55,7 +55,7 @@ router.get('/admins', async (req, res) => {
 })
 
 // Get all customers
-router.get('/customers', async (req, res) => {
+router.get('/customers', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
     await User.collection().where("type", "Customer").fetch().then(users => {
         let usersResult = users.toJSON()
