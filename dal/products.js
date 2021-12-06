@@ -72,7 +72,7 @@ async function updateProduct(productId, productData) {
             if (productData.product_gallery_8) { product.set('product_gallery_8', productData.product_gallery_8); }
             if (productData.claim_date) { product.set('claim_date', productData.claim_date); }
             if (productData.claim_amount) { product.set('claim_amount', productData.claim_amount); }
-            if (productData.hasOwnProperty('active')) { product.set('authenticity', productData.active); }
+            if (productData.hasOwnProperty('active')) { product.set('active', productData.active); }
     
             product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     
