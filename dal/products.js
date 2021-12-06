@@ -4,6 +4,18 @@ const {
     Product
 } = require("../models");
 
+// List of valid product conditions
+function getProductConditionList() {
+    return [
+        "New, with tag",
+        "Never worn",
+        "Pristine",
+        "Good",
+        "Fair",
+        "Vintage"
+    ]
+}
+
 async function getAllProducts() {
     try {
         let products = await Product.collection().fetch({
@@ -191,5 +203,6 @@ module.exports = {
     deleteProduct,
     getAllDesigners, getDesignerById,
     getAllProducts, getProductById,
+    getProductConditionList,
     updateProduct
 }

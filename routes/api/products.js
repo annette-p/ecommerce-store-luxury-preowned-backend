@@ -24,6 +24,14 @@ router.get('/', async (_req, res) => {
     });
 })
 
+// Retrieve list of valid product conditions
+router.get('/conditions', async (req, res) => {
+    res.status(200).send({
+        "success": true,
+        "data": await productDataLayer.getProductConditionList()
+    })
+})
+
 // Retrieve a product by its ID
 router.get('/:product_id', async (req, res) => {
     await productDataLayer.getProductById(req.params.product_id).then( product => {

@@ -131,7 +131,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/refresh
 content-type: application/json
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM4NjI2NjcwLCJleHAiOjE2MzkyMzE0NzAsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM4NjgxMjM1LCJleHAiOjE2MzkyODYwMzUsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ.tRO8iEh_YIobHubR8cGse9UllZRVcDYJ6l9aeKsDCBo"
 }
 
 ###
@@ -175,7 +175,7 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/categories/6
 # Create category
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/categories/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODYyNjY3MCwiZXhwIjoxNjM4NjI3NTcwLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.0eyoze-SgLHQ4ln2a4OSpBbwEtaeXNg9GHhzmhBRV80
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc1NDA5MywiZXhwIjoxNjM4NzU0OTkzLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.07RSnIuTQh66SYZPbHWOEZNjVI0BYhtMwLzlpcbwzDg
 
 {
     "name": "Test Shoes"
@@ -229,9 +229,10 @@ DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/designers/1/delete
 # Create designer
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/designers/create
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc1NDA5MywiZXhwIjoxNjM4NzU0OTkzLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.07RSnIuTQh66SYZPbHWOEZNjVI0BYhtMwLzlpcbwzDg
 
 {
-    "name": "Prada"
+    "name": "Dolce Gabbanna"
 }
 
 ###
@@ -277,6 +278,11 @@ content-type: application/json
 
 # Get list of all products
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products
+
+###
+
+# Get list of product conditions
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products/conditions
 
 ###
 
@@ -383,10 +389,10 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/tags/1
 # Create tag
 POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/tags/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6NSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJzdGFyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYmFieSIsImlhdCI6MTYzNzY3NjM2OCwiZXhwIjoxNjM3Njc3MjY4LCJzdWIiOiJzdGFyQGdtYWlsLmNvbSJ9.nAm2sM8hytm86CXmi40oi_myMGpN_7P0_A-jq84IBhY
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc2MjM3MSwiZXhwIjoxNjM4NzYzMjcxLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.pqxMwoGLZ_HxslAvNkJO6Hl9DTstqQRO-z_TMlgF4Rk
 
 {
-    "name": "New Arrival"
+    "name": "X Collaboration"
 }
 
 ###
@@ -554,7 +560,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/consignments
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODY4MTIzNSwiZXhwIjoxNjM4NjgyMTM1LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.hTGW2PYU3BcUUtS9cg4LJ-RbQ4YR31KIwkcVJyfDYUw
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODY5MDQ2NywiZXhwIjoxNjM4NjkxMzY3LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.5rigw322kT1nnA0FsvdxsHYUjdlB-FT4WqKC6SlBMEY
 
 
 ###
