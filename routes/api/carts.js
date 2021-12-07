@@ -5,6 +5,7 @@ const cartServiceLayer = require("../../services/cart")
 const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT,
+    checkIsCustomerJWT,
     parseJWT
 } = require('../../middlewares/authentication');
 
@@ -20,6 +21,31 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsAdminJWT ], async (_req, res) 
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve carts due to unexpected error.`
+        })
+        return;
+    });
+})
+
+// get a specific cart by id 
+router.get('/mycart', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (req, res) => {
+    let userId = req.user.id
+    await cartServiceLayer.getCartByUser(userId).then( cart => {
+        if (cart) {
+            res.send({
+                "success": true,
+                "data": cart
+            })
+        } else {
+            res.status(404).send({
+                "success": false,
+                "message": `User ID ${userId} do not have an existing cart.`
+            })
+        }
+        
+    }).catch(_err => {
+        res.status(500).send({
+            "success": false,
+            "message": `Unable to retrieve cart for User ID ${userId} due to unexpected error.`
         })
         return;
     });
