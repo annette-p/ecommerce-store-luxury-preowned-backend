@@ -150,7 +150,7 @@ async function createProduct(productData) {
         product.set('product_gallery_8', productData.product_gallery_8);
         product.set('claim_date', productData.claim_date);
         product.set('claim_amount', productData.claim_amount);
-        const isActive = false;
+        let isActive = false;
         if (productData.hasOwnProperty('active')) {
             isActive = productData.active;
         }
