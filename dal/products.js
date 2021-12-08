@@ -21,7 +21,12 @@ async function getAllProducts(searchCriteria) {
     try {
         // Prepare the query for searching products
         let q = Product.collection();
-        q = q.query("join", "designers", "designer_id", "designers.id")
+        if (searchCriteria.hasOwnProperty("designer_id")) {
+            q = q.query("join", "designers", "designer_id", "designers.id")
+        } else if (searchCriteria.hasOwnProperty("tag_id")) {
+            q = q.query("join", "products_tags", "products.id", "products_tags.product_id");
+            q = q.query("join", "tags", "products_tags.tag_id", "tags.id");
+        }
 
         q.where( (qb) => {
             // add a default search filter that will always return true.
@@ -30,6 +35,18 @@ async function getAllProducts(searchCriteria) {
 
             if (searchCriteria.hasOwnProperty("active")) {
                 qb.andWhere("active", searchCriteria.active === "true" ? true : false)
+            }
+
+            if (searchCriteria.hasOwnProperty("category_id")) {
+                qb.andWhere("category_id", parseInt(searchCriteria.category_id))
+            }
+
+            if (searchCriteria.hasOwnProperty("designer_id")) {
+                qb.andWhere("designer_id", parseInt(searchCriteria.designer_id))
+            }
+
+            if (searchCriteria.hasOwnProperty("tag_id")) {
+                qb.andWhere("tags.id", parseInt(searchCriteria.tag_id))
             }
 
             if (searchCriteria.hasOwnProperty("search")) {
