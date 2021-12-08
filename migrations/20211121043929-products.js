@@ -79,11 +79,11 @@ exports.up = function(db) {
     },
     description: {
       type: 'string',
-      length: 500
+      length: 1000
     },
     specifications: {
       type: 'string',
-      length: 500
+      length: 1000
     },
     condition: {
       type: 'string',
@@ -91,7 +91,7 @@ exports.up = function(db) {
     },
     condition_description: {
       type: 'string',
-      length: 300
+      length: 1000
     },
     sku: {
       type: 'string',
