@@ -37,8 +37,9 @@ async function getAllProducts(searchCriteria) {
 
                     searchCriteria.search.split(" ").forEach( searchWord => {
                         // ignore spaces, and handle search text
+
                         if (searchWord.trim().length > 0) {
-                            qb1.where("designers.name", "like", `%${searchWord}%`)
+                            qb1.whereRaw("LOWER(designers.name) like ?", `%${searchWord.toLowerCase()}%`)
                                 .orWhere("products.name", "like", `%${searchWord}%`)
                                 .orWhere("description", "like", `%${searchWord}%`)
                                 .orWhere("specifications", "like", `%${searchWord}%`)
