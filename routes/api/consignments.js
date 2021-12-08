@@ -25,6 +25,7 @@ router.get('/', [ checkIfAuthenticatedJWT ], async(req, res) => {
             "data": consignments
         })
     } catch(_err) {
+        console.log(_err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve orders due to unexpected error.`
