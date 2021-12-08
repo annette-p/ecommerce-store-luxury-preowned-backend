@@ -16,13 +16,46 @@ function getProductConditionList() {
     ]
 }
 
-async function getAllProducts() {
+// Retrieve products, with optional search filter
+async function getAllProducts(searchCriteria) {
     try {
-        let products = await Product.collection().fetch({
+        // Prepare the query for searching products
+        let q = Product.collection();
+        q = q.query("join", "designers", "designer_id", "designers.id")
+
+        q.where( (qb) => {
+            // add a default search filter that will always return true.
+            // this is necessary because there search filter input is optional
+            qb.where(1, 1)
+
+            if (searchCriteria.hasOwnProperty("active")) {
+                qb.andWhere("active", searchCriteria.active === "true" ? true : false)
+            }
+
+            if (searchCriteria.hasOwnProperty("search")) {
+                qb.andWhere( (qb1) => {
+
+                    searchCriteria.search.split(" ").forEach( searchWord => {
+                        // ignore spaces, and handle search text
+                        if (searchWord.trim().length > 0) {
+                            qb1.where("designers.name", "like", `%${searchWord}%`)
+                                .orWhere("products.name", "like", `%${searchWord}%`)
+                                .orWhere("description", "like", `%${searchWord}%`)
+                                .orWhere("specifications", "like", `%${searchWord}%`)
+                        }
+                    })
+                    
+                })
+            }
+        })
+
+        let products = await q.fetch({
             withRelated: ["category", "consignment", "designer", "insurance", "tags"]
-        });
+        })
+
         return products;
     } catch(err) {
+        console.log(err)
         throw err
     }
 }

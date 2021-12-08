@@ -9,8 +9,9 @@ const {
 
 
 // Retrieve all products
-router.get('/', async (_req, res) => {
-    await productDataLayer.getAllProducts().then( products => {
+router.get('/', async (req, res) => {
+    // pass optional search criteria as part of URL parameters (in req.query)
+    await productDataLayer.getAllProducts(req.query).then( products => {
         res.status(200).send({
             "success": true,
             "data": products
