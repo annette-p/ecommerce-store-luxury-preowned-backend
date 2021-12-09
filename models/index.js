@@ -54,7 +54,7 @@ const Order = bookshelf.model("Order", {
         return this.hasMany("OrderShipment");
     },
     products() {
-        return this.belongsToMany("Product").withPivot(['quantity']);
+        return this.belongsToMany("Product").withPivot(['quantity', 'unit_price']);
     }
 });
 

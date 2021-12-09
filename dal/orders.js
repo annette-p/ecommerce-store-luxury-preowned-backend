@@ -59,7 +59,7 @@ async function getOrdersByUser(userId) {
     try {
         let orders = await q.fetch({
             require: false,
-            withRelated: ["products", "orderShipment"]
+            withRelated: ["products", "products.designer", "orderShipment"]
         });
         return orders;
     } catch (err) {
