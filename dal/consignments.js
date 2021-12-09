@@ -55,7 +55,7 @@ async function getConsignmentsByUser(userId) {
     try {
         let consignments = await q.fetch({
             require: false,
-            withRelated: ["product"]
+            withRelated: ["product", "product.designer"]
         });
         return consignments;
     } catch (err) {
