@@ -18,7 +18,8 @@ router.get('/', async (req, res) => {
             "success": true,
             "data": designers
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve designers due to unexpected error.`
@@ -40,7 +41,8 @@ router.get('/:designer_id', async (req, res) => {
                 "message": `Designer id ${req.params.designer_id} does not exists.`
             });
         }
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve designer id ${req.params.designer_id} due to unexpected error.`
@@ -54,7 +56,8 @@ router.put('/:designer_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], a
         'id': req.params.designer_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve Designer ID ${req.params.designer_id}. Designer update failed. `
@@ -72,7 +75,8 @@ router.put('/:designer_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], a
                 "success": true,
                 "message": `Designer ID ${req.params.designer_id} updated successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to update Designer ID ${req.params.designer_id} due to unexpected error.`
@@ -87,7 +91,8 @@ router.delete('/:designer_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT]
         'id': req.params.designer_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve Designer ID ${req.params.designer_id}. Designer deletion failed. `
@@ -101,7 +106,8 @@ router.delete('/:designer_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT]
                 "success": true,
                 "message": `Designer ID ${req.params.designer_id} deleted successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to delete Designer ID ${req.params.designer_id} due to unexpected error.`
@@ -122,7 +128,8 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
             "message": "New designer created successfully",
             "designer_id": designer.get("id")
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new designer due to unexpected error.`

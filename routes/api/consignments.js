@@ -24,8 +24,8 @@ router.get('/', [ checkIfAuthenticatedJWT ], async(req, res) => {
             "success": true,
             "data": consignments
         })
-    } catch(_err) {
-        console.log(_err)
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve orders due to unexpected error.`
@@ -50,8 +50,8 @@ router.get('/:consignment_id', [ checkIfAuthenticatedJWT ], async (req, res) => 
             "success": true,
             "data": consignment
         })
-    } catch(_err) {
-        console.log(_err)
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve orders due to unexpected error.`
@@ -86,8 +86,8 @@ router.post('/create', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async(re
             "message": "New consignment created successfully",
             "consignment_id": newConsignmentId
         });
-    } catch(_err) {
-        console.log(_err)
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new consignment due to unexpected error.`
@@ -108,7 +108,8 @@ router.put('/:consignment_id/update', [ checkIfAuthenticatedJWT, checkIsAdminJWT
             "success": true,
             "message": `Consignment ID ${consignmentId} successfully`
         });
-    } catch(_err) {
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update consignment id ${consignmentId} due to unexpected error.`

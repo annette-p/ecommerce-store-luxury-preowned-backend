@@ -91,7 +91,8 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
             "success": true,
             "data": userResult
         }); // convert collection to JSON
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve user due to unexpected error.`
@@ -107,7 +108,8 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
         'active': true
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve user information. User update failed. `
@@ -130,7 +132,8 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
                 "success": true,
                 "message": `User updated successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to update user due to unexpected error.`
@@ -147,8 +150,8 @@ router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
         'active': true
     }).fetch({
         require: true
-    }).catch(_err => {
-        console.log(_err)
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve user information. User change password failed. `
@@ -169,7 +172,8 @@ router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
                     "success": true,
                     "message": "Password changed successfully"
                 })
-            }).catch(_err => {
+            }).catch(err => {
+                console.log(err)
                 res.status(500).send({
                     "success": false,
                     "message": `Unable to change user password due to unexpected error.`
@@ -200,7 +204,8 @@ router.delete('/delete', [checkIfAuthenticatedJWT], async (req, res) => {
         'id': userId
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve User ID ${userId}. User deletion failed. `
@@ -230,7 +235,8 @@ router.delete('/delete', [checkIfAuthenticatedJWT], async (req, res) => {
                     "success": true,
                     "message": `User ID ${userId} deleted successfully`
                 })
-            }).catch(_err => {
+            }).catch(err => {
+                console.log(err)
                 res.status(500).send({
                     "success": false,
                     "message": `Unable to delete User ID ${userId} due to unexpected error.`
@@ -262,7 +268,8 @@ router.get('/:user_id', async (req, res) => {
             "success": true,
             "data": userResult
         }); // convert collection to JSON
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve users due to unexpected error.`
@@ -276,7 +283,8 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
         'id': req.params.user_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve User ID ${req.params.user_id}. User update failed. `
@@ -300,7 +308,8 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
                 "success": true,
                 "message": `User ID ${req.params.user_id} updated successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to update User ID ${req.params.user_id} due to unexpected error.`
@@ -320,7 +329,8 @@ router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
         'id': req.params.user_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve User ID ${req.params.user_id}. User deletion failed. `
@@ -346,7 +356,8 @@ router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
                 "success": true,
                 "message": `User ID ${req.params.user_id} deleted successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to delete User ID ${req.params.user_id} due to unexpected error.`
@@ -376,7 +387,8 @@ router.post('/create', async (req, res) => {
             "message": "New user created successfully",
             "user_id": user.get("id")
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new user due to unexpected error.`
@@ -428,8 +440,8 @@ router.post('/authenticate', async (req, res) => {
                 })
             }
 
-        }).catch(_err => {
-            console.log(_err)
+        }).catch(err => {
+            console.log(err)
             // something bad happened on the backend
             res.status(500).send({
                 "success": false,
@@ -453,8 +465,8 @@ router.post("/refresh", async (req, res) => {
         }).fetch({
             require: false
         });
-    } catch(_err) {
-        console.log(_err)
+    } catch(err) {
+        console.log(err)
         return res.status(500).send({
             "success": false,
             "message": `Failed to refresh the access token due to unexpected error.`
@@ -481,7 +493,8 @@ router.post("/refresh", async (req, res) => {
             "email": payload.sub
         }).fetch({
             require: true
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             return res.sendStatus(403);
         });
 
@@ -502,6 +515,7 @@ router.post("/logout", checkIfAuthenticatedJWT, async (req, res) => {
     } else {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, payload) => {
             if (err) {
+                console.log(err)
                 return res.sendStatus(403);
             }
 

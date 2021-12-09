@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
             "success": true,
             "data": products
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve products due to unexpected error.`
@@ -48,8 +49,8 @@ router.get('/:product_id', async (req, res) => {
             })
         }
         
-    }).catch(_err => {
-        console.log(`Unable to retrieve product id ${req.params.product_id}. `, _err)
+    }).catch(err => {
+        console.log(`Unable to retrieve product id ${req.params.product_id}. `, err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve product id ${req.params.product_id} due to unexpected error.`
@@ -74,8 +75,8 @@ router.put('/:product_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
                 "message": `Unable to update non-existent Product ID ${productId}`
             })
         }
-    } catch(_err) {
-        console.log(`Unable to update Product ID ${productId}. `, _err)
+    } catch(err) {
+        console.log(`Unable to update Product ID ${productId}. `, err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update Product ID ${productId} due to unexpected error.`
@@ -99,7 +100,8 @@ router.delete('/:product_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT],
                 "message": `Unable to delete non-existent Product ID ${productId}.`
             })
         }
-    } catch(_err) {
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to delete Product ID ${productId} due to unexpected error.`
@@ -116,8 +118,8 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
             "message": "New product created successfully",
             "product_id": newProductId
         })
-    } catch(_err) {
-        console.log("Unable to create new product. ", _err)
+    } catch(err) {
+        console.log("Unable to create new product. ", err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new product due to unexpected error.`

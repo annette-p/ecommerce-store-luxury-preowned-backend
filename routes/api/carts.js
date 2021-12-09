@@ -17,7 +17,8 @@ router.get('/', [ checkIfAuthenticatedJWT, checkIsAdminJWT ], async (_req, res) 
             "success": true,
             "data": carts
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve carts due to unexpected error.`
@@ -42,7 +43,8 @@ router.get('/mycart', [ checkIfAuthenticatedJWT, checkIsCustomerJWT ], async (re
             })
         }
         
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve cart for User ID ${userId} due to unexpected error.`
@@ -61,7 +63,8 @@ router.post('/create', [parseJWT], async (req, res) => {
             "success": true,
             "cart_id": cartId
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new cart due to unexpected error.`
@@ -85,7 +88,8 @@ router.get('/:cart_id', [parseJWT], async (req, res) => {
             })
         }
         
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve cart id ${req.params.cart_id} due to unexpected error.`
@@ -104,7 +108,8 @@ router.put('/:cart_id/own', [checkIfAuthenticatedJWT], async (req, res) => {
             "success": true,
             "message": `Cart id ${cartId} ownership updated successfully`
         })
-    } catch(_err) {
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update ownership of Cart id ${cartId} due to unexpected error.`
@@ -123,7 +128,8 @@ router.put('/:cart_id/update', [parseJWT], async (req, res) => {
             "success": true,
             "message": `Cart id ${cartId} updated successfully`
         })
-    } catch(_err) {
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update Cart id ${cartId} due to unexpected error.`
@@ -143,7 +149,8 @@ router.put('/:cart_id/update/:product_id', [parseJWT], async (req, res) => {
             "success": true,
             "message": `Quantity of product id ${productId} in cart id ${cartId} updated successfully`
         })
-    } catch(_err) {
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update Cart id ${cartId} due to unexpected error.`

@@ -4,16 +4,19 @@
 
 # Get list of all users
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc5ODU2MiwiZXhwIjoxNjM4Nzk5NDYyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.s8DdfJgOnN5XXo-2JGwr4gLeWxbNfKdh3E2XNFpO4pA
 
 ###
 
 # Get list of all admin users
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/admins
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc5ODU2MiwiZXhwIjoxNjM4Nzk5NDYyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.s8DdfJgOnN5XXo-2JGwr4gLeWxbNfKdh3E2XNFpO4pA
 
 ###
 
 # Get list of all customers
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/customers
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc5ODU2MiwiZXhwIjoxNjM4Nzk5NDYyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.s8DdfJgOnN5XXo-2JGwr4gLeWxbNfKdh3E2XNFpO4pA
 
 ###
 
@@ -85,7 +88,19 @@ content-type: application/json
 
 # Delete user
 
-DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/4/delete
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/5/delete
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzOTAyNTYxNCwiZXhwIjoxNjM5MDI2NTE0LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.ZCdG0JZirhgRIHx3mjcuO5tSGN9ux1jhe7JsSZyebrE
+
+###
+
+DELETE {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/delete
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Nywicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJzdGFyQGFiLmNvbSIsInVzZXJuYW1lIjoic3RhciIsImlhdCI6MTYzOTAzODEyOSwiZXhwIjoxNjM5MDM5MDI5LCJzdWIiOiJzdGFyQGFiLmNvbSJ9.bRwTKQRs4gpwkI4VDuac5TtoxfYQLTSPxvPg3aPA670
+
+{
+    "password": "password1"
+}
+
 
 ###
 
@@ -108,7 +123,7 @@ content-type: application/json
 
 {
     "username": "admin",
-    "password": "password1"
+    "password": "password"
 }
 
 ###
@@ -119,8 +134,8 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/authenticate
 content-type: application/json
 
 {
-    "username": "cherry",
-    "password": "password"
+    "username": "star",
+    "password": "password1"
 }
 
 ###
@@ -281,6 +296,11 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products
 
 ###
 
+# Get list of all products with search criteria
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products?tag_id=2
+
+###
+
 # Get list of product conditions
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products/conditions
 
@@ -415,9 +435,9 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Get cart for authenticated user
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/mycart
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Niwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzNzgyMzM3OSwiZXhwIjoxNjM3ODI0Mjc5LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.WaTB_ugEvjzUySYalWCEPP3rCfEPFJ4Y9-x_h0ogCyo
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6Miwicm9sZSI6IkN1c3RvbWVyIiwiZW1haWwiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImNoZXJyeSIsImlhdCI6MTYzODg5NTE4NiwiZXhwIjoxNjM4ODk2MDg2LCJzdWIiOiJibHVlLmNoZXJyeUBnbWFpbC5jb20ifQ.IV_cyejcyLZzdaT-R9u37YKAZI_S3UDGUkAfWqAvagw
 
 ###
 
@@ -428,7 +448,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 ###
 
 # Get a cart by id 
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/34
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/carts/52
 
 ###
 
@@ -524,7 +544,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 # Get list of all orders
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODU1NTc2MCwiZXhwIjoxNjM4NTU2NjYwLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.Fo4CIE3zlr7pKnWrPpsur4aYKZAsLyePEpQryZz8cS8
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc5NzIwMiwiZXhwIjoxNjM4Nzk4MTAyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.7II0KIFl2WA9ciGYdBorg87vZgq3kiBlCC4OCB-DJ5o
 
 ###
 

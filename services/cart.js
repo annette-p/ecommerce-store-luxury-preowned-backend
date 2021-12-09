@@ -2,10 +2,10 @@ const cartDataLayer = require("../dal/carts");
 const orderDataLayer = require("../dal/orders");
 
 async function assignCartOwner(cartId, userId) {
-    let userCart = await cartDataLayer.getCartByUser(userId)
-    if (userCart && userCart.get("id") !== parseInt(cartId)) {
-        throw new Error("User already have an existing cart");
-    }
+    // let userCart = await cartDataLayer.getCartByUser(userId)
+    // if (userCart && userCart.get("id") !== parseInt(cartId)) {
+    //     throw new Error("User already have an existing cart");
+    // }
 
     let cart = await getCartById(cartId);
     if (cart && cart.get("user_id") !== null && cart.get("user_id") !== parseInt(userId)) {

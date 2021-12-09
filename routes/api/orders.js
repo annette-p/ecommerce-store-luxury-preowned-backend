@@ -21,8 +21,8 @@ router.get('/', [ checkIfAuthenticatedJWT ], async (req, res) => {
             "success": true,
             "data": orders
         })
-    } catch(_err) {
-        console.log(_err)
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve orders due to unexpected error.`
@@ -55,8 +55,8 @@ router.get('/:order_id', [ checkIfAuthenticatedJWT ], async (req, res) => {
             "success": true,
             "data": order
         })
-    } catch(_err) {
-        console.log(_err)
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve orders due to unexpected error.`
@@ -79,8 +79,8 @@ router.put('/:order_id/update', [ checkIfAuthenticatedJWT ], async (req, res) =>
             "success": true,
             "message": `Order Id ${orderId} updated.`
         })
-    } catch(_err) {
-        console.log(_err)
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to update order id ${orderId} due to unexpected error.`

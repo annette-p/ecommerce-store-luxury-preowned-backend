@@ -41,7 +41,8 @@ router.get('/:tag_id', async (req, res) => {
             "success": true,
             "data": tag.toJSON()
         }); // convert collection to JSON
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve tag due to unexpected error.`
@@ -55,7 +56,8 @@ router.put('/:tag_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async 
         'id': req.params.tag_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve Tag ID ${req.params.tag_id}. Tag update failed. `
@@ -73,7 +75,8 @@ router.put('/:tag_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async 
                 "success": true,
                 "message": `Tag ID ${req.params.tag_id} updated successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to update Tag ID ${req.params.tag_id} due to unexpected error.`
@@ -88,7 +91,8 @@ router.delete('/:tag_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], asy
         'id': req.params.tag_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve Tag ID ${req.params.tag_id}. Tag deletion failed. `
@@ -123,7 +127,8 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
             "message": "New tag created successfully",
             "tag_id": tag.get("id")
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new tag due to unexpected error.`

@@ -15,7 +15,8 @@ router.get('/', async (req, res) => {
             "success": true,
             "data": categories
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve categories due to unexpected error.`
@@ -38,7 +39,8 @@ router.get('/:category_id', async (req, res) => {
                 "message": `Category id ${req.params.category_id} does not exists.`
             });
         }
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve category id ${req.params.category_id} due to unexpected error.`
@@ -63,8 +65,8 @@ router.put('/:category_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], a
                 "message": `Unable to retrieve Category ID ${categoryId}. Category update failed. `
             })
         }
-    } catch(_err) {
-        console.log(_err);
+    } catch(err) {
+        console.log(err);
         res.status(500).send({
             "success": false,
             "message": `Unable to update Category ID ${categoryId} due to unexpected error.`
@@ -88,7 +90,8 @@ router.delete('/:category_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT]
                 "message": `Unable to retrieve Category ID ${categoryId}. Category deletion failed. `
             })
         }
-    } catch(_err) {
+    } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to delete Category ID ${categoryId} due to unexpected error.`
@@ -107,6 +110,7 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
             "category_id": newCategoryId
         })
     } catch(err) {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new category due to unexpected error.`

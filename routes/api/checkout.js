@@ -181,8 +181,8 @@ router.post('/', [ jsonParser, checkIfAuthenticatedJWT, checkIsCustomerJWT ], as
         }
 
         
-    }).catch(_err => {
-        console.log(_err)
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve carts due to unexpected error.`
@@ -220,8 +220,8 @@ router.post('/process_payment', express.raw({type:'application/json'}), async (r
                 "order_id": newOrderId
             })
         }
-    } catch (e) {
-        console.error(e)
+    } catch (err) {
+        console.error(err)
         // handle errors
         res.send({
             'error': e.message

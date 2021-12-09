@@ -41,7 +41,8 @@ router.get('/:insurance_id', async (req, res) => {
             "success": true,
             "data": insurance.toJSON()
         }); // convert collection to JSON
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to retrieve insurance due to unexpected error.`
@@ -55,7 +56,8 @@ router.put('/:insurance_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], 
         'id': req.params.insurance_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve Insurance ID ${req.params.insurance_id}. Insurance update failed. `
@@ -76,7 +78,8 @@ router.put('/:insurance_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], 
                 "success": true,
                 "message": `Insurance ID ${req.params.insurance_id} updated successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to update Insurance ID ${req.params.insurance_id} due to unexpected error.`
@@ -91,7 +94,8 @@ router.delete('/:insurance_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT
         'id': req.params.insurance_id
     }).fetch({
         require: true
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(404).send({
             "success": false,
             "message": `Unable to retrieve Insurance ID ${req.params.insurance_id}. Insurance deletion failed. `
@@ -105,7 +109,8 @@ router.delete('/:insurance_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT
                 "success": true,
                 "message": `Insurance ID ${req.params.insurance_id} deleted successfully`
             })
-        }).catch(_err => {
+        }).catch(err => {
+            console.log(err)
             res.status(500).send({
                 "success": false,
                 "message": `Unable to delete Designer ID ${req.params.insurance_id} due to unexpected error.`
@@ -129,7 +134,8 @@ router.post('/create', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, r
             "message": "New insurance created successfully",
             "insurance_id": insurance.get("id")
         })
-    }).catch(_err => {
+    }).catch(err => {
+        console.log(err)
         res.status(500).send({
             "success": false,
             "message": `Unable to create new insurance due to unexpected error.`
