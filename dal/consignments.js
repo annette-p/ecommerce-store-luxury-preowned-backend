@@ -12,6 +12,7 @@ function getStatusList() {
         "Official Evaluation",
         "Shipment",
         "Listed",
+        "Completed",
         "Rejected",
         "Cancelled",
         "Refund"
