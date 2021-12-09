@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid'); 
 
 const {
     checkIfAuthenticatedJWT,
@@ -79,7 +80,8 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
     // fetch a user by primary key "id"
     const userId = req.user.id;
     await User.where({
-        'id': userId
+        'id': userId,
+        'active': true
     }).fetch({
         require: true
     }).then(user => {
@@ -101,7 +103,8 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
 router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
     const userId = req.user.id;
     const user = await User.where({
-        'id': userId
+        'id': userId,
+        'active': true
     }).fetch({
         require: true
     }).catch(_err => {
@@ -140,7 +143,8 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
 router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
     const userId = req.user.id;
     const user = await User.where({
-        'id': userId
+        'id': userId,
+        'active': true
     }).fetch({
         require: true
     }).catch(_err => {
@@ -183,6 +187,65 @@ router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
             "message": `Unable to change user password due to unexpected error.`
         })
     }
+})
+
+// When there is a need to delete a user, the user record should remains in the DB but the private 
+// personal information should be masked, and one approach is to use uuid for generating random 
+// unique string.
+// ref: https://www.uuidgenerator.net/dev-corner/javascript
+// ref: https://github.com/uuidjs/uuid
+router.delete('/delete', [checkIfAuthenticatedJWT], async (req, res) => {
+    const userId = req.user.id;
+    const user = await User.where({
+        'id': userId
+    }).fetch({
+        require: true
+    }).catch(_err => {
+        res.status(404).send({
+            "success": false,
+            "message": `Unable to retrieve User ID ${userId}. User deletion failed. `
+        })
+        return;
+    });
+
+    if (user !== undefined) {
+
+        const passwordInDB = user.get("password")
+        const passwordProvided = getHashedPassword(req.body.password)
+
+        if (passwordInDB === passwordProvided) {
+            user.set('username', uuidv4()); 
+            user.set('password', "***"); 
+            user.set('firstname', "***"); 
+            user.set('lastname', "***");
+            user.set('email', uuidv4());
+            user.set('billing_address', "***");
+            user.set('shipping_address', "***");
+            user.set('active', false);
+            user.set('federated_login', false); 
+            user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+            await user.save().then(() => {
+                res.status(200).send({
+                    "success": true,
+                    "message": `User ID ${userId} deleted successfully`
+                })
+            }).catch(_err => {
+                res.status(500).send({
+                    "success": false,
+                    "message": `Unable to delete User ID ${userId} due to unexpected error.`
+                })
+            });
+        } else {
+            res.status(401).send({
+                "success": false,
+                "message": `Incorrect password. Unable to delete User ID ${userId}.`
+            })
+        }
+
+        
+    }
+
 })
 
 router.get('/:user_id', async (req, res) => {
@@ -247,6 +310,11 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
 
 })
 
+// When there is a need to delete a user, the user record should remains in the DB but the private 
+// personal information should be masked, and one approach is to use uuid for generating random 
+// unique string.
+// ref: https://www.uuidgenerator.net/dev-corner/javascript
+// ref: https://github.com/uuidjs/uuid
 router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
@@ -261,7 +329,19 @@ router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
     });
 
     if (user !== undefined) {
-        await user.destroy().then(() => {
+
+        user.set('username', uuidv4());
+        user.set('password', "***"); 
+        user.set('firstname', "***"); 
+        user.set('lastname', "***");
+        user.set('email', uuidv4());
+        user.set('billing_address', "***");
+        user.set('shipping_address', "***");
+        user.set('active', false);
+        user.set('federated_login', false); 
+        user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
+
+        await user.save().then(() => {
             res.status(200).send({
                 "success": true,
                 "message": `User ID ${req.params.user_id} deleted successfully`
@@ -310,12 +390,12 @@ router.post('/authenticate', async (req, res) => {
     // using 'bookshelf-eloquent' plugin for Bookshelf.js
     // https://www.npmjs.com/package/bookshelf-eloquent
     await User.where(
-            "email", req.body.username
+            "email", req.body.username,
         ).orWhere(
             "username", req.body.username
         ).first()
         .then(async (user) => {
-            if (user) {
+            if (user && user.get("active")) {
                 // check if the password matches
                 const passwordInDB = user.get("password")
                 const passwordProvided = getHashedPassword(req.body.password)
