@@ -147,8 +147,7 @@ async function removeItemFromCart(cartId, productId) {
     await getCartById(cartId)
     .then(async (cart) => {
         try {
-            let itemToRemove = await cart.related("products").where({"product_id": productId}).pluck("id");
-            await cart.products().detach(itemToRemove);
+            await cart.products().detach([productId]);
         } catch(err) {
             throw err
         }
