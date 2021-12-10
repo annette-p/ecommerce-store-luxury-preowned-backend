@@ -3,6 +3,8 @@ const {
     OrderShipment
 } = require("../models");
 
+const productDataLayer = require("../dal/products");
+
 // List of valid order statuses
 function getStatusList() {
     return [
@@ -88,6 +90,19 @@ async function createOrder(orderData) {
 
         // handle items in order
         if (orderData.items) {
+
+            orderData.items.forEach( async (item) => {
+                // each item object in this array has 3 info - product_id, quantity, unit_price
+                // get the item from 'products' table and reduce quantity sold
+                let productToUpdate = await productDataLayer.getProductById(item.product_id);
+                if (productToUpdate) {
+                    // assumption: new balance will never go below 0
+                    let newQuantity = productToUpdate.get("quantity") - item.quantity;
+                    productToUpdate.set("quantity", newQuantity);
+                    await productToUpdate.save();
+                }
+            })
+            
             await order.products().attach(orderData.items);
         }
 
