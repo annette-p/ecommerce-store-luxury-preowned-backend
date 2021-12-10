@@ -37,7 +37,7 @@ exports.up = function(db) {
       }
     },
     reminder: {
-      type: 'boolean'
+      type: 'smallint'
     },
     reminder_type: {
       type: 'string',

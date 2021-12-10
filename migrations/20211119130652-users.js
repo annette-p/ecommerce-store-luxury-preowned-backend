@@ -51,7 +51,7 @@ exports.up = function(db) {
       length: 64
     },
     federated_login: {
-      type: 'boolean'
+      type: 'smallint'
     },
     last_login_at: {
       type: 'datetime'
@@ -65,7 +65,7 @@ exports.up = function(db) {
       length: 500
     },
     active: {
-      type: 'boolean'
+      type: 'smallint'
     },
     created_at: {
       type: 'datetime'

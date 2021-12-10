@@ -103,7 +103,7 @@ exports.up = function(db) {
       notNull: true
     },
     authenticity: {
-      type: 'boolean'
+      type: 'smallint'
     },
     product_image_1: {
       type: 'string',
@@ -153,7 +153,7 @@ exports.up = function(db) {
       unsigned: true
     },
     active: {
-      type: 'boolean'
+      type: 'smallint'
     },
     created_at: {
       type: 'datetime'
