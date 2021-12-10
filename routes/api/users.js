@@ -81,7 +81,7 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
     const userId = req.user.id;
     await User.where({
         'id': userId,
-        'active': true
+        'active': 1
     }).fetch({
         require: true
     }).then(user => {
@@ -105,7 +105,7 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
     const userId = req.user.id;
     const user = await User.where({
         'id': userId,
-        'active': true
+        'active': 1
     }).fetch({
         require: true
     }).catch(err => {
@@ -147,7 +147,7 @@ router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
     const userId = req.user.id;
     const user = await User.where({
         'id': userId,
-        'active': true
+        'active': 1
     }).fetch({
         require: true
     }).catch(err => {

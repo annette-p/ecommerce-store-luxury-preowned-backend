@@ -34,7 +34,7 @@ async function getAllProducts(searchCriteria) {
             qb.where(1, 1)
 
             if (searchCriteria.hasOwnProperty("active")) {
-                qb.andWhere("active", searchCriteria.active === "true" ? true : false)
+                qb.andWhere("active", searchCriteria.active === "true" ? 1 : 0)
             }
 
             if (searchCriteria.hasOwnProperty("min_quantity")) {
