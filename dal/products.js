@@ -37,6 +37,10 @@ async function getAllProducts(searchCriteria) {
                 qb.andWhere("active", searchCriteria.active === "true" ? true : false)
             }
 
+            if (searchCriteria.hasOwnProperty("min_quantity")) {
+                qb.andWhere("quantity", ">=", parseInt(searchCriteria.min_quantity))
+            }
+
             if (searchCriteria.hasOwnProperty("category_id")) {
                 qb.andWhere("category_id", parseInt(searchCriteria.category_id))
             }
@@ -88,6 +92,7 @@ async function getProductById(productId) {
         });
         return product;
     } catch(err) {
+        console.log(`dal/products.js getProductById() for product id ${productId} - ERROR: `, err)
         throw err;
     }
     

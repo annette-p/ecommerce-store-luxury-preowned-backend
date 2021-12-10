@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
+const productDataLayer = require("../../dal/products");
 const cartServiceLayer = require("../../services/cart")
 const {
     checkIfAuthenticatedJWT,
@@ -30,6 +31,18 @@ router.post('/', [ jsonParser, checkIfAuthenticatedJWT, checkIsCustomerJWT ], as
             let lineItems = [];
             let meta = [];
             for (let item of cart.products) {
+
+                let productToOrder = await productDataLayer.getProductById(item.id);
+                if (productToOrder && productToOrder.get("quantity") < item["_pivot_quantity"]) {
+                    // insufficient stock balance :(
+                    const errMsg = `Checkout for user id ${userId} failed. Insufficient stock for item ${productToOrder.get("name")}`;
+                    res.status(500).send({
+                        "success": false,
+                        "message": errMsg
+                    })
+                    return;
+                }
+
                 const lineItem = {
                     'name': item["name"],
                     'images': [ item["product_image_1"] ],
