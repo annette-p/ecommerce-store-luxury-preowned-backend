@@ -9,6 +9,7 @@ const productDataLayer = require("../dal/products");
 function getStatusList() {
     return [
         "New",
+        "Paid",
         "Processing",
         "Shipment",
         "Completed",
@@ -70,7 +71,12 @@ async function getOrdersByUser(userId) {
 }
 
 // Create order for a user
-async function createOrder(orderData) {
+async function createOrder(orderData, initialOrderStatus) {
+
+    // validate initial order status
+    if (!getStatusList().includes(initialOrderStatus)) {
+        throw new Error(`Invalid initial order status ${initialOrderStatus}. Unable to create new order.`)
+    }
 
     try {
         const order = new Order();
@@ -79,7 +85,7 @@ async function createOrder(orderData) {
         order.set('payment_reference', orderData.payment_reference)
         order.set('payment_method', orderData.payment_method)
         order.set('payment_amount', orderData.payment_amount)
-        order.set('status', "New")
+        order.set('status', initialOrderStatus)
         order.set('comment', orderData.comment)
         order.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
         order.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
@@ -116,6 +122,7 @@ async function createOrder(orderData) {
 
         return orderId;
     } catch(err) {
+        console.log(err)
         throw err
     }
 }

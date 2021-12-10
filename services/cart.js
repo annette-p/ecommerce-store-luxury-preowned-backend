@@ -116,8 +116,8 @@ Postal Code: ${completedCheckoutSession.shipping.address.postal_code}`
         })
     })
 
-    // create the order
-    const orderId = await orderDataLayer.createOrder(orderData);
+    // create the order with initial order status as "Paid"
+    const orderId = await orderDataLayer.createOrder(orderData, "Paid");
 
     // clear the related cart 
     await cartDataLayer.removeCartByUser(completedCheckoutSession.client_reference_id);
