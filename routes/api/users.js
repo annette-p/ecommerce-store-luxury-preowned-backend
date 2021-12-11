@@ -18,7 +18,8 @@ const {
 
 router.get('/', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
-    await User.collection().fetch().then(users => {
+    // - exclude deleted users (i.e. password set to "***")
+    await User.collection().where("password", "!=", "***").fetch().then(users => {
         let usersResult = users.toJSON()
         // mask out the users' password hash
         res.status(200).send({
@@ -38,7 +39,8 @@ router.get('/', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => 
 // Get all admin users
 router.get('/admins', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
-    await User.collection().where("type", "Admin").fetch().then(users => {
+    // - exclude deleted users (i.e. password set to "***")
+    await User.collection().where("type", "Admin").where("password", "!=", "***").fetch().then(users => {
         let usersResult = users.toJSON()
         // mask out the users' password hash
         res.status(200).send({
@@ -58,7 +60,8 @@ router.get('/admins', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, re
 // Get all customers
 router.get('/customers', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
-    await User.collection().where("type", "Customer").fetch().then(users => {
+    // - exclude deleted users (i.e. password set to "***")
+    await User.collection().where("type", "Customer").where("password", "!=", "***").fetch().then(users => {
         let usersResult = users.toJSON()
         // mask out the users' password hash
         res.status(200).send({
@@ -82,7 +85,10 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
     await User.where({
         'id': userId,
         'active': 1
-    }).fetch({
+    }).where(
+        // exclude deleted users (i.e. password set to "***")
+        "password", "!=", "***"
+    ).fetch({
         require: true
     }).then(user => {
         // mask out the user's password hash
@@ -106,7 +112,10 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
     const user = await User.where({
         'id': userId,
         'active': 1
-    }).fetch({
+    }).where(
+        // exclude deleted users (i.e. password set to "***")
+        "password", "!=", "***"
+    ).fetch({
         require: true
     }).catch(err => {
         console.log(err)
@@ -148,7 +157,10 @@ router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
     const user = await User.where({
         'id': userId,
         'active': 1
-    }).fetch({
+    }).where(
+        // exclude deleted users (i.e. password set to "***")
+        "password", "!=", "***"
+    ).fetch({
         require: true
     }).catch(err => {
         console.log(err)
@@ -202,7 +214,10 @@ router.delete('/delete', [checkIfAuthenticatedJWT], async (req, res) => {
     const userId = req.user.id;
     const user = await User.where({
         'id': userId
-    }).fetch({
+    }).where(
+        // exclude deleted users (i.e. password set to "***")
+        "password", "!=", "***"
+    ).fetch({
         require: true
     }).catch(err => {
         console.log(err)
@@ -259,7 +274,10 @@ router.get('/:user_id', async (req, res) => {
     const userId = req.params.user_id
     await User.where({
         'id': userId
-    }).fetch({
+    }).where(
+        // exclude deleted users (i.e. password set to "***")
+        "password", "!=", "***"
+    ).fetch({
         require: true
     }).then(user => {
         // mask out the user's password hash
@@ -281,7 +299,10 @@ router.get('/:user_id', async (req, res) => {
 router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
-    }).fetch({
+    }).where(
+        // exclude deleted users (i.e. password set to "***")
+        "password", "!=", "***"
+    ).fetch({
         require: true
     }).catch(err => {
         console.log(err)
@@ -327,7 +348,10 @@ router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
 router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
-    }).fetch({
+    }).where(
+        // exclude deleted users (i.e. password set to "***")
+        "password", "!=", "***"
+    ).fetch({
         require: true
     }).catch(err => {
         console.log(err)

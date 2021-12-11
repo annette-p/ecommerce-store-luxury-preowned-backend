@@ -100,6 +100,8 @@ const Tag = bookshelf.model("Tag", {
 
 const User = bookshelf.model("User", {
     tableName: "users",
+    // As a security measure, prevent password from being listed when calling toJSON()
+    // ref: https://bookshelfjs.org/api.html#Model-instance-hidden
     hidden: ["password"],
     consignments() {
         return this.hasMany("Consignment");
