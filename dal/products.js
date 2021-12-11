@@ -28,7 +28,6 @@ The supported search criteria are:
 
 */
 async function getAllProducts(searchCriteria) {
-    console.log("getAllProducts() - searchCriteria: ", searchCriteria)
     try {
         // Prepare the query for searching products
         let q = Product.collection();
