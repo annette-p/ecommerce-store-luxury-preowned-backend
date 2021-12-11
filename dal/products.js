@@ -28,18 +28,17 @@ The supported search criteria are:
 
 */
 async function getAllProducts(searchCriteria) {
+    console.log("getAllProducts() - searchCriteria: ", searchCriteria)
     try {
         // Prepare the query for searching products
         let q = Product.collection();
-        if (searchCriteria.hasOwnProperty("designer_id")) {
-            q = q.query("join", "designers", "designer_id", "designers.id")
-        } else if (searchCriteria.hasOwnProperty("tag_id")) {
-            // 'products' table and 'tags' table have many-to-many relationship,
-            // hence using 2 'join' for query based on tag id.
-            // ref: https://stackoverflow.com/a/56147245
-            q = q.query("join", "products_tags", "products.id", "products_tags.product_id");
-            q = q.query("join", "tags", "products_tags.tag_id", "tags.id");
-        }
+        q = q.query("join", "designers", "designer_id", "designers.id")
+
+        // 'products' table and 'tags' table have many-to-many relationship,
+        // hence using 2 'join' for query based on tag id.
+        // ref: https://stackoverflow.com/a/56147245
+        q = q.query("join", "products_tags", "products.id", "products_tags.product_id");
+        q = q.query("join", "tags", "products_tags.tag_id", "tags.id");
 
         q.where( (qb) => {
             // add a default search filter that will always return true.
