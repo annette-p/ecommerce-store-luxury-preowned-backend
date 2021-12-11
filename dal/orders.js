@@ -28,13 +28,71 @@ function getShipmentProviderList() {
     ]
 }
 
-// Retrieve all orders
-async function getAllOrders() {
+// Retrieve all orders, with optional search filter
+/* Retrieve all orders, with optional search filter
+
+The supported search criteria are:
+- orders with a specific status (e.g. /orders?order_status=paid)
+- orders with a given text in user's first name, user's last name, user's email, order comments or order shipment tracking number
+
+*/
+async function getAllOrders(searchCriteria) {
     try {
+        let q = Order.collection();
+        q = q.query("join", "users", "user_id", "users.id")
+        q = q.query("join", "order_shipments", "orders.id", "order_shipments.order_id")
+
+        q.where( (qb) => {
+            // add a default search filter that will always return true.
+            // this is necessary because there search filter input is optional
+            // ref: https://stackoverflow.com/a/1264693
+            qb.where(1, 1)
+
+            if (searchCriteria.hasOwnProperty("order_status")) {
+                qb.whereRaw("LOWER(status) = ?", searchCriteria.order_status.toLowerCase());
+            }
+
+            if (searchCriteria.hasOwnProperty("search")) {
+
+                // using multiple "or" conditions to match the same search text in 
+                // multiple table columns
+                // ref: https://stackoverflow.com/a/67377259
+                qb.andWhere( (qb1) => {
+
+                    searchCriteria.search.split(" ").forEach( searchWord => {
+                        // convert search text to lowercase
+                        const searchWordLower = searchWord.toLowerCase();
+                        // ignore spaces, and handle search text
+                        if (searchWord.trim().length > 0) {
+                            qb1.whereRaw("LOWER(users.firstname) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(users.lastname) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(users.email) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(comment) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(order_shipments.tracking_number) like ?", `%${searchWordLower}%`)
+                        }
+                    })
+                    
+                })
+            }
+
+        })
+
+        let orders = await q.fetch({
+            withRelated: ["user", "products", "orderShipment"]
+        });
+        return orders;
+
+        /*
+
+        Current Code
+
         let orders = await Order.collection().fetch({
             withRelated: ["user", "products", "orderShipment"]
         });
         return orders;
+
+        */
+        
     } catch (err) {
         throw err
     }

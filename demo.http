@@ -16,7 +16,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 
 # Get list of all customers
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/customers
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc5ODU2MiwiZXhwIjoxNjM4Nzk5NDYyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.s8DdfJgOnN5XXo-2JGwr4gLeWxbNfKdh3E2XNFpO4pA
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzOTE0ODQxNSwiZXhwIjoxNjM5MTQ5MzE1LCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.rmNCPuU6s5wKedqOIQk650RhD-8DyeDJIsLjUjxTB_A
 
 ###
 
@@ -146,7 +146,7 @@ POST {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/users/refresh
 content-type: application/json
 
 {
-    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM4NjgxMjM1LCJleHAiOjE2MzkyODYwMzUsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ.tRO8iEh_YIobHubR8cGse9UllZRVcDYJ6l9aeKsDCBo"
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJyZWZyZXNoX3Rva2VuIn0.eyJpZCI6MSwiaWF0IjoxNjM5MTkyMzQxLCJleHAiOjE2Mzk3OTcxNDEsInN1YiI6ImFkbWluQHlvdXItY29tcGFueS5jb20ifQ.ZUcHGHdewgpaNAlHnIYLOIQfB2Py7eV-UrSqTVMfCIQ"
 }
 
 ###
@@ -297,7 +297,7 @@ GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products
 ###
 
 # Get list of all products with search criteria
-GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products?tag_id=2
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/products?min_quantity=0
 
 ###
 
@@ -545,6 +545,12 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2
 # Get list of all orders
 GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzODc5NzIwMiwiZXhwIjoxNjM4Nzk4MTAyLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.7II0KIFl2WA9ciGYdBorg87vZgq3kiBlCC4OCB-DJ5o
+
+###
+
+# Get list of all orders with search criteria
+GET {{$dotenv %APP_HOSTNAME}}:{{$dotenv %PORT}}/orders?search=blue.cherry@gmail.com&order_status=paid
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInRva2VuX3R5cGUiOiJhY2Nlc3NfdG9rZW4ifQ.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiZW1haWwiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTYzOTE5NDQ4MywiZXhwIjoxNjM5MTk1MzgzLCJzdWIiOiJhZG1pbkB5b3VyLWNvbXBhbnkuY29tIn0.AxPrZwXhScetY0ilRM8SAFuxs-N7PqofJJDOwvWYTrU
 
 ###
 

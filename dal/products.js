@@ -16,7 +16,17 @@ function getProductConditionList() {
     ]
 }
 
-// Retrieve products, with optional search filter
+/*  Retrieve products, with optional search filter
+
+The supported search criteria are:
+- whether a product is active (e.g. /products?active=true)
+- products that have a mininum balance (e.g. /products?min_quantity=1)
+- products under a specific category id (e.g. /products?category_id=2)
+- products under a specific designer id (e.g. /products?designer_id=4)
+- products under a specific tag id (e.g. /products?tag_id=3)
+- products with a given text in product name, description, specification or designer name (e.g. /products?search=prada+bag)
+
+*/
 async function getAllProducts(searchCriteria) {
     try {
         // Prepare the query for searching products
@@ -24,6 +34,9 @@ async function getAllProducts(searchCriteria) {
         if (searchCriteria.hasOwnProperty("designer_id")) {
             q = q.query("join", "designers", "designer_id", "designers.id")
         } else if (searchCriteria.hasOwnProperty("tag_id")) {
+            // 'products' table and 'tags' table have many-to-many relationship,
+            // hence using 2 'join' for query based on tag id.
+            // ref: https://stackoverflow.com/a/56147245
             q = q.query("join", "products_tags", "products.id", "products_tags.product_id");
             q = q.query("join", "tags", "products_tags.tag_id", "tags.id");
         }
@@ -31,6 +44,7 @@ async function getAllProducts(searchCriteria) {
         q.where( (qb) => {
             // add a default search filter that will always return true.
             // this is necessary because there search filter input is optional
+            // ref: https://stackoverflow.com/a/1264693
             qb.where(1, 1)
 
             if (searchCriteria.hasOwnProperty("active")) {
@@ -54,11 +68,14 @@ async function getAllProducts(searchCriteria) {
             }
 
             if (searchCriteria.hasOwnProperty("search")) {
+
+                // using multiple "or" conditions to match the same search text in 
+                // multiple table columns
+                // ref: https://stackoverflow.com/a/67377259
                 qb.andWhere( (qb1) => {
 
                     searchCriteria.search.split(" ").forEach( searchWord => {
                         // ignore spaces, and handle search text
-
                         if (searchWord.trim().length > 0) {
                             qb1.whereRaw("LOWER(designers.name) like ?", `%${searchWord.toLowerCase()}%`)
                                 .orWhere("products.name", "like", `%${searchWord}%`)

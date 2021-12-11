@@ -12,7 +12,8 @@ router.get('/', [ checkIfAuthenticatedJWT ], async (req, res) => {
     try {
         if (req.user.role === "Admin") {
             // Admins can retrieve all orders
-            orders = await orderDataLayer.getAllOrders();
+            // - pass optional search criteria as part of URL parameters (in req.query)
+            orders = await orderDataLayer.getAllOrders(req.query);
         } else {
             // Customers can only retrieve their orders
             orders = await orderDataLayer.getOrdersByUser(req.user.id)
