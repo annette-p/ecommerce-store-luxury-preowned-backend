@@ -24,7 +24,8 @@ The supported search criteria are:
 - products under a specific category id (e.g. /products?category_id=2)
 - products under a specific designer id (e.g. /products?designer_id=4)
 - products under a specific tag id (e.g. /products?tag_id=3)
-- products with a given text in product name, description, specification or designer name (e.g. /products?search=prada+bag)
+- products with a given text in product name, description, specification, 
+  condition description or designer name (e.g. /products?search=prada+bag)
 
 */
 async function getAllProducts(searchCriteria) {
@@ -76,9 +77,10 @@ async function getAllProducts(searchCriteria) {
                         // ignore spaces, and handle search text
                         if (searchWord.trim().length > 0) {
                             qb1.whereRaw("LOWER(designers.name) like ?", `%${searchWord.toLowerCase()}%`)
-                                .orWhere("products.name", "like", `%${searchWord}%`)
-                                .orWhere("description", "like", `%${searchWord}%`)
-                                .orWhere("specifications", "like", `%${searchWord}%`)
+                                .orWhereRaw("LOWER(products.name) like ?", `%${searchWord.toLowerCase()}%`)
+                                .orWhereRaw("LOWER(description) like ?", `%${searchWord}%`)
+                                .orWhereRaw("LOWER(specifications) like ?", `%${searchWord}%`)
+                                .orWhereRaw("LOWER(condition_description) like ?", `%${searchWord}%`)
                         }
                     })
                     
