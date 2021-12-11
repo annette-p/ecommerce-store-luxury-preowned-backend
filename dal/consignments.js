@@ -19,11 +19,58 @@ function getStatusList() {
     ]
 }
 
-// Retrieve all consignments along with the user information.
-// This would be exposed to admins
-async function getAllConsignments() {
+/* Retrieve all consignments along with the user information.
+
+This would be exposed to admins
+
+The supported search criteria are:
+- consignments with a specific status (e.g. /consignments?consignment_status=paid)
+- consignments with a given text in user's first name, user's last name, user's email, order comments or product's name/description
+
+*/
+async function getAllConsignments(searchCriteria) {
     try {
-        let consignments = await Consignment.collection().fetch({
+        let q = Consignment.collection();
+        q = q.query("join", "users", "user_id", "users.id")
+        q = q.query("join", "products", "product_id", "products.id")
+
+        q.where( (qb) => {
+            // add a default search filter that will always return true.
+            // this is necessary because there search filter input is optional
+            // ref: https://stackoverflow.com/a/1264693
+            qb.where(1, 1)
+
+            if (searchCriteria.hasOwnProperty("consignment_status")) {
+                qb.whereRaw("LOWER(status) = ?", searchCriteria.consignment_status.toLowerCase());
+            }
+
+            if (searchCriteria.hasOwnProperty("search")) {
+
+                // using multiple "or" conditions to match the same search text in 
+                // multiple table columns
+                // ref: https://stackoverflow.com/a/67377259
+                qb.andWhere( (qb1) => {
+
+                    searchCriteria.search.split(" ").forEach( searchWord => {
+                        // convert search text to lowercase
+                        const searchWordLower = searchWord.toLowerCase();
+                        // ignore spaces, and handle search text
+                        if (searchWord.trim().length > 0) {
+                            qb1.whereRaw("LOWER(users.firstname) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(users.lastname) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(users.email) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(comment) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(products.name) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(products.description) like ?", `%${searchWordLower}%`)
+                        }
+                    })
+                    
+                })
+            }
+
+        })
+
+        let consignments = await q.fetch({
             withRelated: ["user", "product", "product.category", "product.designer"]
         });
         return consignments;

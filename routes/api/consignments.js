@@ -15,7 +15,8 @@ router.get('/', [ checkIfAuthenticatedJWT ], async(req, res) => {
     try {
         if (req.user.role === "Admin") {
             // Admins can retrieve all consignments
-            consignments = await consignmentDataLayer.getAllConsignments();
+            // - pass optional search criteria as part of URL parameters (in req.query)
+            consignments = await consignmentDataLayer.getAllConsignments(req.query);
         } else {
             // Customers can only retrieve their orders
             consignments = await consignmentDataLayer.getConsignmentsByUser(req.user.id)

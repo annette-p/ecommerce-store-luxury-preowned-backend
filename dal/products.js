@@ -74,13 +74,15 @@ async function getAllProducts(searchCriteria) {
                 qb.andWhere( (qb1) => {
 
                     searchCriteria.search.split(" ").forEach( searchWord => {
+                        // convert search text to lowercase
+                        const searchWordLower = searchWord.toLowerCase();
                         // ignore spaces, and handle search text
                         if (searchWord.trim().length > 0) {
-                            qb1.whereRaw("LOWER(designers.name) like ?", `%${searchWord.toLowerCase()}%`)
-                                .orWhereRaw("LOWER(products.name) like ?", `%${searchWord.toLowerCase()}%`)
-                                .orWhereRaw("LOWER(description) like ?", `%${searchWord}%`)
-                                .orWhereRaw("LOWER(specifications) like ?", `%${searchWord}%`)
-                                .orWhereRaw("LOWER(condition_description) like ?", `%${searchWord}%`)
+                            qb1.whereRaw("LOWER(designers.name) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(products.name) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(description) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(specifications) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(condition_description) like ?", `%${searchWordLower}%`)
                         }
                     })
                     
