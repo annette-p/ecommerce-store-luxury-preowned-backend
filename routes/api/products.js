@@ -97,7 +97,7 @@ router.delete('/:product_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT],
         } else {
             res.status(400).send({
                 "success": false,
-                "message": `Unable to delete non-existent Product ID ${productId}.`
+                "message": `Unable to delete Product ID ${productId}.`
             })
         }
     } catch(err) {

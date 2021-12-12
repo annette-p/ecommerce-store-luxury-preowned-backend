@@ -178,6 +178,50 @@ async function updateProduct(productId, productData) {
 }
 
 async function deleteProduct(productId) {
+    console.log(productId, typeof productId)
+
+    // validations
+    // - deletion of a product should not be allowed when it is associated with any carts, orders and/or consignments
+    try {
+
+        // Use "count()" method in bookshelf to determine the number of rows that match the query
+        // ref: https://bookshelfjs.org/api.html#Model-instance-count
+        
+        // check whether the product is part of any consignments
+        let q1 = Product.collection();
+        q1 = q1.query("join", "consignments", "products.id", "consignments.product_id");
+        q1.where("consignments.product_id", parseInt(productId))
+
+        let numOfConsignmentsWithProduct = await q1.count();
+
+        // check whether the product is part of any carts
+        let q2 = Product.collection();
+        q2 = q2.query("join", "carts_products", "products.id", "carts_products.product_id");
+        q2 = q2.query("join", "carts", "carts_products.cart_id", "carts.id");
+        q2.where("carts_products.product_id", parseInt(productId))
+
+        let numOfCartsWithProduct = await q2.count();
+
+        // check whether the product is part of any orders
+        let q3 = Product.collection();
+        q3 = q3.query("join", "orders_products", "products.id", "orders_products.product_id");
+        q3 = q3.query("join", "orders", "orders_products.order_id", "orders.id");
+        q3.where("orders_products.product_id", parseInt(productId))
+
+        let numOfOrdersWithProduct = await q3.count();
+
+        console.log(`dal/products.js deleteProduct() - product id ${productId} is associated with ${numOfConsignmentsWithProduct} consignments, ${numOfCartsWithProduct} carts, ${numOfOrdersWithProduct} orders`)
+
+        if ( (numOfConsignmentsWithProduct + numOfCartsWithProduct + numOfOrdersWithProduct) > 0 ) {
+            console.log(`dal/products.js deleteProduct() - unable to delete product id ${productId} as it has associated carts, consignment and/or orders`)
+            return false;
+        }
+
+    } catch(err) {
+        console.error("dal/products.js deleteProduct() - failed to verify whether product is associated with existing carts, consignment and/or orders. ERROR: ", err)
+        throw err;
+    }
+
     try {
         const product = await Product.where({
             'id': productId
@@ -187,11 +231,14 @@ async function deleteProduct(productId) {
     
         if (product) {
             await product.destroy();
+            console.log(`dal/products.js deleteProduct() - product id ${productId} has been deleted successfully`)
             return true
         } else {
+            console.log(`dal/products.js deleteProduct() - unable to delete product id ${productId} as it does not exists`)
             return false;
         }
     } catch(err) {
+        console.error("dal/products.js deleteProduct() - ERROR: ", err)
         throw err;
     }
 }
