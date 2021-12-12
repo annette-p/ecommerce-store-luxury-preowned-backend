@@ -133,7 +133,7 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
         if (req.body.email) { user.set('email', req.body.email); }
         if (req.body.billing_address) { user.set('billing_address', req.body.billing_address); }
         if (req.body.shipping_address) { user.set('shipping_address', req.body.shipping_address); }
-        if (req.body.hasOwnProperty('active')) { user.set('active', req.body.active); }
+        if (req.body.hasOwnProperty('active')) { user.set('active', req.body.active === true ? 1 : 0); }
         user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await user.save().then(() => {
@@ -241,8 +241,8 @@ router.delete('/delete', [checkIfAuthenticatedJWT], async (req, res) => {
             user.set('email', uuidv4());
             user.set('billing_address', "***");
             user.set('shipping_address', "***");
-            user.set('active', false);
-            user.set('federated_login', false); 
+            user.set('active', 0);
+            user.set('federated_login', 0); 
             user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
             await user.save().then(() => {
@@ -371,8 +371,8 @@ router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
         user.set('email', uuidv4());
         user.set('billing_address', "***");
         user.set('shipping_address', "***");
-        user.set('active', false);
-        user.set('federated_login', false); 
+        user.set('active', 0);
+        user.set('federated_login', 0); 
         user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await user.save().then(() => {
@@ -401,8 +401,8 @@ router.post('/create', async (req, res) => {
     user.set('shipping_address', req.body.shipping_address);
     user.set('username', req.body.username);
     user.set('password', getHashedPassword(req.body.password));
-    user.set('federated_login', false);
-    user.set('active', true)
+    user.set('federated_login', 0);
+    user.set('active', 1)
     user.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     await user.save().then(() => {
