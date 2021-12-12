@@ -1,10 +1,16 @@
-node_modules/
-sessions/
+# default
 .github/
-.env
 .vscode
 
+# location where the installed NodeJS packages are saved
+node_modules/
+
+# use of session for NodeJS Express
+sessions/
+
+# Store environment variables for use with the application running locally
+.env
+
 # db-migrate
-migrations.old/
 database.json
 database-*.json
