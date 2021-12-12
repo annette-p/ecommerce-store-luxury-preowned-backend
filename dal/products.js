@@ -32,13 +32,16 @@ async function getAllProducts(searchCriteria) {
     try {
         // Prepare the query for searching products
         let q = Product.collection();
-        q = q.query("join", "designers", "designer_id", "designers.id")
 
-        // 'products' table and 'tags' table have many-to-many relationship,
-        // hence using 2 'join' for query based on tag id.
-        // ref: https://stackoverflow.com/a/56147245
-        q = q.query("join", "products_tags", "products.id", "products_tags.product_id");
-        q = q.query("join", "tags", "products_tags.tag_id", "tags.id");
+        if (searchCriteria.hasOwnProperty("designer_id")) {
+            q = q.query("join", "designers", "designer_id", "designers.id")
+        } else if (searchCriteria.hasOwnProperty("tag_id")) {
+            // 'products' table and 'tags' table have many-to-many relationship,
+            // hence using 2 'join' for query based on tag id.
+            // ref: https://stackoverflow.com/a/56147245
+            q = q.query("join", "products_tags", "products.id", "products_tags.product_id");
+            q = q.query("join", "tags", "products_tags.tag_id", "tags.id");
+        }
 
         q.where( (qb) => {
             // add a default search filter that will always return true.
@@ -47,6 +50,7 @@ async function getAllProducts(searchCriteria) {
             qb.where(1, 1)
 
             if (searchCriteria.hasOwnProperty("active")) {
+                console.log("filtering products by active..")
                 qb.andWhere("active", searchCriteria.active === "true" ? 1 : 0)
             }
 
@@ -78,11 +82,20 @@ async function getAllProducts(searchCriteria) {
                         const searchWordLower = searchWord.toLowerCase();
                         // ignore spaces, and handle search text
                         if (searchWord.trim().length > 0) {
-                            qb1.whereRaw("LOWER(designers.name) like ?", `%${searchWordLower}%`)
+
+                            if (searchCriteria.hasOwnProperty("tag_id")) {
+                                qb1.whereRaw("LOWER(products.name) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(description) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(specifications) like ?", `%${searchWordLower}%`)
+                                .orWhereRaw("LOWER(condition_description) like ?", `%${searchWordLower}%`)
+                            } else {
+                                qb1.whereRaw("LOWER(designers.name) like ?", `%${searchWordLower}%`)
                                 .orWhereRaw("LOWER(products.name) like ?", `%${searchWordLower}%`)
                                 .orWhereRaw("LOWER(description) like ?", `%${searchWordLower}%`)
                                 .orWhereRaw("LOWER(specifications) like ?", `%${searchWordLower}%`)
                                 .orWhereRaw("LOWER(condition_description) like ?", `%${searchWordLower}%`)
+                            }
+                            
                         }
                     })
                     
@@ -186,7 +199,7 @@ async function deleteProduct(productId) {
 
         // Use "count()" method in bookshelf to determine the number of rows that match the query
         // ref: https://bookshelfjs.org/api.html#Model-instance-count
-        
+
         // check whether the product is part of any consignments
         let q1 = Product.collection();
         q1 = q1.query("join", "consignments", "products.id", "consignments.product_id");
