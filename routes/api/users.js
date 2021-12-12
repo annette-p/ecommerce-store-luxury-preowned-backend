@@ -7,7 +7,8 @@ const {
     checkIfAuthenticatedJWT,
     checkIsAdminJWT,
     getHashedPassword,
-    generateAccessToken
+    generateAccessToken,
+    parseJWT
 } = require('../../middlewares/authentication')
 
 // import the User model
@@ -16,6 +17,7 @@ const {
     User
 } = require('../../models');
 
+// Retrieve all users (admins and customers) - only by admins
 router.get('/', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
     // - exclude deleted users (i.e. password set to "***")
@@ -32,11 +34,10 @@ router.get('/', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => 
             "success": false,
             "message": `Unable to retrieve users.`
         })
-        // return;
     });
 })
 
-// Get all admin users
+// Get all admin users - only by admins
 router.get('/admins', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
     // - exclude deleted users (i.e. password set to "***")
@@ -53,11 +54,10 @@ router.get('/admins', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, re
             "success": false,
             "message": `Unable to retrieve users.`
         })
-        // return;
     });
 })
 
-// Get all customers
+// Get all customers - only by admins
 router.get('/customers', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch all the users (i.e., SELECT * FROM users)
     // - exclude deleted users (i.e. password set to "***")
@@ -74,7 +74,6 @@ router.get('/customers', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req,
             "success": false,
             "message": `Unable to retrieve users.`
         })
-        // return;
     });
 })
 
@@ -103,10 +102,10 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
             "success": false,
             "message": `Unable to retrieve user due to unexpected error.`
         })
-        return;
     });
 })
 
+// For an authenticated user to update his/her own profile
 router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
     const userId = req.user.id;
     const user = await User.where({
@@ -152,6 +151,7 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
 
 })
 
+// for an authenticated user to change his/her own password
 router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
     const userId = req.user.id;
     const user = await User.where({
@@ -269,7 +269,8 @@ router.delete('/delete', [checkIfAuthenticatedJWT], async (req, res) => {
 
 })
 
-router.get('/:user_id', async (req, res) => {
+// Retrueve info for a specific user by id - only by admin
+router.get('/:user_id', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     // fetch a user by primary key "id"
     const userId = req.params.user_id
     await User.where({
@@ -296,7 +297,8 @@ router.get('/:user_id', async (req, res) => {
     });
 })
 
-router.put('/:user_id/update', checkIfAuthenticatedJWT, async (req, res) => {
+// Update info of a user profile - only by admin
+router.put('/:user_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
     const user = await User.where({
         'id': req.params.user_id
     }).where(
@@ -391,7 +393,17 @@ router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
 
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', parseJWT, async (req, res) => {
+    // retrieve the requestor's role from "user" object in session (if authenticated)
+    let requestorRole = req.user ? req.user.role : undefined;
+    if (requestorRole !== "Admin" && req.body.type === "Admin") {
+        // only admins are allowed to create new admin accounts
+        res.status(401).send({
+            "success": false,
+            "message": "Unauthorized to create new administrative accounts"
+        })
+        return;
+    }
     const user = new User();
     user.set('firstname', req.body.firstname);
     user.set('lastname', req.body.lastname);
