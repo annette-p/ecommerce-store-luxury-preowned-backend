@@ -107,6 +107,32 @@ router.get('/info', checkIfAuthenticatedJWT, async (req, res) => {
 
 // For an authenticated user to update his/her own profile
 router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
+
+    // ********** validations **********
+    if (req.body.firstname && req.body.firstname.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "First Name cannot be empty"
+        });
+        return;
+    }
+
+    if (req.body.lastname && req.body.lastname.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Last Name cannot be empty"
+        });
+        return;
+    }
+
+    if (req.body.email && req.body.email.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Email cannot be empty"
+        });
+        return;
+    }
+    
     const userId = req.user.id;
     const user = await User.where({
         'id': userId,
@@ -153,6 +179,24 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
 
 // for an authenticated user to change his/her own password
 router.put('/change-password', checkIfAuthenticatedJWT, async (req, res) => {
+
+    // ********** validations **********
+    if (!req.body.current_password || req.body.current_password.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Current password not provided"
+        });
+        return;
+    }
+
+    if (!req.body.new_password || req.body.new_password.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "New password not provided"
+        });
+        return;
+    }
+
     const userId = req.user.id;
     const user = await User.where({
         'id': userId,
@@ -299,6 +343,32 @@ router.get('/:user_id', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, 
 
 // Update info of a user profile - only by admin
 router.put('/:user_id/update', [checkIfAuthenticatedJWT, checkIsAdminJWT], async (req, res) => {
+
+    // ********** validations **********
+    if (req.body.firstname && req.body.firstname.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "First Name cannot be empty"
+        });
+        return;
+    }
+
+    if (req.body.lastname && req.body.lastname.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Last Name cannot be empty"
+        });
+        return;
+    }
+
+    if (req.body.email && req.body.email.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Email cannot be empty"
+        });
+        return;
+    }
+
     const user = await User.where({
         'id': req.params.user_id
     }).where(
@@ -394,6 +464,40 @@ router.delete('/:user_id/delete', [checkIfAuthenticatedJWT, checkIsAdminJWT], as
 })
 
 router.post('/create', parseJWT, async (req, res) => {
+
+    // ********** validations **********
+    if (!req.body.firstname || req.body.firstname.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "First Name not provided"
+        });
+        return;
+    }
+
+    if (!req.body.email || req.body.email.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Email not provided"
+        });
+        return;
+    }
+
+    if (!req.body.username || req.body.username.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Username not provided"
+        });
+        return;
+    }
+
+    if (!req.body.password || req.body.password.trim().length === 0) {
+        res.status(400);
+        res.json({
+            "error": "Password not provided"
+        });
+        return;
+    }
+
     // retrieve the requestor's role from "user" object in session (if authenticated)
     let requestorRole = req.user ? req.user.role : undefined;
     if (requestorRole !== "Admin" && req.body.type === "Admin") {
