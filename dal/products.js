@@ -29,11 +29,12 @@ The supported search criteria are:
 
 */
 async function getAllProducts(searchCriteria) {
+    
     try {
         // Prepare the query for searching products
         let q = Product.collection();
 
-        if (searchCriteria.hasOwnProperty("designer_id")) {
+        if (searchCriteria.hasOwnProperty("designer_id") || searchCriteria.hasOwnProperty("search")) {
             q = q.query("join", "designers", "designer_id", "designers.id")
         } else if (searchCriteria.hasOwnProperty("tag_id")) {
             // 'products' table and 'tags' table have many-to-many relationship,
