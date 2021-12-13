@@ -132,7 +132,7 @@ router.put('/update', checkIfAuthenticatedJWT, async (req, res) => {
         if (req.body.email) { user.set('email', req.body.email); }
         if (req.body.billing_address) { user.set('billing_address', req.body.billing_address); }
         if (req.body.shipping_address) { user.set('shipping_address', req.body.shipping_address); }
-        if (req.body.hasOwnProperty('active')) { user.set('active', req.body.active === true ? 1 : 0); }
+        if (req.body.hasOwnProperty('active')) { user.set('active', req.body.active); }
         user.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         await user.save().then(() => {
@@ -443,7 +443,7 @@ router.post('/authenticate', async (req, res) => {
             "username", req.body.username
         ).first()
         .then(async (user) => {
-            if (user && user.get("active")) {
+            if (user && user.get("active") === 1) {
                 // check if the password matches
                 const passwordInDB = user.get("password")
                 const passwordProvided = getHashedPassword(req.body.password)

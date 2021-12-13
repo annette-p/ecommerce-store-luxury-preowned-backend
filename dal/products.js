@@ -50,7 +50,6 @@ async function getAllProducts(searchCriteria) {
             qb.where(1, 1)
 
             if (searchCriteria.hasOwnProperty("active")) {
-                console.log("filtering products by active..")
                 qb.andWhere("active", searchCriteria.active === "true" ? 1 : 0)
             }
 
@@ -147,7 +146,7 @@ async function updateProduct(productId, productData) {
             if (productData.condition) { product.set('condition', productData.condition); }
             if (productData.condition_description) { product.set('condition_description', productData.condition_description); }
             if (productData.sku) { product.set('sku', productData.sku); }
-            if (productData.hasOwnProperty('authenticity')) { product.set('authenticity', productData.authenticity === true ? 1 : 0); }
+            if (productData.hasOwnProperty('authenticity')) { product.set('authenticity', productData.authenticity); }
             if (productData.product_image_1) { product.set('product_image_1', productData.product_image_1); }
             if (productData.product_image_2) { product.set('product_image_2', productData.product_image_2); }
             if (productData.product_gallery_1) { product.set('product_gallery_1', productData.product_gallery_1); }
@@ -160,7 +159,7 @@ async function updateProduct(productId, productData) {
             if (productData.product_gallery_8) { product.set('product_gallery_8', productData.product_gallery_8); }
             if (productData.claim_date) { product.set('claim_date', productData.claim_date); }
             if (productData.claim_amount) { product.set('claim_amount', productData.claim_amount); }
-            if (productData.hasOwnProperty('active')) { product.set('active', productData.active === true ? 1 : 0); }
+            if (productData.hasOwnProperty('active')) { product.set('active', productData.active); }
     
             product.set('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
     
@@ -272,7 +271,7 @@ async function createProduct(productData) {
         product.set('condition_description', productData.condition_description);
         product.set('sku', productData.sku);
         product.set('quantity', productData.quantity);
-        product.set('authenticity', productData.authenticity === true ? 1 : 0);
+        product.set('authenticity', productData.authenticity);
         product.set('product_image_1', productData.product_image_1);
         product.set('product_image_2', productData.product_image_2);
         product.set('product_gallery_1', productData.product_gallery_1);
@@ -285,9 +284,9 @@ async function createProduct(productData) {
         product.set('product_gallery_8', productData.product_gallery_8);
         product.set('claim_date', productData.claim_date);
         product.set('claim_amount', productData.claim_amount);
-        let isActive = false;
+        let isActive = 0;
         if (productData.hasOwnProperty('active')) {
-            isActive = productData.active === true ? 1 : 0;
+            isActive = productData.active;
         }
         product.set('active', isActive);
         product.set('created_at', new Date().toISOString().slice(0, 19).replace('T', ' '));

@@ -81,17 +81,6 @@ async function getAllOrders(searchCriteria) {
             withRelated: ["user", "products", "orderShipment"]
         });
         return orders;
-
-        /*
-
-        Current Code
-
-        let orders = await Order.collection().fetch({
-            withRelated: ["user", "products", "orderShipment"]
-        });
-        return orders;
-
-        */
         
     } catch (err) {
         throw err
