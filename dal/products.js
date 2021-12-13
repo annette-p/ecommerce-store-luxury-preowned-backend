@@ -147,7 +147,7 @@ async function updateProduct(productId, productData) {
             if (productData.condition) { product.set('condition', productData.condition); }
             if (productData.condition_description) { product.set('condition_description', productData.condition_description); }
             if (productData.sku) { product.set('sku', productData.sku); }
-            if (productData.hasOwnProperty('authenticity')) { product.set('authenticity', productData.authenticity); }
+            if (productData.hasOwnProperty('authenticity')) { product.set('authenticity', productData.authenticity === true ? 1 : 0); }
             if (productData.product_image_1) { product.set('product_image_1', productData.product_image_1); }
             if (productData.product_image_2) { product.set('product_image_2', productData.product_image_2); }
             if (productData.product_gallery_1) { product.set('product_gallery_1', productData.product_gallery_1); }
@@ -272,7 +272,7 @@ async function createProduct(productData) {
         product.set('condition_description', productData.condition_description);
         product.set('sku', productData.sku);
         product.set('quantity', productData.quantity);
-        product.set('authenticity', productData.authenticity);
+        product.set('authenticity', productData.authenticity === true ? 1 : 0);
         product.set('product_image_1', productData.product_image_1);
         product.set('product_image_2', productData.product_image_2);
         product.set('product_gallery_1', productData.product_gallery_1);
